@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://cowug1mbtod0e"]
+
+[ext_resource type="Script" path="res://FusekiCallerButton.gd" id="1_jlk23"]
+
+[node name="FusekiCallerButton" type="Button"]
+offset_right = 226.0
+offset_bottom = 78.0
+text = "Call Fuseki"
+script = ExtResource("1_jlk23")
+
+[node name="SparqlFusekiQueries" type="HTTPRequest" parent="."]
+use_threads = true
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]
+[connection signal="request_completed" from="SparqlFusekiQueries" to="." method="_on_fuseki_completion"]

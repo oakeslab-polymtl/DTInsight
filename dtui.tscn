@@ -1,0 +1,46 @@
+[gd_scene load_steps=3 format=3 uid="uid://nqgolpvgp7yg"]
+
+[ext_resource type="Script" path="res://dtui.gd" id="1_26otp"]
+[ext_resource type="PackedScene" uid="uid://cowug1mbtod0e" path="res://fuseki_caller_button.tscn" id="1_fn8md"]
+
+[node name="DTUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_26otp")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="FusekiCallerButton" parent="VBoxContainer/HBoxContainer" instance=ExtResource("1_fn8md")]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+
+[node name="ServicesContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="EnablersContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ModelsContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[connection signal="enablers_updated" from="VBoxContainer/HBoxContainer/FusekiCallerButton" to="." method="_on_fuseki_caller_button_enablers_updated"]
+[connection signal="models_updated" from="VBoxContainer/HBoxContainer/FusekiCallerButton" to="." method="_on_fuseki_caller_button_models_updated"]
+[connection signal="services_updated" from="VBoxContainer/HBoxContainer/FusekiCallerButton" to="." method="_on_fuseki_caller_button_services_updated"]
