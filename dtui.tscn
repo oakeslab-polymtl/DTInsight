@@ -41,6 +41,4 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_vertical = 3
 
-[connection signal="enablers_updated" from="VBoxContainer/HBoxContainer/FusekiCallerButton" to="." method="_on_fuseki_caller_button_enablers_updated"]
-[connection signal="models_updated" from="VBoxContainer/HBoxContainer/FusekiCallerButton" to="." method="_on_fuseki_caller_button_models_updated"]
-[connection signal="services_updated" from="VBoxContainer/HBoxContainer/FusekiCallerButton" to="." method="_on_fuseki_caller_button_services_updated"]
+[connection signal="fuseki_data_updated" from="VBoxContainer/HBoxContainer/FusekiCallerButton" to="." method="_on_fuseki_data_updated"]

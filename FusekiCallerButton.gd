@@ -2,13 +2,11 @@ extends Button
 
 @onready var SparqlRequest = $SparqlFusekiQueries
 
-signal services_updated
-signal enablers_updated
-signal models_updated
+signal fuseki_data_updated
 
-var services
-var enablers
-var models
+var service
+var enabler
+var model
 
 const URL = "http://localhost:3030" #Fuseki server, localhost if started from openCAESAR on this machine
 const DATASET = "/DTDF" #FUseki endpoint defined in fuseki.ttl in the project
@@ -47,6 +45,9 @@ func _on_pressed():
 	query_fuseky(ENABLERS_QUERY)
 	await(SparqlRequest.request_completed)
 	query_fuseky(MODELS_QUERY)
+	await(SparqlRequest.request_completed)
+	fuseki_data_updated.emit()
+	
 
 func query_fuseky(query):
 	SparqlRequest.request(URL + DATASET + ENDPOINT + query.uri_encode())
@@ -58,11 +59,8 @@ func _on_fuseki_completion(_result, _response_code, _headers, body):
 	var json_results = json["results"]["bindings"]
 	match json_head:
 		"service":
-			services = json_results
-			services_updated.emit()
+			service = json_results
 		"enabler":
-			enablers = json_results
-			enablers_updated.emit()
+			enabler = json_results
 		"model":
-			models = json_results
-			models_updated.emit()
+			model = json_results
