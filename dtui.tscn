@@ -23,11 +23,10 @@ grow_vertical = 2
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+alignment = 1
 
 [node name="FusekiCallerButton" parent="VBoxContainer/HBoxContainer" instance=ExtResource("1_fn8md")]
 layout_mode = 2
-size_flags_horizontal = 6
-size_flags_vertical = 4
 
 [node name="ServicesContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2

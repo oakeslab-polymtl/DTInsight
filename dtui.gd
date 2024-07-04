@@ -4,20 +4,19 @@ extends Control
 @onready var enabler_container = $VBoxContainer/EnablersContainer
 @onready var model_container = $VBoxContainer/ModelsContainer
 
-@onready var fuseki_caller = $VBoxContainer/HBoxContainer/FusekiCallerButton
+@onready var fuseki_data = $VBoxContainer/HBoxContainer/FusekiCallerButton/SparqlFusekiQueries/FusekiData
 
 var generic_display = preload("res://generic_display.tscn")
 
 func _on_fuseki_data_updated():
-	update_node_with("service", service_container, fuseki_caller.service)
-	update_node_with("enabler", enabler_container, fuseki_caller.enabler)
-	update_node_with("model", model_container, fuseki_caller.model)
+	update_node_with(service_container, fuseki_data.service)
+	update_node_with(enabler_container, fuseki_data.enabler)
+	update_node_with(model_container, fuseki_data.model)
 
-func update_node_with(node_name, visual_container, fuseki_content):
+func update_node_with(visual_container, fuseki_content):
 	free_all_child(visual_container)
 	for element in fuseki_content :
-		print(element)
-		var displayed_name: String = element[node_name]["value"]
+		var displayed_name: String = element[element.keys()[0]]["value"]
 		displayed_name= displayed_name.split("#")[1]
 		var new_display = generic_display.instantiate()
 		new_display.get_node("Label").text = displayed_name
