@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cowug1mbtod0e"]
 
-[ext_resource type="Script" path="res://FusekiCallerButton.gd" id="1_jlk23"]
-[ext_resource type="Script" path="res://FusekiData.gd" id="2_51eik"]
+[ext_resource type="Script" path="res://Fuseki/FusekiCallerButton.gd" id="1_jlk23"]
+[ext_resource type="Script" path="res://Fuseki/FusekiData.gd" id="2_51eik"]
 
 [node name="FusekiCallerButton" type="Button"]
 anchors_preset = 8

@@ -37,7 +37,6 @@ WHERE {
 GROUP BY ?model"
 
 func _on_pressed():
-	print("fuseki call")
 	query_fuseky(SERVICES_QUERY)
 	await(SparqlRequest.request_completed)
 	query_fuseky(ENABLERS_QUERY)

@@ -6,7 +6,7 @@ extends Control
 
 @onready var fuseki_data = $VBoxContainer/HBoxContainer/FusekiCallerButton/SparqlFusekiQueries/FusekiData
 
-var generic_display = preload("res://generic_display.tscn")
+var generic_display = preload("res://GenericDisplay/generic_display.tscn")
 
 func _on_fuseki_data_updated():
 	update_node_with(service_container, fuseki_data.service)
