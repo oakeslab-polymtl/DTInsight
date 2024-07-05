@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://cowug1mbtod0e"]
+[gd_scene load_steps=4 format=3 uid="uid://cowug1mbtod0e"]
 
 [ext_resource type="Script" path="res://Fuseki/FusekiCallerButton.gd" id="1_jlk23"]
 [ext_resource type="Script" path="res://Fuseki/FusekiData.gd" id="2_51eik"]
+[ext_resource type="Script" path="res://Fuseki/FusekiQuery.gd" id="3_gfdwu"]
 
 [node name="FusekiCallerButton" type="Button"]
 anchors_preset = 8
@@ -25,6 +26,9 @@ use_threads = true
 
 [node name="FusekiData" type="Node" parent="SparqlFusekiQueries"]
 script = ExtResource("2_51eik")
+
+[node name="FusekiQuery" type="Node" parent="SparqlFusekiQueries"]
+script = ExtResource("3_gfdwu")
 
 [connection signal="pressed" from="." to="." method="_on_pressed"]
 [connection signal="request_completed" from="SparqlFusekiQueries" to="." method="_on_fuseki_completion"]
