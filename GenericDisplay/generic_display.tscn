@@ -9,8 +9,12 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="."]
+[node name="GenericElementName" type="Label" parent="."]
 layout_mode = 2
 text = "Default"
 horizontal_alignment = 1
 vertical_alignment = 3
+
+[node name="GenericElementAttributes" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4

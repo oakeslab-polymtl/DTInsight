@@ -25,10 +25,11 @@ func update_node_with(visual_container, fuseki_node_data):
 	free_all_child(visual_container)
 	for element in fuseki_node_data :
 		var new_node = generic_display.instantiate()
-		new_node.get_node("Label").text = element
+		new_node.get_node("GenericElementName").text = element.element_name
+		new_node.get_node("GenericElementAttributes").text = build_displayed_string(element.element_attributes)
 		visual_container.add_child(new_node)
 		var displayed_element = DisplayedNode.new()
-		displayed_element.name = element
+		displayed_element.name = element.element_name
 		displayed_element.node = new_node
 		displayed_node_list.append(displayed_element)
 
@@ -36,16 +37,24 @@ func free_all_child(node):
 	for child in node.get_children():
 		child.free()
 
+func build_displayed_string(attributes):
+	var displayed_string = ""
+	for key in attributes.keys():
+		displayed_string += key + " : " + attributes[key] + "\n"
+	return displayed_string
+		
+
 func update_link_with(fuseki_link_data):
 	if(fuseki_link_data == null):
 		return
 	for link in fuseki_link_data:
-		var first_node = get_node_by_name(link.first_node)
-		var second_node = get_node_by_name(link.second_node)
+		var first_node = get_node_by_name(link.first_node_name)
+		var second_node = get_node_by_name(link.second_node_name)
 		var drawing_positions = get_facing_sides(first_node, second_node)
 		draw_line(drawing_positions[0], drawing_positions[1], Color.AQUA, 10, true)
 
 func get_node_by_name(node_name : String):
+	print(node_name)
 	for displayed_node in displayed_node_list:
 		if (displayed_node.name == node_name):
 			return displayed_node.node

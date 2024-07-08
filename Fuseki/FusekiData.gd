@@ -1,8 +1,16 @@
 extends Node
 
-class LinkedNodes:
-	var first_node
-	var second_node
+class GenericElement:
+	var element_name : String
+	var element_attributes : Dictionary
+
+class GenericLinkedNodes:
+	var first_node_name: String
+	var second_node_name: String
+
+class JsonValue:
+	var json_name: String
+	var json_value : String
 
 var service
 var service_to_enabler
@@ -11,17 +19,17 @@ var model
 
 func inputDataFromFusekiJSON(json):
 	var json_head = json["head"]["vars"]
-	match json_head:
-		["service"]:
-			service = parse_fuseki_json(json)
-		["service", "enabler"]:
-			service_to_enabler = parse_fuseki_json(json)
-		["enabler"]:
-			enabler = parse_fuseki_json(json)
-		["model"]:
-			model = parse_fuseki_json(json)
+	if ("service" in json_head && "enabler" in json_head):
+		service_to_enabler = parse_fuseki_json(json, true)
+		return
+	elif ("service" in json_head):
+		service = parse_fuseki_json(json)
+	elif("enabler" in json_head):
+		enabler = parse_fuseki_json(json)
+	elif ("model" in json_head):
+		model = parse_fuseki_json(json)
 
-func parse_fuseki_json(json):
+func parse_fuseki_json(json, is_link = false):
 	var json_head = json["head"]["vars"]
 	var json_results = json["results"]["bindings"]
 	var result_aggregator: = []
@@ -30,23 +38,34 @@ func parse_fuseki_json(json):
 			break
 		var tuple_aggregator = []
 		for head in json_head:
-			tuple_aggregator.append(parse_fuseki_value(result[head]["value"]))
+			if (result.has(head)):
+				var new_json_value = JsonValue.new()
+				new_json_value.json_name = head
+				new_json_value.json_value = parse_fuseki_value(result[head]["value"])
+				tuple_aggregator.append(new_json_value)
 		result_aggregator.append(tuple_aggregator)
-	return format_result(result_aggregator)
+	var formated_result = format_result(result_aggregator, is_link)
+	return formated_result
 
 func parse_fuseki_value(value) -> String:
-	return value.split("#")[1]
+	if(value.contains("#")):
+		return value.split("#")[1]
+	return value
 
-func format_result(result_aggregator):
+func format_result(result_aggregator, is_link = false):
 	var formated_result = []
 	for result in result_aggregator:
 		if(result.size() <= 0):
 			break
-		elif (result.size() == 1):
-			formated_result.append(result[0])
-		else:
-			var link = LinkedNodes.new()
-			link.first_node = result[0]
-			link.second_node = result[1]
+		elif(is_link):
+			var link = GenericLinkedNodes.new()
+			link.first_node_name = result[0].json_value
+			link.second_node_name = result[1].json_value
 			formated_result.append(link)
+		else:
+			var element = GenericElement.new()
+			element.element_name = result[0].json_value
+			for i in range(1, result.size()):
+				element.element_attributes[result[i].json_name] = result[i].json_value
+			formated_result.append(element)
 	return formated_result

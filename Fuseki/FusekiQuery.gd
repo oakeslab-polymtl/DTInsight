@@ -21,11 +21,11 @@ WHERE {
 const ENABLERS_QUERY = "PREFIX DTDFvocab:   <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
 PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT ?enabler
+SELECT *
 WHERE {
-	?enabler a DTDFvocab:Enabler
-}
-GROUP BY ?enabler"
+	?enabler a DTDFvocab:Enabler .
+	OPTIONAL {?enabler DTDFvocab:IsAutomatic ?automatic}
+}"
 
 const MODELS_QUERY = "PREFIX DTDFvocab:   <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
 PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
