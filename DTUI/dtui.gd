@@ -15,6 +15,7 @@ class DisplayedNode:
 var displayed_node_list: Array[DisplayedNode]
 
 func _on_fuseki_data_updated():
+	displayed_node_list.clear()
 	update_node_with(service_container, fuseki_data.service)
 	update_node_with(enabler_container, fuseki_data.enabler)
 	update_node_with(model_container, fuseki_data.model)
@@ -33,24 +34,39 @@ func update_node_with(visual_container, fuseki_node_data):
 
 func free_all_child(node):
 	for child in node.get_children():
-		child.queue_free()
+		child.free()
 
 func update_link_with(fuseki_link_data):
 	if(fuseki_link_data == null):
 		return
 	for link in fuseki_link_data:
-		var first_node_position = get_node_by_name(link.first_node).global_position
-		var second_node_position = get_node_by_name(link.second_node).global_position
-		print(first_node_position)
-		print(second_node_position)
-		print("----------------------")
-		draw_line(first_node_position, second_node_position, Color.AQUA, 10, true)
+		var first_node = get_node_by_name(link.first_node)
+		var second_node = get_node_by_name(link.second_node)
+		var drawing_positions = get_facing_sides(first_node, second_node)
+		draw_line(drawing_positions[0], drawing_positions[1], Color.AQUA, 10, true)
 
 func get_node_by_name(node_name : String):
 	for displayed_node in displayed_node_list:
 		if (displayed_node.name == node_name):
 			return displayed_node.node
 	return null
+
+func get_facing_sides(first_node, second_node) -> Array[Vector2]:
+	if (first_node.global_position.y < second_node.global_position.y):
+		return [get_bottom_side(first_node), get_top_side(second_node)]
+	return [get_bottom_side(second_node), get_top_side(first_node)]
+	
+func get_bottom_side(node) -> Vector2:
+	var position = node.global_position
+	var size = node.size
+	var corrected_position = Vector2(position.x + size.x / 2, position.y + size.y)
+	return corrected_position
+
+func get_top_side(node) -> Vector2:
+	var position = node.global_position
+	var size = node.size
+	var corrected_position = Vector2(position.x + size.x / 2, position.y)
+	return corrected_position
 
 func _draw():
 	update_link_with(fuseki_data.service_to_enabler)
