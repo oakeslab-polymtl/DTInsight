@@ -16,6 +16,7 @@ var service
 var service_to_enabler
 var enabler_to_service
 var enabler
+var model_to_enabler
 var model
 
 func inputDataFromFusekiJSON(json):
@@ -25,6 +26,8 @@ func inputDataFromFusekiJSON(json):
 			service_to_enabler = parse_fuseki_json(json, true)
 		else:
 			enabler_to_service = parse_fuseki_json(json, true)
+	elif ("model" in json_head && "enabler" in json_head):
+		model_to_enabler = parse_fuseki_json(json, true)
 	elif ("service" in json_head):
 		service = parse_fuseki_json(json)
 	elif("enabler" in json_head):

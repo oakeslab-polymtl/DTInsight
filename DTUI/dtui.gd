@@ -42,8 +42,12 @@ func build_displayed_string(attributes):
 	for key in attributes.keys():
 		displayed_string += key + " : " + attributes[key] + "\n"
 	return displayed_string
-		
 
+func _draw():
+	update_link_with(fuseki_data.service_to_enabler)
+	update_link_with(fuseki_data.enabler_to_service)
+	update_link_with(fuseki_data.model_to_enabler)
+	
 func update_link_with(fuseki_link_data):
 	if(fuseki_link_data == null):
 		return
@@ -55,7 +59,6 @@ func update_link_with(fuseki_link_data):
 		draw_circle(drawing_positions[1], 10, Color.AQUA)
 
 func get_node_by_name(node_name : String):
-	print(node_name)
 	for displayed_node in displayed_node_list:
 		if (displayed_node.name == node_name):
 			return displayed_node.node
@@ -77,7 +80,3 @@ func get_top_side(node) -> Vector2:
 	var size = node.size
 	var corrected_position = Vector2(position.x + size.x / 2, position.y)
 	return corrected_position
-
-func _draw():
-	update_link_with(fuseki_data.service_to_enabler)
-	update_link_with(fuseki_data.enabler_to_service)

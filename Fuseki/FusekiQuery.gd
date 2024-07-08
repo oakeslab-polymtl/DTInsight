@@ -36,6 +36,15 @@ WHERE {
 	OPTIONAL {?enabler DTDFvocab:IsAutomatic ?automatic}
 }"
 
+const MODELS_TO_ENABLERS_QUERY = "PREFIX DTDFvocab:   <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
+PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT *
+WHERE {
+	?model a DTDFvocab:Model .
+	?model DTDFvocab:inputTo ?enabler
+}"
+
 const MODELS_QUERY = "PREFIX DTDFvocab:   <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
 PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
 
