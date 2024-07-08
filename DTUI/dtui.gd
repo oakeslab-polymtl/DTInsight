@@ -51,7 +51,8 @@ func update_link_with(fuseki_link_data):
 		var first_node = get_node_by_name(link.first_node_name)
 		var second_node = get_node_by_name(link.second_node_name)
 		var drawing_positions = get_facing_sides(first_node, second_node)
-		draw_line(drawing_positions[0], drawing_positions[1], Color.AQUA, 10, true)
+		draw_line(drawing_positions[0], drawing_positions[1], Color.AQUA, 7, true)
+		draw_circle(drawing_positions[1], 10, Color.AQUA)
 
 func get_node_by_name(node_name : String):
 	print(node_name)
@@ -63,7 +64,7 @@ func get_node_by_name(node_name : String):
 func get_facing_sides(first_node, second_node) -> Array[Vector2]:
 	if (first_node.global_position.y < second_node.global_position.y):
 		return [get_bottom_side(first_node), get_top_side(second_node)]
-	return [get_bottom_side(second_node), get_top_side(first_node)]
+	return [get_top_side(first_node), get_bottom_side(second_node)]
 	
 func get_bottom_side(node) -> Vector2:
 	var position = node.global_position
@@ -79,3 +80,4 @@ func get_top_side(node) -> Vector2:
 
 func _draw():
 	update_link_with(fuseki_data.service_to_enabler)
+	update_link_with(fuseki_data.enabler_to_service)

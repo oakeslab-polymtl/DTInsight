@@ -19,6 +19,8 @@ func _on_pressed():
 	await(SparqlRequest.request_completed)
 	query_fuseky(FusekiQueryManager.SERVICES_TO_ENABLERS_QUERY)
 	await(SparqlRequest.request_completed)
+	query_fuseky(FusekiQueryManager.ENABLERS_TO_SERVICES_QUERY)
+	await(SparqlRequest.request_completed)
 	fuseki_data_updated.emit()
 	
 func query_fuseky(query):

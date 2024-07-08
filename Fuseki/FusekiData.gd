@@ -14,14 +14,17 @@ class JsonValue:
 
 var service
 var service_to_enabler
+var enabler_to_service
 var enabler
 var model
 
 func inputDataFromFusekiJSON(json):
 	var json_head = json["head"]["vars"]
 	if ("service" in json_head && "enabler" in json_head):
-		service_to_enabler = parse_fuseki_json(json, true)
-		return
+		if (json_head[0] == "service"):
+			service_to_enabler = parse_fuseki_json(json, true)
+		else:
+			enabler_to_service = parse_fuseki_json(json, true)
 	elif ("service" in json_head):
 		service = parse_fuseki_json(json)
 	elif("enabler" in json_head):
