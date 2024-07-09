@@ -1,24 +1,25 @@
 extends Node
 
-class GenericElement:
-	var element_name : String
-	var element_attributes : Dictionary
-
+#Represent a link between two elements by their names
 class GenericLinkedNodes:
 	var first_node_name: String
 	var second_node_name: String
 
+#Internal data stucture
 class JsonValue:
 	var json_name: String
 	var json_value : String
 
-var service
-var service_to_enabler
-var enabler_to_service
-var enabler
-var model_to_enabler
-var model
+#Store parsed values from Fuseki
+var service : Dictionary
+var service_to_enabler : Array[GenericLinkedNodes]
+var enabler_to_service : Array[GenericLinkedNodes]
+var enabler : Dictionary
+var model_to_enabler : Array[GenericLinkedNodes]
+var model : Dictionary
 
+#Teke a json from a Fuseki query and store the resulting informations in 
+#variables reachable from the Godot application
 func inputDataFromFusekiJSON(json):
 	var json_head = json["head"]["vars"]
 	if ("service" in json_head && "enabler" in json_head):
@@ -35,6 +36,8 @@ func inputDataFromFusekiJSON(json):
 	elif ("model" in json_head):
 		model = parse_fuseki_json(json)
 
+#Parse the json from Fuseki into internal data structure
+#Return an Array of GenericLinkedNodes or a Dictionary depending on the data type
 func parse_fuseki_json(json, is_link = false):
 	var json_head = json["head"]["vars"]
 	var json_results = json["results"]["bindings"]
@@ -53,25 +56,40 @@ func parse_fuseki_json(json, is_link = false):
 	var formated_result = format_result(result_aggregator, is_link)
 	return formated_result
 
+#Remove oml link data from values
 func parse_fuseki_value(value) -> String:
 	if(value.contains("#")):
 		return value.split("#")[1]
 	return value
 
+#Transform the result agregator in an array of GenericLinkedNodes or
+#in a dictionary depending on the data type
 func format_result(result_aggregator, is_link = false):
-	var formated_result = []
-	for result in result_aggregator:
-		if(result.size() <= 0):
-			break
-		elif(is_link):
-			var link = GenericLinkedNodes.new()
-			link.first_node_name = result[0].json_value
-			link.second_node_name = result[1].json_value
-			formated_result.append(link)
-		else:
-			var element = GenericElement.new()
-			element.element_name = result[0].json_value
-			for i in range(1, result.size()):
-				element.element_attributes[result[i].json_name] = result[i].json_value
-			formated_result.append(element)
+	if(is_link):
+		return parse_link_result(result_aggregator)
+	else:
+		return parse_element_result(result_aggregator)
+
+#Transform the result agregator in an Array of GenericLinkedNodes
+func parse_link_result(result_agregator) -> Array[GenericLinkedNodes]:
+	var formated_result : Array[GenericLinkedNodes] = []
+	for result in result_agregator:
+		var link = GenericLinkedNodes.new()
+		link.first_node_name = result[0].json_value
+		link.second_node_name = result[1].json_value
+		formated_result.append(link)
+	return formated_result
+
+#Transfrom the result agregator in a dictionary, in each entry corresponding 
+#to an elementis a disctionary containing every attributes of this element
+func parse_element_result(result_agregator) -> Dictionary:
+	var formated_result : Dictionary = {}
+	for result in result_agregator:
+		var entry_name = result[0].json_value
+		var entry_value : Dictionary = {}
+		entry_value[result[1].json_value] = result[2].json_value
+		if (formated_result.has(entry_name)):
+			formated_result[entry_name].merge(entry_value)
+		else :
+			formated_result[entry_name] = entry_value
 	return formated_result

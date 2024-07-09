@@ -1,13 +1,15 @@
 extends Node
 
+#Sparql queries intended to interact with the Fuseki Server
+
 const SERVICES_QUERY = "PREFIX DTDFvocab:   <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
 PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT ?service
+SELECT *
 WHERE {
-	?service a DTDFvocab:Service
-}
-GROUP BY ?service"
+	?service a DTDFvocab:Service .
+	OPTIONAL {?service ?attribute ?value}
+}"
 
 const SERVICES_TO_ENABLERS_QUERY = "PREFIX DTDFvocab:   <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
 PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
@@ -33,7 +35,7 @@ PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
 SELECT *
 WHERE {
 	?enabler a DTDFvocab:Enabler .
-	OPTIONAL {?enabler DTDFvocab:IsAutomatic ?automatic}
+	OPTIONAL {?enabler ?attribute ?value}
 }"
 
 const MODELS_TO_ENABLERS_QUERY = "PREFIX DTDFvocab:   <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
@@ -48,8 +50,8 @@ WHERE {
 const MODELS_QUERY = "PREFIX DTDFvocab:   <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
 PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT ?model
+SELECT *
 WHERE {
-	?model a DTDFvocab:Model
-}
-GROUP BY ?model"
+	?model a DTDFvocab:Model .
+	OPTIONAL {?model ?attribute ?value}
+}"
