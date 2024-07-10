@@ -1,32 +1,41 @@
-extends FusekiData
+extends Node
 
 class_name FusekiDataDumper
 
-#An extension to the class FusekiData could be calles in its place
-#Permit the usage of dump_to_console function if needed for debug purpuses
+const DUMP_PATH = "D:/Polytechnique/DTdump"
 
-func dump_to_console():
-	print("Services :")
-	display_dictionary(service)
-	print("Services to enablers :")
-	display_array_link(service_to_enabler)
-	print("Enablers to services :")
-	display_array_link(enabler_to_service)
-	print("Enablers :")
-	display_dictionary(enabler)
-	print("Enablers to models :")
-	display_array_link(enabler_to_model)
-	print("Models to enablers :")
-	display_array_link(model_to_enabler)
-	print("Models :")
-	display_dictionary(model)
+func dump(data : FusekiData, to_console = false):
+	var dump_string = ""
+	dump_string += "Services :\n"
+	dump_string += dump_dictionary(data.service)
+	dump_string += "Services to enablers :\n"
+	dump_string += dump_array_link(data.service_to_enabler)
+	dump_string += "Enablers to services :\n"
+	dump_string += dump_array_link(data.enabler_to_service)
+	dump_string += "Enablers :\n"
+	dump_string += dump_dictionary(data.enabler)
+	dump_string += "Enablers to models :\n"
+	dump_string += dump_array_link(data.enabler_to_model)
+	dump_string += "Models to enablers :\n"
+	dump_string += dump_array_link(data.model_to_enabler)
+	dump_string += "Models :\n"
+	dump_string += dump_dictionary(data.model)
+	if(to_console):
+		print(dump_string)
+	else:
+		var file = FileAccess.open(DUMP_PATH, FileAccess.WRITE)
+		file.store_string(dump_string)
 
-func display_dictionary(dict : Dictionary):
+func dump_dictionary(dict : Dictionary) -> String:
+	var dict_string = ""
 	for key in dict.keys():
-		print("	" + key)
+		dict_string += "	" + key + "\n"
 		for attribute_key in dict[key].keys():
-			print("		" + attribute_key + " : " + dict[key][attribute_key])
+			dict_string += "		" + attribute_key + " : " + dict[key][attribute_key] + "\n"
+	return dict_string
 
-func display_array_link(list : Array[GenericLinkedNodes]):
+func dump_array_link(list : Array[FusekiData.GenericLinkedNodes]) -> String:
+	var array_string = ""
 	for link in list:
-		print("	" + link.first_node_name + " -> " + link.second_node_name)
+		array_string += "	" + link.first_node_name + " -> " + link.second_node_name + "\n"
+	return array_string
