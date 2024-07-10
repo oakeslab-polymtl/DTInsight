@@ -57,6 +57,7 @@ func _draw():
 	update_link_with(fuseki_data.service_to_enabler)
 	update_link_with(fuseki_data.enabler_to_service)
 	update_link_with(fuseki_data.model_to_enabler)
+	update_link_with(fuseki_data.enabler_to_model)
 
 #With Fuseki link data draw those links
 func update_link_with(fuseki_link_data):

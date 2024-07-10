@@ -47,6 +47,15 @@ WHERE {
 	?model DTDFvocab:inputTo ?enabler
 }"
 
+const ENABLERS_TO_MODELS_QUERY = "PREFIX DTDFvocab:   <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
+PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT *
+WHERE {
+	?enabler a DTDFvocab:Enabler .
+	?enabler DTDFvocab:hasInput ?model
+}"
+
 const MODELS_QUERY = "PREFIX DTDFvocab:   <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
 PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
 

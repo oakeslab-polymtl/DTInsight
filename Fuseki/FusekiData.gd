@@ -1,5 +1,7 @@
 extends Node
 
+class_name FusekiData
+
 #Represent a link between two elements by their names
 class GenericLinkedNodes:
 	var first_node_name: String
@@ -16,6 +18,7 @@ var service_to_enabler : Array[GenericLinkedNodes]
 var enabler_to_service : Array[GenericLinkedNodes]
 var enabler : Dictionary
 var model_to_enabler : Array[GenericLinkedNodes]
+var enabler_to_model : Array[GenericLinkedNodes]
 var model : Dictionary
 
 #Teke a json from a Fuseki query and store the resulting informations in 
@@ -28,7 +31,10 @@ func inputDataFromFusekiJSON(json):
 		else:
 			enabler_to_service = parse_fuseki_json(json, true)
 	elif ("model" in json_head && "enabler" in json_head):
-		model_to_enabler = parse_fuseki_json(json, true)
+		if (json_head[0] == "model"):
+			model_to_enabler = parse_fuseki_json(json, true)
+		else:
+			enabler_to_model = parse_fuseki_json(json, true)
 	elif ("service" in json_head):
 		service = parse_fuseki_json(json)
 	elif("enabler" in json_head):
@@ -65,10 +71,7 @@ func parse_fuseki_value(value) -> String:
 #Transform the result agregator in an array of GenericLinkedNodes or
 #in a dictionary depending on the data type
 func format_result(result_aggregator, is_link = false):
-	if(is_link):
-		return parse_link_result(result_aggregator)
-	else:
-		return parse_element_result(result_aggregator)
+		return parse_link_result(result_aggregator) if (is_link) else parse_element_result(result_aggregator)
 
 #Transform the result agregator in an Array of GenericLinkedNodes
 func parse_link_result(result_agregator) -> Array[GenericLinkedNodes]:
