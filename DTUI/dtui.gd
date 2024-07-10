@@ -67,9 +67,24 @@ func update_link_with(fuseki_link_data):
 		var first_node = get_node_by_name(link.first_node_name)
 		var second_node = get_node_by_name(link.second_node_name)
 		var drawing_positions = get_facing_sides(first_node, second_node)
-		var color = Color.LIGHT_SEA_GREEN if (drawing_positions[0].y > drawing_positions[1].y) else Color.BURLYWOOD
-		draw_line(drawing_positions[0], drawing_positions[1], color, 7, true)
-		draw_circle(drawing_positions[1], 10, color)
+		draw_upstream(drawing_positions) if (drawing_positions[0].y > drawing_positions[1].y) else draw_downstream(drawing_positions)
+
+func draw_upstream(drawing_positions):
+	var color = Color.GREEN_YELLOW
+	var position0 = shift_position(drawing_positions[0], 10)
+	var position1 = shift_position(drawing_positions[1], 10)
+	draw_line(position0, position1, color, 7, true)
+	draw_circle(position1, 10, color)
+
+func draw_downstream(drawing_positions):
+	var color = Color.BROWN
+	var position0 = shift_position(drawing_positions[0], -10)
+	var position1 = shift_position(drawing_positions[1], -10)
+	draw_line(position0, position1, color, 7, true)
+	draw_circle(position1, 10, color)
+
+func shift_position(position : Vector2, shift_value) -> Vector2:
+	return Vector2(position.x + shift_value, position.y)
 
 #Return a node by its nale in the displayes_node_list
 func get_node_by_name(node_name : String):
