@@ -21,6 +21,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(500, 300)
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
