@@ -14,6 +14,7 @@ const ENDPOINT = "/sparql?query=" #sparql endpoint
 
 #On pressed call all queries and emit a signal
 func _on_pressed():
+	disabled = true
 	query_fuseky(FusekiQueryManager.SERVICES_QUERY)
 	await(SparqlRequest.request_completed)
 	query_fuseky(FusekiQueryManager.ENABLERS_QUERY)
@@ -29,6 +30,7 @@ func _on_pressed():
 	query_fuseky(FusekiQueryManager.ENABLERS_TO_MODELS_QUERY)
 	await(SparqlRequest.request_completed)
 	fuseki_data_updated.emit()
+	disabled = false
 
 #Query the Fuseki Server with a given query
 func query_fuseky(query):
