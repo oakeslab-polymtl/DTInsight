@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://ca4ircpbul4vs"]
+
+[ext_resource type="PackedScene" uid="uid://cowug1mbtod0e" path="res://Fuseki/fuseki_caller_button.tscn" id="1_dwtmo"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ffs3u"]
+border_width_left = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.259294, 0.259294, 0.259294, 1)
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[node name="ControlPanel" type="PanelContainer"]
+custom_minimum_size = Vector2(0, 50)
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 31.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ffs3u")
+
+[node name="FusekiCallerButton" parent="." instance=ExtResource("1_dwtmo")]
+layout_mode = 2

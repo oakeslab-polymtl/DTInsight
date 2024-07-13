@@ -1,12 +1,12 @@
 extends Control
 
 #Reference each visual data container
-@onready var service_container = $DTContainer/ServicesPanel/ServicesContainer
-@onready var enabler_container = $DTContainer/EnablersPanel/EnablersContainer
-@onready var model_container = $DTContainer/ModelsPanel/ModelsContainer
+@onready var service_container = $ServicesPanel/ServicesContainer
+@onready var enabler_container = $EnablersPanel/EnablersContainer
+@onready var model_container = $ModelsPanel/ModelsContainer
 
 #Access to fuseki data
-@onready var fuseki_data = $FusekiCallerButton/SparqlFusekiQueries/FusekiData
+var fuseki_data = null
 
 #Load the generic display scene
 const generic_display = preload("res://GenericDisplay/generic_display.tscn")
@@ -19,8 +19,13 @@ class DisplayedNode:
 #Array of displayes nodes
 var displayed_node_list: Array[DisplayedNode]
 
+#Feed fuseki data
+func feed_fuseki_data(feed):
+	fuseki_data = feed
+	on_fuseki_data_updated()
+
 #Update all displayed information on data update from a signal from FusekiCallerButton
-func _on_fuseki_data_updated():
+func on_fuseki_data_updated():
 	displayed_node_list.clear()
 	update_node_with(service_container, fuseki_data.service)
 	update_node_with(enabler_container, fuseki_data.enabler)
@@ -38,6 +43,9 @@ func update_node_with(visual_container, fuseki_node_data : Dictionary):
 		displayed_element.name = key
 		displayed_element.node = new_node
 		displayed_node_list.append(displayed_element)
+		
+func _process(delta):
+	queue_redraw()
 
 #Free all childs of a node
 static func free_all_child(node : Node):
@@ -54,10 +62,11 @@ static func build_displayed_string(attributes : Dictionary):
 
 #Draw all links
 func _draw():
-	update_link_with(fuseki_data.service_to_enabler)
-	update_link_with(fuseki_data.enabler_to_service)
-	update_link_with(fuseki_data.model_to_enabler)
-	update_link_with(fuseki_data.enabler_to_model)
+	if (not fuseki_data == null):
+		update_link_with(fuseki_data.service_to_enabler)
+		update_link_with(fuseki_data.enabler_to_service)
+		update_link_with(fuseki_data.model_to_enabler)
+		update_link_with(fuseki_data.enabler_to_model)
 
 #With Fuseki link data draw those links
 func update_link_with(fuseki_link_data):
