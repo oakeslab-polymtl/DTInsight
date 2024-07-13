@@ -6,6 +6,11 @@
 [node name="Root" type="Node"]
 
 [node name="DTUI" parent="." instance=ExtResource("2_5aamd")]
+offset_left = -9.0
+offset_top = -2.0
+offset_right = -9.0
+offset_bottom = -2.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(575, 326)
 script = ExtResource("2_x2ubr")

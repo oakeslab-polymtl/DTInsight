@@ -1,15 +1,15 @@
 extends Control
 
 #Reference each visual data container
-@onready var service_container = $VBoxContainer/ServicesContainer
-@onready var enabler_container = $VBoxContainer/EnablersContainer
-@onready var model_container = $VBoxContainer/ModelsContainer
+@onready var service_container = $DTContainer/ServicesPanel/ServicesContainer
+@onready var enabler_container = $DTContainer/EnablersPanel/EnablersContainer
+@onready var model_container = $DTContainer/ModelsPanel/ModelsContainer
 
 #Access to fuseki data
-@onready var fuseki_data = $VBoxContainer/HBoxContainer/FusekiCallerButton/SparqlFusekiQueries/FusekiData
+@onready var fuseki_data = $FusekiCallerButton/SparqlFusekiQueries/FusekiData
 
 #Load the generic display scene
-var generic_display = preload("res://GenericDisplay/generic_display.tscn")
+const generic_display = preload("res://GenericDisplay/generic_display.tscn")
 
 #Displayes node referenced by its name
 class DisplayedNode:
@@ -33,7 +33,6 @@ func update_node_with(visual_container, fuseki_node_data : Dictionary):
 	for key in fuseki_node_data.keys():
 		var new_node = generic_display.instantiate()
 		new_node.get_node("GenericElementName").text = key
-		new_node.get_node("GenericElementAttributes").text = build_displayed_string(fuseki_node_data[key])
 		visual_container.add_child(new_node)
 		var displayed_element = DisplayedNode.new()
 		displayed_element.name = key
@@ -41,12 +40,13 @@ func update_node_with(visual_container, fuseki_node_data : Dictionary):
 		displayed_node_list.append(displayed_element)
 
 #Free all childs of a node
-func free_all_child(node):
+static func free_all_child(node : Node):
 	for child in node.get_children():
-		child.free()
+		if (child.get_class() == "VBoxContainer"):
+			child.free()
 
 #Format element attributes to be displayed as a string
-func build_displayed_string(attributes : Dictionary):
+static func build_displayed_string(attributes : Dictionary):
 	var displayed_string = ""
 	for key in attributes.keys():
 		displayed_string += key + " : " + attributes[key] + "\n"
@@ -83,13 +83,13 @@ func draw_downstream(drawing_positions):
 	draw_line(position0, position1, color, 7, true)
 	draw_circle(position1, 10, color)
 
-func shift_position(position : Vector2, shift_value) -> Vector2:
+static func shift_position(position : Vector2, shift_value) -> Vector2:
 	return Vector2(position.x + shift_value, position.y)
 
 #Return a node by its nale in the displayes_node_list
 func get_node_by_name(node_name : String):
 	for displayed_node in displayed_node_list:
-		if (displayed_node.name == node_name):
+		if (displayed_node.name == node_name && displayed_node.node != null):
 			return displayed_node.node
 	var displayed_node_list_string = ""
 	for displayed_node in displayed_node_list:
@@ -98,20 +98,20 @@ func get_node_by_name(node_name : String):
 	return null
 
 #Return facing positions on the side of each node
-func get_facing_sides(first_node, second_node) -> Array[Vector2]:
+static func get_facing_sides(first_node, second_node) -> Array[Vector2]:
 	if (first_node.global_position.y < second_node.global_position.y):
 		return [get_bottom_side(first_node), get_top_side(second_node)]
 	return [get_top_side(first_node), get_bottom_side(second_node)]
 
 #Return a position on the middle and bottom of a node
-func get_bottom_side(node) -> Vector2:
+static func get_bottom_side(node) -> Vector2:
 	var position = node.global_position
 	var size = node.size
 	var corrected_position = Vector2(position.x + size.x / 2, position.y + size.y)
 	return corrected_position
 
 #Return a postition on the middle and top of a node
-func get_top_side(node) -> Vector2:
+static func get_top_side(node) -> Vector2:
 	var position = node.global_position
 	var size = node.size
 	var corrected_position = Vector2(position.x + size.x / 2, position.y)

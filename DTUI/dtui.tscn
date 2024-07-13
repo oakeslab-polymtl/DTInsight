@@ -1,7 +1,40 @@
-[gd_scene load_steps=3 format=3 uid="uid://nqgolpvgp7yg"]
+[gd_scene load_steps=6 format=3 uid="uid://nqgolpvgp7yg"]
 
 [ext_resource type="Script" path="res://DTUI/dtui.gd" id="1_4sgfg"]
 [ext_resource type="PackedScene" uid="uid://cowug1mbtod0e" path="res://Fuseki/fuseki_caller_button.tscn" id="2_ocla3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xj583"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(0.8, 1, 1, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ks3ld"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(0.8, 1, 0.8, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ox2pm"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(1, 0.8, 0.6, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
 
 [node name="DTUI" type="Control"]
 layout_mode = 3
@@ -12,33 +45,88 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_4sgfg")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="DTContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -304.0
+offset_right = 100.0
+offset_bottom = 304.0
 grow_horizontal = 2
 grow_vertical = 2
+alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-custom_minimum_size = Vector2(500, 300)
+[node name="ServicesPanel" type="PanelContainer" parent="DTContainer"]
+z_index = -1
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_xj583")
+
+[node name="ServicesContainer" type="HBoxContainer" parent="DTContainer/ServicesPanel"]
+custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 
-[node name="FusekiCallerButton" parent="VBoxContainer/HBoxContainer" instance=ExtResource("2_ocla3")]
+[node name="ServicesLabel" type="Label" parent="DTContainer/ServicesPanel/ServicesContainer"]
 layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Services"
 
-[node name="ServicesContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="EnablersPanel" type="PanelContainer" parent="DTContainer"]
+z_index = -1
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ks3ld")
+
+[node name="EnablersContainer" type="HBoxContainer" parent="DTContainer/EnablersPanel"]
+custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 size_flags_vertical = 3
+alignment = 1
 
-[node name="EnablersContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="EnablersLabel" type="Label" parent="DTContainer/EnablersPanel/EnablersContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Enablers"
+
+[node name="ModelsPanel" type="PanelContainer" parent="DTContainer"]
+z_index = -1
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ox2pm")
+
+[node name="ModelsContainer" type="HBoxContainer" parent="DTContainer/ModelsPanel"]
+custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 size_flags_vertical = 3
+alignment = 1
 
-[node name="ModelsContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="ModelsLabel" type="Label" parent="DTContainer/ModelsPanel/ModelsContainer"]
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_horizontal = 2
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Models/Data
+"
 
-[connection signal="fuseki_data_updated" from="VBoxContainer/HBoxContainer/FusekiCallerButton" to="." method="_on_fuseki_data_updated"]
+[node name="FusekiCallerButton" parent="." instance=ExtResource("2_ocla3")]
+layout_mode = 1
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 90.0
+offset_bottom = 31.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[connection signal="fuseki_data_updated" from="FusekiCallerButton" to="." method="_on_fuseki_data_updated"]
