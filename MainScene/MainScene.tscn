@@ -33,3 +33,5 @@ color = Color(0.933333, 0.913725, 0.933333, 1)
 [node name="ControlLayer" type="CanvasLayer" parent="."]
 
 [node name="ControlPanel" parent="ControlLayer" instance=ExtResource("4_bpfsb")]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]

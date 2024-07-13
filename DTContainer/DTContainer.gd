@@ -30,7 +30,6 @@ func on_fuseki_data_updated():
 	update_node_with(service_container, fuseki_data.service)
 	update_node_with(enabler_container, fuseki_data.enabler)
 	update_node_with(model_container, fuseki_data.model)
-	queue_redraw()
 
 #Update a node with Fuseki element data by creating a generic display node
 func update_node_with(visual_container, fuseki_node_data : Dictionary):
