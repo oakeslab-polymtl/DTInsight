@@ -4,7 +4,7 @@ class_name FusekiDataDumper
 
 const DUMP_PATH = "D:/Polytechnique/DTdump"
 
-func dump(data : FusekiData, to_console = false):
+static func dump(data : FusekiData, to_console = false):
 	var dump_string = ""
 	dump_string += "Services :\n"
 	dump_string += dump_dictionary(data.service)
@@ -26,7 +26,7 @@ func dump(data : FusekiData, to_console = false):
 		var file = FileAccess.open(DUMP_PATH, FileAccess.WRITE)
 		file.store_string(dump_string)
 
-func dump_dictionary(dict : Dictionary) -> String:
+static func dump_dictionary(dict : Dictionary) -> String:
 	var dict_string = ""
 	for key in dict.keys():
 		dict_string += "	" + key + "\n"
@@ -34,7 +34,7 @@ func dump_dictionary(dict : Dictionary) -> String:
 			dict_string += "		" + attribute_key + " : " + dict[key][attribute_key] + "\n"
 	return dict_string
 
-func dump_array_link(list : Array[FusekiData.GenericLinkedNodes]) -> String:
+static func dump_array_link(list : Array[FusekiData.GenericLinkedNodes]) -> String:
 	var array_string = ""
 	for link in list:
 		array_string += "	" + link.first_node_name + " -> " + link.second_node_name + "\n"
