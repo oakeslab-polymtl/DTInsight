@@ -116,3 +116,12 @@ static func parse_element_result(result_agregator) -> Dictionary:
 
 func dump(to_console = false):
 	FusekiDataDumper.dump(self, to_console)
+
+func empty():
+	service = {}
+	service_to_enabler = []
+	enabler_to_service = []
+	enabler = {}
+	enabler_to_model = []
+	model_to_enabler = []
+	model = {}

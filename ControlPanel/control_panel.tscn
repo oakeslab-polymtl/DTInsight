@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://ca4ircpbul4vs"]
+[gd_scene load_steps=4 format=3 uid="uid://ca4ircpbul4vs"]
 
-[ext_resource type="PackedScene" uid="uid://cowug1mbtod0e" path="res://Fuseki/fuseki_caller_button.tscn" id="1_dwtmo"]
+[ext_resource type="PackedScene" uid="uid://bpja34bbtxgig" path="res://Fuseki/Dump/FusekiDumperController.tscn" id="1_38nkc"]
+[ext_resource type="PackedScene" uid="uid://cowug1mbtod0e" path="res://Fuseki/Caller/fuseki_caller_button.tscn" id="1_nw2ve"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ffs3u"]
 border_width_left = 4
@@ -11,12 +12,21 @@ corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 
 [node name="ControlPanel" type="PanelContainer"]
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 100)
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 31.0
+offset_bottom = 35.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ffs3u")
 
-[node name="FusekiCallerButton" parent="." instance=ExtResource("1_dwtmo")]
+[node name="ControlContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="FusekiDumperController" parent="ControlContainer" instance=ExtResource("1_38nkc")]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+
+[node name="FusekiCallerButton" parent="ControlContainer" instance=ExtResource("1_nw2ve")]
 layout_mode = 2

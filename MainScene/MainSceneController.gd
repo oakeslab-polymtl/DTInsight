@@ -1,16 +1,19 @@
 extends Node
 
 #scene ressources
-@onready var fuseki_caller = $ControlLayer/ControlPanel/FusekiCallerButton
-@onready var fuseki_data = $ControlLayer/ControlPanel/FusekiCallerButton/SparqlFusekiQueries/FusekiData
-@onready var dt_container = $DTContainer
+@onready var fuseki_caller = $ControlLayer/ControlPanel/ControlContainer/FusekiCallerButton
+@onready var fuseki_dumper = $ControlLayer/ControlPanel/ControlContainer/FusekiDumperController
+@onready var fuseki_data : FusekiData = $FusekiData
+@onready var dt_container : BoxContainer = $DTContainer
 
 #audio ressources
 @onready var audio_player = $AudioStreamPlayer
 @onready var drop_sound = preload("res://Audio/drop_001.ogg")
 
 func _ready():
-	fuseki_caller.fuseki_data_updated.connect(_update_fuseki_data)
+	fuseki_caller.set_fuseki_data_manager(fuseki_data)
+	fuseki_dumper.set_fuseki_data_manager(fuseki_data)
+	FusekiSignals.fuseki_data_updated.connect(_update_fuseki_data)
 
 func _update_fuseki_data():
 	audio_player.stream = drop_sound

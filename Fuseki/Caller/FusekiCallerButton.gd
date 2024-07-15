@@ -1,16 +1,17 @@
 extends Button
 
 @onready var SparqlRequest = $SparqlFusekiQueries
-@onready var FusekiDataManager = $SparqlFusekiQueries/FusekiData
 @onready var FusekiQueryManager = $SparqlFusekiQueries/FusekiQuery
-
-#Emit this signal once all queries have been made
-signal fuseki_data_updated
 
 #Fuseki endpoint data
 const URL = "http://localhost:3030" #Fuseki server, localhost if started from openCAESAR on this machine
 const DATASET = "/DTDF" #FUseki endpoint defined in fuseki.ttl in the project
 const ENDPOINT = "/sparql?query=" #sparql endpoint
+
+#FusekiDataManager
+var FusekiDataManager : FusekiData
+func set_fuseki_data_manager(fuseki_data_manager : FusekiData):
+	FusekiDataManager = fuseki_data_manager
 
 #On pressed call all queries and emit a signal
 func _on_pressed():
@@ -29,7 +30,7 @@ func _on_pressed():
 	await(SparqlRequest.request_completed)
 	query_fuseky(FusekiQueryManager.ENABLERS_TO_MODELS_QUERY)
 	await(SparqlRequest.request_completed)
-	fuseki_data_updated.emit()
+	FusekiSignals.fuseki_data_updated.emit()
 	disabled = false
 
 #Query the Fuseki Server with a given query
