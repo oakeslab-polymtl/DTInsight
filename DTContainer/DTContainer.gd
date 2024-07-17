@@ -19,6 +19,17 @@ class DisplayedNode:
 #Array of displayes nodes
 var displayed_node_list: Array[DisplayedNode]
 
+#Link width
+const link_width : int = 5
+
+#displayed coordinates collection
+var already_drawn_x : Array[int] = []
+var already_drawn_y : Array[int] = []
+
+#link display colot
+const dimmed_color : Color = Color.GRAY
+const highlight_color : Color = Color.DIM_GRAY
+
 #Feed fuseki data
 func feed_fuseki_data(feed):
 	fuseki_data = feed
@@ -44,12 +55,14 @@ func update_node_with(visual_container, fuseki_node_data : Dictionary):
 		displayed_node_list.append(displayed_element)
 		
 func _process(delta):
+	already_drawn_x.clear()
+	already_drawn_y.clear()
 	queue_redraw()
 
 #Free all childs of a node
 static func free_all_child(node : Node):
 	for child in node.get_children():
-		if (child.get_class() == "VBoxContainer"):
+		if (child.get_class() == "BoxContainer"):
 			child.free()
 
 #Format element attributes to be displayed as a string
@@ -71,25 +84,62 @@ func _draw():
 func update_link_with(fuseki_link_data):
 	if(fuseki_link_data == null):
 		return
+	var links_as_dict : Dictionary = to_link_dictionary(fuseki_link_data)
+	for key in links_as_dict.keys():
+		var drawable_y_position = get_drawable_y_height(key, links_as_dict[key])
+		var x_drawn : Array[int] = []
+		x_drawn.append(draw_element_to_lane(key, drawable_y_position))
+		for association_element in links_as_dict[key]:
+			x_drawn.append(draw_element_to_lane(association_element, drawable_y_position, true))
+		var most_left_x_position : int = x_drawn.min() - link_width / 2 - 0.5
+		var most_right_x_position : int = x_drawn.max() + link_width / 2 + 0.5
+		draw_link_lane(most_left_x_position, most_right_x_position, drawable_y_position)
+
+func draw_element_to_lane(node, drawable_y_position : int, destination : bool = false) -> int:
+	var is_pointing_up : bool = node.global_position.y < drawable_y_position
+	var drawing_position_element : Vector2 = get_bottom_side(node) if (is_pointing_up) else get_top_side(node)
+	var adjusted_x : int = get_drawable_x_position(drawing_position_element.x)
+	var vertical_shift : int = draw_triangle(Vector2(adjusted_x, drawing_position_element.y), is_pointing_up) if destination else 0
+	draw_line(Vector2(adjusted_x, drawing_position_element.y + vertical_shift), Vector2(adjusted_x, drawable_y_position), highlight_color, link_width)
+	return adjusted_x
+
+func draw_triangle(aimed_at : Vector2, is_pointing_up : bool) -> int:
+	var triangle : PackedVector2Array = []
+	triangle.append(aimed_at)
+	var vertical_shift = link_width if is_pointing_up else - link_width
+	triangle.append(Vector2(aimed_at.x + link_width, aimed_at.y + vertical_shift))
+	triangle.append(Vector2(aimed_at.x - link_width, aimed_at.y + vertical_shift))
+	draw_polygon(triangle, [highlight_color])
+	return vertical_shift
+
+func draw_link_lane(most_left_x_position, most_right_x_position, drawable_y_position):
+	draw_line(Vector2(most_left_x_position, drawable_y_position), Vector2(most_right_x_position, drawable_y_position), highlight_color, link_width)
+
+func get_drawable_y_height(key, array_nodes: Array) -> int:
+	var potential_y_position = (key.global_position.y + key.size.y + array_nodes[0].global_position.y) / 2
+	return get_viable_position(potential_y_position, already_drawn_y, 1)
+
+func get_drawable_x_position(potential_x : int) -> int:
+	return get_viable_position(potential_x, already_drawn_x, 1)
+
+func get_viable_position(potential : int, concerned_list : Array[int], iteration : int) -> int:
+	if(potential in concerned_list):
+		if (iteration % 2 == 0):
+			return get_viable_position(potential - 2 * link_width * iteration, concerned_list, iteration + 1)
+		else:
+			return get_viable_position(potential + 2 * link_width * iteration, concerned_list, iteration + 1)
+	else:
+		concerned_list.append(potential)
+		return potential
+
+func to_link_dictionary(fuseki_link_data) -> Dictionary:
+	var links : Dictionary = {} #desination as key -> list 
 	for link in fuseki_link_data:
-		var first_node = get_node_by_name(link.first_node_name)
-		var second_node = get_node_by_name(link.second_node_name)
-		var drawing_positions = get_facing_sides(first_node, second_node)
-		draw_upstream(drawing_positions) if (drawing_positions[0].y > drawing_positions[1].y) else draw_downstream(drawing_positions)
-
-func draw_upstream(drawing_positions):
-	var color = Color.GREEN_YELLOW
-	var position0 = shift_position(drawing_positions[0], 10)
-	var position1 = shift_position(drawing_positions[1], 10)
-	draw_line(position0, position1, color, 7, true)
-	draw_circle(position1, 10, color)
-
-func draw_downstream(drawing_positions):
-	var color = Color.BROWN
-	var position0 = shift_position(drawing_positions[0], -10)
-	var position1 = shift_position(drawing_positions[1], -10)
-	draw_line(position0, position1, color, 7, true)
-	draw_circle(position1, 10, color)
+		var source_node = get_node_by_name(link.first_node_name)
+		if(not links.has(source_node)):
+			links[source_node] = []
+		links[source_node].append(get_node_by_name(link.second_node_name))
+	return links
 
 static func shift_position(position : Vector2, shift_value) -> Vector2:
 	return Vector2(position.x + shift_value, position.y)
@@ -105,22 +155,20 @@ func get_node_by_name(node_name : String):
 	print(node_name + " not found in " + displayed_node_list_string)
 	return null
 
-#Return facing positions on the side of each node
-static func get_facing_sides(first_node, second_node) -> Array[Vector2]:
-	if (first_node.global_position.y < second_node.global_position.y):
-		return [get_bottom_side(first_node), get_top_side(second_node)]
-	return [get_top_side(first_node), get_bottom_side(second_node)]
-
 #Return a position on the middle and bottom of a node
-static func get_bottom_side(node) -> Vector2:
+static func get_middle_x(node) -> int:
 	var position = node.global_position
 	var size = node.size
-	var corrected_position = Vector2(position.x + size.x / 2, position.y + size.y)
+	return position.x + size.x / 2 - link_width / 2
+
+func get_bottom_side(node) -> Vector2:
+	var position = node.global_position
+	var size = node.size
+	var corrected_position = Vector2(get_middle_x(node), position.y + size.y)
 	return corrected_position
 
-#Return a postition on the middle and top of a node
-static func get_top_side(node) -> Vector2:
+func get_top_side(node) -> Vector2:
 	var position = node.global_position
 	var size = node.size
-	var corrected_position = Vector2(position.x + size.x / 2, position.y)
+	var corrected_position = Vector2(get_middle_x(node), position.y)
 	return corrected_position
