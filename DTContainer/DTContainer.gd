@@ -78,7 +78,6 @@ func _draw():
 		update_link_with(fuseki_data.service_to_enabler)
 		update_link_with(fuseki_data.enabler_to_service)
 		update_link_with(fuseki_data.model_to_enabler)
-		update_link_with(fuseki_data.enabler_to_model)
 
 #With Fuseki link data draw those links
 func update_link_with(fuseki_link_data):
@@ -91,8 +90,8 @@ func update_link_with(fuseki_link_data):
 		x_drawn.append(draw_element_to_lane(key, drawable_y_position))
 		for association_element in links_as_dict[key]:
 			x_drawn.append(draw_element_to_lane(association_element, drawable_y_position, true))
-		var most_left_x_position : int = x_drawn.min() - link_width / 2 - 0.5
-		var most_right_x_position : int = x_drawn.max() + link_width / 2 + 0.5
+		var most_left_x_position : int = x_drawn.min() - round(link_width / 2 - 0.5)
+		var most_right_x_position : int = x_drawn.max() + round(link_width / 2 + 0.5)
 		draw_link_lane(most_left_x_position, most_right_x_position, drawable_y_position)
 
 func draw_element_to_lane(node, drawable_y_position : int, destination : bool = false) -> int:

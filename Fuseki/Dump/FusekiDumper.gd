@@ -9,7 +9,6 @@ const services_indicator = "Services :"
 const services_to_enablers_indicator = "Services to enablers :"
 const enablers_to_services_indicator = "Enablers to services :"
 const enablers_indicator = "Enablers :"
-const enablers_to_models_indicator = "Enablers to models :"
 const models_to_enablers_indicator = "Models to enablers :"
 const models_indicator = "Models :"
 const EOF_indicator = ""
@@ -35,8 +34,6 @@ static func dump(data : FusekiData, dump_path : String, to_console = false):
 	dump_string += dump_array_link(data.enabler_to_service)
 	dump_string += enablers_indicator + "\n"
 	dump_string += dump_dictionary(data.enabler)
-	dump_string += enablers_to_models_indicator + "\n"
-	dump_string += dump_array_link(data.enabler_to_model)
 	dump_string += models_to_enablers_indicator + "\n"
 	dump_string += dump_array_link(data.model_to_enabler)
 	dump_string += models_indicator + "\n"
@@ -70,8 +67,7 @@ static func load_from_dump(fuseki_data : FusekiData, file_path : String):
 	fuseki_data.service = load_dictionary(content.slice(content.find(services_indicator), content.find(services_to_enablers_indicator)))
 	fuseki_data.service_to_enabler = load_array_link(content.slice(content.find(services_to_enablers_indicator), content.find(enablers_to_services_indicator)))
 	fuseki_data.enabler_to_service = load_array_link(content.slice(content.find(enablers_to_services_indicator), content.find(enablers_indicator)))
-	fuseki_data.enabler = load_dictionary(content.slice(content.find(enablers_indicator), content.find(enablers_to_models_indicator)))
-	fuseki_data.enabler_to_model = load_array_link(content.slice(content.find(enablers_to_models_indicator), content.find(models_to_enablers_indicator)))
+	fuseki_data.enabler = load_dictionary(content.slice(content.find(enablers_indicator), content.find(models_to_enablers_indicator)))
 	fuseki_data.model_to_enabler = load_array_link(content.slice(content.find(models_to_enablers_indicator), content.find(models_indicator)))
 	fuseki_data.model = load_dictionary(content.slice(content.find(models_indicator), content.find(EOF_indicator)))
 	FusekiSignals.fuseki_data_updated.emit()
