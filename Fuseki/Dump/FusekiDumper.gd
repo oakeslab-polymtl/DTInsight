@@ -6,11 +6,12 @@ class_name FusekiDataDumper
 
 #Dump file indicators
 const services_indicator = "Services :"
-const services_to_enablers_indicator = "Services to enablers :"
 const enablers_to_services_indicator = "Enablers to services :"
 const enablers_indicator = "Enablers :"
 const models_to_enablers_indicator = "Models to enablers :"
 const models_indicator = "Models :"
+const insights_indicator = "Insights :"
+const services_to_insights_indicator = "Services to indicator"
 const EOF_indicator = ""
 
 #FusekiDataManager
@@ -28,8 +29,6 @@ static func dump(data : FusekiData, dump_path : String, to_console = false):
 	var dump_string = ""
 	dump_string += services_indicator + "\n"
 	dump_string += dump_dictionary(data.service)
-	dump_string += services_to_enablers_indicator + "\n"
-	dump_string += dump_array_link(data.service_to_enabler)
 	dump_string += enablers_to_services_indicator + "\n"
 	dump_string += dump_array_link(data.enabler_to_service)
 	dump_string += enablers_indicator + "\n"
@@ -38,6 +37,11 @@ static func dump(data : FusekiData, dump_path : String, to_console = false):
 	dump_string += dump_array_link(data.model_to_enabler)
 	dump_string += models_indicator + "\n"
 	dump_string += dump_dictionary(data.model)
+	dump_string += insights_indicator + "\n"
+	dump_string += dump_dictionary(data.insight)
+	dump_string += services_to_insights_indicator + "\n"
+	dump_string += dump_array_link(data.service_to_insight)
+	
 	if(to_console):
 		print(dump_string)
 	else:
@@ -64,12 +68,13 @@ static func load_from_dump(fuseki_data : FusekiData, file_path : String):
 		return
 	fuseki_data.empty()
 	var content = file.get_as_text().split("\n")
-	fuseki_data.service = load_dictionary(content.slice(content.find(services_indicator), content.find(services_to_enablers_indicator)))
-	fuseki_data.service_to_enabler = load_array_link(content.slice(content.find(services_to_enablers_indicator), content.find(enablers_to_services_indicator)))
+	fuseki_data.service = load_dictionary(content.slice(content.find(services_indicator), content.find(enablers_to_services_indicator)))
 	fuseki_data.enabler_to_service = load_array_link(content.slice(content.find(enablers_to_services_indicator), content.find(enablers_indicator)))
 	fuseki_data.enabler = load_dictionary(content.slice(content.find(enablers_indicator), content.find(models_to_enablers_indicator)))
 	fuseki_data.model_to_enabler = load_array_link(content.slice(content.find(models_to_enablers_indicator), content.find(models_indicator)))
-	fuseki_data.model = load_dictionary(content.slice(content.find(models_indicator), content.find(EOF_indicator)))
+	fuseki_data.model = load_dictionary(content.slice(content.find(models_indicator), content.find(insights_indicator)))
+	fuseki_data.insight = load_dictionary(content.slice(content.find(insights_indicator), content.find(services_to_insights_indicator)))
+	fuseki_data.service_to_insight = load_array_link(content.slice(content.find(services_to_insights_indicator), content.find(EOF_indicator)))
 	FusekiSignals.fuseki_data_updated.emit()
 
 static func load_dictionary(lines : Array[String]) -> Dictionary:
