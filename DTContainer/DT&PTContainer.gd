@@ -122,8 +122,8 @@ func draw_triangle(aimed_at : Vector2, is_pointing_up : bool) -> int:
 	var triangle : PackedVector2Array = []
 	triangle.append(aimed_at)
 	var vertical_shift = link_width if is_pointing_up else - link_width
-	triangle.append(Vector2(aimed_at.x + link_width, aimed_at.y + vertical_shift))
-	triangle.append(Vector2(aimed_at.x - link_width, aimed_at.y + vertical_shift))
+	triangle.append(Vector2(aimed_at.x + link_width * 2, aimed_at.y + vertical_shift * 3))
+	triangle.append(Vector2(aimed_at.x - link_width * 2, aimed_at.y + vertical_shift * 3))
 	draw_polygon(triangle, [highlight_color])
 	return vertical_shift
 
