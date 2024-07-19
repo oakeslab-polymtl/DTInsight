@@ -1,9 +1,17 @@
 extends Control
 
 #Reference each visual data container
-@onready var service_container = $ServicesPanel/ServicesContainer
-@onready var enabler_container = $EnablersPanel/EnablersContainer
-@onready var model_container = $ModelsPanel/ModelsContainer
+@onready var service_container = $DTContainer/ServicesPanel/ServicesContainer
+@onready var enabler_container = $DTContainer/EnablersPanel/EnablersContainer
+@onready var model_container = $DTContainer/ModelsPanel/ModelsContainer
+@onready var insight_container = $PTContainer/PanelContainer/InsightsContainer
+
+#Container side enum
+enum ContainerSide {
+  TOP,
+  BOTTOM,
+  ANY
+}
 
 #Access to fuseki data
 var fuseki_data = null
@@ -41,6 +49,7 @@ func on_fuseki_data_updated():
 	update_node_with(service_container, fuseki_data.service)
 	update_node_with(enabler_container, fuseki_data.enabler)
 	update_node_with(model_container, fuseki_data.model)
+	update_node_with(insight_container, fuseki_data.insight)
 
 #Update a node with Fuseki element data by creating a generic display node
 func update_node_with(visual_container, fuseki_node_data : Dictionary):
@@ -75,17 +84,24 @@ static func build_displayed_string(attributes : Dictionary):
 #Draw all links
 func _draw():
 	if (not fuseki_data == null):
-		update_link_with(fuseki_data.service_to_enabler)
 		update_link_with(fuseki_data.enabler_to_service)
 		update_link_with(fuseki_data.model_to_enabler)
+		update_link_with(fuseki_data.service_to_insight, ContainerSide.TOP)
 
 #With Fuseki link data draw those links
-func update_link_with(fuseki_link_data):
+func update_link_with(fuseki_link_data, force_side_source : ContainerSide = ContainerSide.ANY):
 	if(fuseki_link_data == null):
 		return
 	var links_as_dict : Dictionary = to_link_dictionary(fuseki_link_data)
 	for key in links_as_dict.keys():
-		var drawable_y_position = get_drawable_y_height(key, links_as_dict[key])
+		var drawable_y_position : int
+		match force_side_source :
+			ContainerSide.ANY :
+				drawable_y_position = get_drawable_y_height(key, links_as_dict[key])
+			ContainerSide.TOP :
+				drawable_y_position = get_viable_position(get_top_side(key).y - 20 * link_width, already_drawn_y, 1)
+			ContainerSide.BOTTOM :
+				drawable_y_position = get_viable_position(get_bottom_side(key).y + 20 * link_width, already_drawn_y, 1)
 		var x_drawn : Array[int] = []
 		x_drawn.append(draw_element_to_lane(key, drawable_y_position))
 		for association_element in links_as_dict[key]:

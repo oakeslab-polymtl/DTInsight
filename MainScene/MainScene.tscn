@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://cxj8tr6re2b4t"]
 
-[ext_resource type="PackedScene" uid="uid://nqgolpvgp7yg" path="res://DTContainer/DTContainer.tscn" id="1_lklxr"]
+[ext_resource type="PackedScene" uid="uid://nqgolpvgp7yg" path="res://DTContainer/DT&PTContainer.tscn" id="1_lklxr"]
 [ext_resource type="Script" path="res://MainScene/MainSceneController.gd" id="1_r7thu"]
 [ext_resource type="Script" path="res://Camera/Camera2D.gd" id="3_5mxu4"]
 [ext_resource type="PackedScene" uid="uid://ca4ircpbul4vs" path="res://ControlPanel/control_panel.tscn" id="4_bpfsb"]

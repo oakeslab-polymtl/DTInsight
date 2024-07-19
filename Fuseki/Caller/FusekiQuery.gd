@@ -11,15 +11,6 @@ WHERE {
 	OPTIONAL {?service ?attribute ?value}
 }"
 
-const SERVICES_TO_ENABLERS_QUERY = "PREFIX DTDFvocab:   <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
-PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
-
-SELECT *
-WHERE {
-	?service a DTDFvocab:Service .
-	?service DTDFvocab:provides ?enabler
-}"
-
 const ENABLERS_TO_SERVICES_QUERY = "PREFIX DTDFvocab:   <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
 PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
 
@@ -54,4 +45,22 @@ SELECT *
 WHERE {
 	?model a DTDFvocab:Model .
 	OPTIONAL {?model ?attribute ?value}
+}"
+
+const INSIGHTS_QUERY = "PREFIX DTDFvocab:   <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
+PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT *
+WHERE {
+	?insight a DTDFvocab:Insight .
+	OPTIONAL {?insight ?attribute ?value}
+}"
+
+const SERVICES_TO_INSIGHTS_QUERY = "PREFIX DTDFvocab:   <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
+PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT *
+WHERE {
+	?service a DTDFvocab:Service .
+	?service DTDFvocab:provides ?insight
 }"
