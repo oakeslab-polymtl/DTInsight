@@ -5,11 +5,7 @@ extends BoxContainer
 var mouse_over = false
 
 func _on_mouse_entered():
-	mouse_over = true
+	GenericDisplaySignals.generic_display_over.emit(element_name)
 
 func _on_mouse_exited():
-	mouse_over = false
-
-func _process(delta):
-	if(mouse_over):
-		print(element_name)
+	GenericDisplaySignals.generic_display_over.emit("")

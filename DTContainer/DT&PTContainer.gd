@@ -20,12 +20,12 @@ var fuseki_data = null
 const generic_display = preload("res://GenericDisplay/generic_display.tscn")
 
 #Displayes node referenced by its name
-class DisplayedNode:
+class NamedNode:
 	var name : String
 	var node
 
 #Array of displayes nodes
-var displayed_node_list: Array[DisplayedNode]
+var displayed_node_list: Array[NamedNode]
 
 #Link width
 const link_width : int = 5
@@ -37,6 +37,20 @@ var already_drawn_y : Array[int] = []
 #link display colot
 const dimmed_color : Color = Color.GRAY
 const highlight_color : Color = Color.DIM_GRAY
+
+#name of highlighted element
+var highlighted_element = null
+
+#initialization
+func _ready():
+	GenericDisplaySignals.generic_display_over.connect(_on_element_over)
+
+#set highlighted element on signal
+func _on_element_over(element_name):
+	if (element_name == ""):
+		highlighted_element = null
+	else:
+		highlighted_element = get_node_by_name(element_name)
 
 #Feed fuseki data
 func feed_fuseki_data(feed):
@@ -58,7 +72,7 @@ func update_node_with(visual_container, fuseki_node_data : Dictionary):
 		var new_node = generic_display.instantiate()
 		new_node.get_node("GenericElementName").text = key
 		visual_container.add_child(new_node)
-		var displayed_element = DisplayedNode.new()
+		var displayed_element = NamedNode.new()
 		displayed_element.name = key
 		displayed_element.node = new_node
 		displayed_node_list.append(displayed_element)
@@ -94,41 +108,79 @@ func update_link_with(fuseki_link_data, force_side_source : ContainerSide = Cont
 		return
 	var links_as_dict : Dictionary = to_link_dictionary(fuseki_link_data)
 	for key in links_as_dict.keys():
-		var drawable_y_position : int
-		match force_side_source :
-			ContainerSide.ANY :
-				drawable_y_position = get_drawable_y_height(key, links_as_dict[key])
-			ContainerSide.TOP :
-				drawable_y_position = get_viable_position(get_top_side(key).y - 20 * link_width, already_drawn_y, 1)
-			ContainerSide.BOTTOM :
-				drawable_y_position = get_viable_position(get_bottom_side(key).y + 20 * link_width, already_drawn_y, 1)
-		var x_drawn : Array[int] = []
-		x_drawn.append(draw_element_to_lane(key, drawable_y_position))
+		var drawable_y_position : int = get_drawable_y_position_for_container_side(force_side_source, key, links_as_dict[key])
+		var x_drawn_list : Array[int] = []
+		var most_left_highlight_x_position = null
+		var most_right_highlight_x_position = null
+		
+		var source_in_critical_path : bool = in_critical_path(key, links_as_dict[key])
+		var source_color : Color = get_appripriate_link_color(source_in_critical_path)
+		var source_x = draw_element_to_lane(key, drawable_y_position, source_color)
+		x_drawn_list.append(source_x)
+		
+		if(source_in_critical_path):
+			if (most_left_highlight_x_position == null or most_right_highlight_x_position == null):
+				most_left_highlight_x_position = source_x
+				most_right_highlight_x_position = source_x
+			if (source_x < most_left_highlight_x_position):
+					most_left_highlight_x_position = source_x
+			if (source_x > most_right_highlight_x_position):
+				most_right_highlight_x_position = source_x
+		
 		for association_element in links_as_dict[key]:
-			x_drawn.append(draw_element_to_lane(association_element, drawable_y_position, true))
-		var most_left_x_position : int = x_drawn.min() - round(link_width / 2 - 0.5)
-		var most_right_x_position : int = x_drawn.max() + round(link_width / 2 + 0.5)
-		draw_link_lane(most_left_x_position, most_right_x_position, drawable_y_position)
+			var destination_in_critical_path : bool = in_critical_path(key, [association_element])
+			var arrow_color : Color = get_appripriate_link_color(destination_in_critical_path)
+			var drawn_x : int = draw_element_to_lane(association_element, drawable_y_position, arrow_color, true)
+			x_drawn_list.append(drawn_x)
+			
+			if(destination_in_critical_path):
+				if (drawn_x < most_left_highlight_x_position):
+					most_left_highlight_x_position = drawn_x
+				if (drawn_x > most_right_highlight_x_position):
+					most_right_highlight_x_position = drawn_x
+		
+		draw_link_lane(x_drawn_list, drawable_y_position, most_left_highlight_x_position, most_right_highlight_x_position)
 
-func draw_element_to_lane(node, drawable_y_position : int, destination : bool = false) -> int:
+func in_critical_path(source, destinations : Array) -> bool:
+	return (highlighted_element == null or source == highlighted_element or highlighted_element in destinations)
+
+func get_appripriate_link_color(in_critical_path : bool):
+	return highlight_color if in_critical_path else dimmed_color
+
+func get_drawable_y_position_for_container_side(side : ContainerSide, key : Object, links : Array) -> int:
+	match side :
+		ContainerSide.ANY :
+			return get_drawable_y_height(key, links)
+		ContainerSide.TOP :
+			return get_viable_position(get_top_side(key).y - 20 * link_width, already_drawn_y, 1)
+		ContainerSide.BOTTOM :
+			return get_viable_position(get_bottom_side(key).y + 20 * link_width, already_drawn_y, 1)
+	return 0
+
+func draw_element_to_lane(node, drawable_y_position : int, color : Color, destination : bool = false) -> int:
 	var is_pointing_up : bool = node.global_position.y < drawable_y_position
 	var drawing_position_element : Vector2 = get_bottom_side(node) if (is_pointing_up) else get_top_side(node)
 	var adjusted_x : int = get_drawable_x_position(drawing_position_element.x)
-	var vertical_shift : int = draw_triangle(Vector2(adjusted_x, drawing_position_element.y), is_pointing_up) if destination else 0
-	draw_line(Vector2(adjusted_x, drawing_position_element.y + vertical_shift), Vector2(adjusted_x, drawable_y_position), highlight_color, link_width)
+	var vertical_shift : int = draw_triangle(Vector2(adjusted_x, drawing_position_element.y), color, is_pointing_up) if destination else 0
+	draw_line(Vector2(adjusted_x, drawing_position_element.y + vertical_shift), Vector2(adjusted_x, drawable_y_position), color, link_width)
 	return adjusted_x
 
-func draw_triangle(aimed_at : Vector2, is_pointing_up : bool) -> int:
+func draw_triangle(aimed_at : Vector2, color : Color, is_pointing_up : bool) -> int:
 	var triangle : PackedVector2Array = []
 	triangle.append(aimed_at)
 	var vertical_shift = link_width if is_pointing_up else - link_width
 	triangle.append(Vector2(aimed_at.x + link_width * 2, aimed_at.y + vertical_shift * 3))
 	triangle.append(Vector2(aimed_at.x - link_width * 2, aimed_at.y + vertical_shift * 3))
-	draw_polygon(triangle, [highlight_color])
+	draw_polygon(triangle, [color])
 	return vertical_shift
 
-func draw_link_lane(most_left_x_position, most_right_x_position, drawable_y_position):
-	draw_line(Vector2(most_left_x_position, drawable_y_position), Vector2(most_right_x_position, drawable_y_position), highlight_color, link_width)
+func draw_link_lane(x_drawn : Array[int], drawable_y_position: int, most_left_highlight_x_position, most_right_highlight_x_position):
+	var most_left_x_position : int = x_drawn.min() - round(link_width / 2 - 0.5)
+	var most_right_x_position : int = x_drawn.max() + round(link_width / 2 + 0.5)
+	var base_color = highlight_color if (highlighted_element == null) else dimmed_color
+	draw_line(Vector2(most_left_x_position, drawable_y_position), Vector2(most_right_x_position, drawable_y_position), base_color, link_width)
+	if not(most_left_highlight_x_position == null or most_right_highlight_x_position == null):
+		draw_line(Vector2(most_left_highlight_x_position - round(link_width / 2 - 0.5), drawable_y_position), Vector2(most_right_highlight_x_position + round(link_width / 2 + 0.5), drawable_y_position), highlight_color, link_width)
 
 func get_drawable_y_height(key, array_nodes: Array) -> int:
 	var potential_y_position = (key.global_position.y + key.size.y + array_nodes[0].global_position.y) / 2

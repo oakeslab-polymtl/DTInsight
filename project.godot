@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 FusekiSignals="*res://Fuseki/Data/FusekiSignals.gd"
+GenericDisplaySignals="*res://GenericDisplay/GenericDisplaySignals.gd"
 
 [input]
 
