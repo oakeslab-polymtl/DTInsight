@@ -110,36 +110,22 @@ func update_link_with(fuseki_link_data, force_side_source : ContainerSide = Cont
 	for key in links_as_dict.keys():
 		var drawable_y_position : int = get_drawable_y_position_for_container_side(force_side_source, key, links_as_dict[key])
 		var x_drawn_list : Array[int] = []
-		var most_left_highlight_x_position = null
-		var most_right_highlight_x_position = null
-		
+		var x_highlight_list : Array[int] = []
 		var source_in_critical_path : bool = in_critical_path(key, links_as_dict[key])
 		var source_color : Color = get_appripriate_link_color(source_in_critical_path)
 		var source_x = draw_element_to_lane(key, drawable_y_position, source_color)
 		x_drawn_list.append(source_x)
-		
 		if(source_in_critical_path):
-			if (most_left_highlight_x_position == null or most_right_highlight_x_position == null):
-				most_left_highlight_x_position = source_x
-				most_right_highlight_x_position = source_x
-			if (source_x < most_left_highlight_x_position):
-					most_left_highlight_x_position = source_x
-			if (source_x > most_right_highlight_x_position):
-				most_right_highlight_x_position = source_x
-		
+			x_highlight_list.append(source_x)
 		for association_element in links_as_dict[key]:
 			var destination_in_critical_path : bool = in_critical_path(key, [association_element])
 			var arrow_color : Color = get_appripriate_link_color(destination_in_critical_path)
 			var drawn_x : int = draw_element_to_lane(association_element, drawable_y_position, arrow_color, true)
 			x_drawn_list.append(drawn_x)
-			
 			if(destination_in_critical_path):
-				if (drawn_x < most_left_highlight_x_position):
-					most_left_highlight_x_position = drawn_x
-				if (drawn_x > most_right_highlight_x_position):
-					most_right_highlight_x_position = drawn_x
+				x_highlight_list.append(drawn_x)
 		
-		draw_link_lane(x_drawn_list, drawable_y_position, most_left_highlight_x_position, most_right_highlight_x_position)
+		draw_link_lane(x_drawn_list, x_highlight_list, drawable_y_position)
 
 func in_critical_path(source, destinations : Array) -> bool:
 	return (highlighted_element == null or source == highlighted_element or highlighted_element in destinations)
@@ -174,13 +160,15 @@ func draw_triangle(aimed_at : Vector2, color : Color, is_pointing_up : bool) -> 
 	draw_polygon(triangle, [color])
 	return vertical_shift
 
-func draw_link_lane(x_drawn : Array[int], drawable_y_position: int, most_left_highlight_x_position, most_right_highlight_x_position):
+func draw_link_lane(x_drawn : Array[int], x_highlight : Array[int], drawable_y_position: int):
 	var most_left_x_position : int = x_drawn.min() - round(link_width / 2 - 0.5)
 	var most_right_x_position : int = x_drawn.max() + round(link_width / 2 + 0.5)
 	var base_color = highlight_color if (highlighted_element == null) else dimmed_color
 	draw_line(Vector2(most_left_x_position, drawable_y_position), Vector2(most_right_x_position, drawable_y_position), base_color, link_width)
-	if not(most_left_highlight_x_position == null or most_right_highlight_x_position == null):
-		draw_line(Vector2(most_left_highlight_x_position - round(link_width / 2 - 0.5), drawable_y_position), Vector2(most_right_highlight_x_position + round(link_width / 2 + 0.5), drawable_y_position), highlight_color, link_width)
+	if (not x_highlight.is_empty()):
+		var most_left_highlight_x_position : int = x_highlight.min() - round(link_width / 2 - 0.5)
+		var most_right_highlight_x_position : int = x_highlight.max() + round(link_width / 2 + 0.5)
+		draw_line(Vector2(most_left_highlight_x_position, drawable_y_position), Vector2(most_right_highlight_x_position, drawable_y_position), highlight_color, link_width)
 
 func get_drawable_y_height(key, array_nodes: Array) -> int:
 	var potential_y_position = (key.global_position.y + key.size.y + array_nodes[0].global_position.y) / 2
