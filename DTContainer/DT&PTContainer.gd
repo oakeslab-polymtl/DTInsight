@@ -1,5 +1,7 @@
 extends Control
 
+class_name DT_PT
+
 #Reference each visual data container
 @onready var service_container = $DTContainer/ServicesPanel/ServicesContainer
 @onready var enabler_container = $DTContainer/EnablersPanel/EnablersContainer
@@ -67,7 +69,7 @@ func on_fuseki_data_updated():
 
 #Update a node with Fuseki element data by creating a generic display node
 func update_node_with(visual_container, fuseki_node_data : Dictionary):
-	free_all_child(visual_container)
+	DT_PT.free_all_child(visual_container)
 	for key in fuseki_node_data.keys():
 		var new_node = generic_display.instantiate()
 		new_node.get_node("GenericElementName").text = key
@@ -77,7 +79,7 @@ func update_node_with(visual_container, fuseki_node_data : Dictionary):
 		displayed_element.node = new_node
 		displayed_node_list.append(displayed_element)
 		
-func _process(delta):
+func _process(_delta):
 	already_drawn_x.clear()
 	already_drawn_y.clear()
 	queue_redraw()
@@ -124,14 +126,13 @@ func update_link_with(fuseki_link_data, force_side_source : ContainerSide = Cont
 			x_drawn_list.append(drawn_x)
 			if(destination_in_critical_path):
 				x_highlight_list.append(drawn_x)
-		
 		draw_link_lane(x_drawn_list, x_highlight_list, drawable_y_position)
 
 func in_critical_path(source, destinations : Array) -> bool:
 	return (highlighted_element == null or source == highlighted_element or highlighted_element in destinations)
 
-func get_appripriate_link_color(in_critical_path : bool):
-	return highlight_color if in_critical_path else dimmed_color
+func get_appripriate_link_color(is_in_critical_path : bool):
+	return highlight_color if is_in_critical_path else dimmed_color
 
 func get_drawable_y_position_for_container_side(side : ContainerSide, key : Object, links : Array) -> int:
 	match side :
@@ -196,8 +197,8 @@ func to_link_dictionary(fuseki_link_data) -> Dictionary:
 		links[source_node].append(get_node_by_name(link.second_node_name))
 	return links
 
-static func shift_position(position : Vector2, shift_value) -> Vector2:
-	return Vector2(position.x + shift_value, position.y)
+static func shift_position(initial_position : Vector2, shift_value) -> Vector2:
+	return Vector2(initial_position.x + shift_value, initial_position.y)
 
 #Return a node by its nale in the displayes_node_list
 func get_node_by_name(node_name : String):
@@ -212,18 +213,17 @@ func get_node_by_name(node_name : String):
 
 #Return a position on the middle and bottom of a node
 static func get_middle_x(node) -> int:
-	var position = node.global_position
-	var size = node.size
-	return position.x + size.x / 2 - link_width / 2
+	var node_position = node.global_position
+	var node_size = node.size
+	return node_position.x + node_size.x / 2 - link_width / 2
 
 func get_bottom_side(node) -> Vector2:
-	var position = node.global_position
-	var size = node.size
-	var corrected_position = Vector2(get_middle_x(node), position.y + size.y)
+	var node_position = node.global_position
+	var node_size = node.size
+	var corrected_position = Vector2(DT_PT.get_middle_x(node), node_position.y + node_size.y)
 	return corrected_position
 
 func get_top_side(node) -> Vector2:
-	var position = node.global_position
-	var size = node.size
-	var corrected_position = Vector2(get_middle_x(node), position.y)
+	var node_position = node.global_position
+	var corrected_position = Vector2(DT_PT.get_middle_x(node), node_position.y)
 	return corrected_position
