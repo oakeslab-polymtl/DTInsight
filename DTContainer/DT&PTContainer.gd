@@ -51,8 +51,10 @@ func _ready():
 func _on_element_over(element_name):
 	if (element_name == ""):
 		highlighted_element = null
+		GenericDisplaySignals.generic_display_highlight.emit([])
 	else:
 		highlighted_element = get_node_by_name(element_name)
+		GenericDisplaySignals.generic_display_highlight.emit(get_all_connected_to(element_name))
 
 #Feed fuseki data
 func feed_fuseki_data(feed):
@@ -96,6 +98,15 @@ static func build_displayed_string(attributes : Dictionary):
 	for key in attributes.keys():
 		displayed_string += key + " : " + attributes[key] + "\n"
 	return displayed_string
+
+func get_all_connected_to(element_name : String) -> Array[String]:
+	var all_connected : Array[String]= [element_name]
+	for link in fuseki_data.enabler_to_service + fuseki_data.model_to_enabler + fuseki_data.service_to_insight:
+		if link.first_node_name == element_name:
+			all_connected.append(link.second_node_name)
+		if link.second_node_name == element_name:
+			all_connected.append(link.first_node_name)
+	return all_connected
 
 #Draw all links
 func _draw():
