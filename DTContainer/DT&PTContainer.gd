@@ -19,12 +19,12 @@ enum ContainerSide {
 var fuseki_data = null
 
 #Load the generic display scene
-const generic_display = preload("res://GenericDisplay/generic_display.tscn")
+const GenericDisplay = preload("res://GenericDisplay/generic_display.tscn")
 
 #Displayes node referenced by its name
 class NamedNode:
 	var name : String
-	var node
+	var node : GenericDisplay
 
 #Array of displayes nodes
 var displayed_node_list: Array[NamedNode]
@@ -42,6 +42,9 @@ const highlight_color : Color = Color.DIM_GRAY
 
 #name of highlighted element
 var highlighted_element = null
+
+#border attribute
+const border_attribute : String = "hasTimeScale"
 
 #initialization
 func _ready():
@@ -73,14 +76,26 @@ func on_fuseki_data_updated():
 func update_node_with(visual_container, fuseki_node_data : Dictionary):
 	DT_PT.free_all_child(visual_container)
 	for key in fuseki_node_data.keys():
-		var new_node = generic_display.instantiate()
+		var new_node = GenericDisplay.instantiate()
 		new_node.get_node("GenericElementName").text = key
 		visual_container.add_child(new_node)
 		var displayed_element = NamedNode.new()
 		displayed_element.name = key
 		displayed_element.node = new_node
 		displayed_node_list.append(displayed_element)
-		
+		set_starting_node_style(displayed_element, fuseki_node_data[key])
+
+func set_starting_node_style(namedNode : NamedNode, attributes : Dictionary):
+	namedNode.node.set_dimmed_style()
+	if (border_attribute in attributes.keys()):
+		match attributes[border_attribute]:
+			"slower_trt":
+				namedNode.node.set_slower_style()
+			"rt":
+				namedNode.node.set_rt_style()
+			"faster_trt":
+				namedNode.node.set_faster_style()
+
 func _process(_delta):
 	already_drawn_x.clear()
 	already_drawn_y.clear()
