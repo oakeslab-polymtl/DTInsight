@@ -1,0 +1,21 @@
+extends Node
+
+#Realtime relationship style
+class RTBorder:
+	const BORDER_WIDTH : int = 5
+
+	const SLOWER_THAN_RT_COLOR : Color = Color.BLUE_VIOLET
+	const RT_COLOR : Color = Color.AQUAMARINE
+	const FASTER_THAN_RT_COLOR : Color = Color.GOLD
+
+#DT/RT displayed element style
+class DTElement:
+	const DIMMED_COLOR : Color = Color.GRAY
+	const HIGHLIGHT_COLOR : Color = Color.DIM_GRAY
+
+#Visual link style
+class Link:
+	const WIDTH : int = 5
+	
+	const DIMMED_COLOR : Color = Color.GRAY
+	const HIGHLIGHT_COLOR : Color = Color.DIM_GRAY

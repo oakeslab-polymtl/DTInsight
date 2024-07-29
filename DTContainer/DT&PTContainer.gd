@@ -29,16 +29,9 @@ class NamedNode:
 #Array of displayes nodes
 var displayed_node_list: Array[NamedNode]
 
-#Link width
-const link_width : int = 5
-
 #displayed coordinates collection
 var already_drawn_x : Array[int] = []
 var already_drawn_y : Array[int] = []
-
-#link display colot
-const dimmed_color : Color = Color.GRAY
-const highlight_color : Color = Color.DIM_GRAY
 
 #name of highlighted element
 var highlighted_element = null
@@ -158,16 +151,16 @@ func in_critical_path(source, destinations : Array) -> bool:
 	return (highlighted_element == null or source == highlighted_element or highlighted_element in destinations)
 
 func get_appripriate_link_color(is_in_critical_path : bool):
-	return highlight_color if is_in_critical_path else dimmed_color
+	return StyleConfig.Link.HIGHLIGHT_COLOR if is_in_critical_path else StyleConfig.Link.DIMMED_COLOR
 
 func get_drawable_y_position_for_container_side(side : ContainerSide, key : Object, links : Array) -> int:
 	match side :
 		ContainerSide.ANY :
 			return get_drawable_y_height(key, links)
 		ContainerSide.TOP :
-			return get_viable_position(get_top_side(key).y - 20 * link_width, already_drawn_y, 1)
+			return get_viable_position(get_top_side(key).y - 20 * StyleConfig.Link.WIDTH, already_drawn_y, 1)
 		ContainerSide.BOTTOM :
-			return get_viable_position(get_bottom_side(key).y + 20 * link_width, already_drawn_y, 1)
+			return get_viable_position(get_bottom_side(key).y + 20 * StyleConfig.Link.WIDTH, already_drawn_y, 1)
 	return 0
 
 func draw_element_to_lane(node, drawable_y_position : int, color : Color, destination : bool = false) -> int:
@@ -175,27 +168,27 @@ func draw_element_to_lane(node, drawable_y_position : int, color : Color, destin
 	var drawing_position_element : Vector2 = get_bottom_side(node) if (is_pointing_up) else get_top_side(node)
 	var adjusted_x : int = get_drawable_x_position(drawing_position_element.x)
 	var vertical_shift : int = draw_triangle(Vector2(adjusted_x, drawing_position_element.y), color, is_pointing_up) if destination else 0
-	draw_line(Vector2(adjusted_x, drawing_position_element.y + vertical_shift), Vector2(adjusted_x, drawable_y_position), color, link_width)
+	draw_line(Vector2(adjusted_x, drawing_position_element.y + vertical_shift), Vector2(adjusted_x, drawable_y_position), color, StyleConfig.Link.WIDTH)
 	return adjusted_x
 
 func draw_triangle(aimed_at : Vector2, color : Color, is_pointing_up : bool) -> int:
 	var triangle : PackedVector2Array = []
 	triangle.append(aimed_at)
-	var vertical_shift = link_width if is_pointing_up else - link_width
-	triangle.append(Vector2(aimed_at.x + link_width * 2, aimed_at.y + vertical_shift * 3))
-	triangle.append(Vector2(aimed_at.x - link_width * 2, aimed_at.y + vertical_shift * 3))
+	var vertical_shift = StyleConfig.Link.WIDTH if is_pointing_up else - StyleConfig.Link.WIDTH
+	triangle.append(Vector2(aimed_at.x + StyleConfig.Link.WIDTH * 2, aimed_at.y + vertical_shift * 3))
+	triangle.append(Vector2(aimed_at.x - StyleConfig.Link.WIDTH * 2, aimed_at.y + vertical_shift * 3))
 	draw_polygon(triangle, [color])
 	return vertical_shift
 
 func draw_link_lane(x_drawn : Array[int], x_highlight : Array[int], drawable_y_position: int):
-	var most_left_x_position : int = x_drawn.min() - round(link_width / 2 - 0.5)
-	var most_right_x_position : int = x_drawn.max() + round(link_width / 2 + 0.5)
-	var base_color = highlight_color if (highlighted_element == null) else dimmed_color
-	draw_line(Vector2(most_left_x_position, drawable_y_position), Vector2(most_right_x_position, drawable_y_position), base_color, link_width)
+	var most_left_x_position : int = x_drawn.min() - round(StyleConfig.Link.WIDTH / 2 - 0.5)
+	var most_right_x_position : int = x_drawn.max() + round(StyleConfig.Link.WIDTH / 2 + 0.5)
+	var base_color = StyleConfig.Link.HIGHLIGHT_COLOR if (highlighted_element == null) else StyleConfig.Link.DIMMED_COLOR
+	draw_line(Vector2(most_left_x_position, drawable_y_position), Vector2(most_right_x_position, drawable_y_position), base_color, StyleConfig.Link.WIDTH)
 	if (not x_highlight.is_empty()):
-		var most_left_highlight_x_position : int = x_highlight.min() - round(link_width / 2 - 0.5)
-		var most_right_highlight_x_position : int = x_highlight.max() + round(link_width / 2 + 0.5)
-		draw_line(Vector2(most_left_highlight_x_position, drawable_y_position), Vector2(most_right_highlight_x_position, drawable_y_position), highlight_color, link_width)
+		var most_left_highlight_x_position : int = x_highlight.min() - round(StyleConfig.Link.WIDTH / 2 - 0.5)
+		var most_right_highlight_x_position : int = x_highlight.max() + round(StyleConfig.Link.WIDTH / 2 + 0.5)
+		draw_line(Vector2(most_left_highlight_x_position, drawable_y_position), Vector2(most_right_highlight_x_position, drawable_y_position), StyleConfig.Link.HIGHLIGHT_COLOR, StyleConfig.Link.WIDTH)
 
 func get_drawable_y_height(key, array_nodes: Array) -> int:
 	var potential_y_position = (key.global_position.y + key.size.y + array_nodes[0].global_position.y) / 2
@@ -207,9 +200,9 @@ func get_drawable_x_position(potential_x : int) -> int:
 func get_viable_position(potential : int, concerned_list : Array[int], iteration : int) -> int:
 	if(potential in concerned_list):
 		if (iteration % 2 == 0):
-			return get_viable_position(potential - 2 * link_width * iteration, concerned_list, iteration + 1)
+			return get_viable_position(potential - 2 * StyleConfig.Link.WIDTH * iteration, concerned_list, iteration + 1)
 		else:
-			return get_viable_position(potential + 2 * link_width * iteration, concerned_list, iteration + 1)
+			return get_viable_position(potential + 2 * StyleConfig.Link.WIDTH * iteration, concerned_list, iteration + 1)
 	else:
 		concerned_list.append(potential)
 		return potential
@@ -241,7 +234,7 @@ func get_node_by_name(node_name : String):
 static func get_middle_x(node) -> int:
 	var node_position = node.global_position
 	var node_size = node.size
-	return node_position.x + node_size.x / 2 - link_width / 2
+	return node_position.x + node_size.x / 2 - StyleConfig.Link.WIDTH / 2
 
 func get_bottom_side(node) -> Vector2:
 	var node_position = node.global_position

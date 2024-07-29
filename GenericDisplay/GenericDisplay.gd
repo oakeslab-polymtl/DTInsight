@@ -22,14 +22,11 @@ func _on_mouse_exited():
 	GenericDisplaySignals.generic_display_over.emit("")
 
 #Background style --------------------------------------------------------------
-const dimmed_color : Color = Color.GRAY
-const highlight_color : Color = Color.DIM_GRAY
-
 func set_dimmed_style():
-	set_bg_color(dimmed_color)
+	set_bg_color(StyleConfig.DTElement.DIMMED_COLOR)
 
 func set_highlight_style():
-	set_bg_color(highlight_color)
+	set_bg_color(StyleConfig.DTElement.HIGHLIGHT_COLOR)
 
 func set_bg_color(color : Color):
 	var styleBox : StyleBoxFlat = element.get_theme_stylebox("normal").duplicate()
@@ -37,23 +34,17 @@ func set_bg_color(color : Color):
 	element.add_theme_stylebox_override("normal", styleBox)
 
 #Border style ------------------------------------------------------------------
-const slower_color : Color = Color.BLUE_VIOLET
-const rt_color : Color = Color.AQUAMARINE
-const faster_color : Color = Color.GOLD
-
-const border_width : int = 5
-
 func set_slower_style():
-	set_border_color(slower_color)
+	set_border_color(StyleConfig.RTBorder.SLOWER_THAN_RT_COLOR)
 
 func set_rt_style():
-	set_border_color(rt_color)
+	set_border_color(StyleConfig.RTBorder.RT_COLOR)
 
 func set_faster_style():
-	set_border_color(faster_color)
+	set_border_color(StyleConfig.RTBorder.FASTER_THAN_RT_COLOR)
 
 func set_border_color(color : Color):
 	var styleBox : StyleBoxFlat = element.get_theme_stylebox("normal").duplicate()
 	styleBox.border_color = color
-	styleBox.set_border_width_all(border_width)
+	styleBox.set_border_width_all(StyleConfig.RTBorder.BORDER_WIDTH)
 	element.add_theme_stylebox_override("normal", styleBox)
