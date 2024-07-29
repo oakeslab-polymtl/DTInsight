@@ -3,11 +3,6 @@ extends Button
 @onready var SparqlRequest = $SparqlFusekiQueries
 @onready var FusekiQueryManager = $SparqlFusekiQueries/FusekiQuery
 
-#Fuseki endpoint data
-const URL = "http://localhost:3030" #Fuseki server, localhost if started from openCAESAR on this machine
-const DATASET = "/DTDF" #FUseki endpoint defined in fuseki.ttl in the project
-const ENDPOINT = "/sparql?query=" #sparql endpoint
-
 #FusekiDataManager
 var FusekiDataManager : FusekiData
 func set_fuseki_data_manager(fuseki_data_manager : FusekiData):
@@ -35,7 +30,7 @@ func _on_pressed():
 
 #Query the Fuseki Server with a given query
 func query_fuseky(query):
-	SparqlRequest.request(URL + DATASET + ENDPOINT + query.uri_encode())
+	SparqlRequest.request(FusekiConfig.URL + FusekiConfig.DATASET + FusekiConfig.ENDPOINT + query.uri_encode())
 
 #Parse and store resulting Fuseki json
 func _on_fuseki_completion(_result, _response_code, _headers, body):
