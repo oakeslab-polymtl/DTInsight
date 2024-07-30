@@ -6,7 +6,8 @@ class_name DT_PT
 @onready var service_container = $DTContainer/ServicesPanel/ServicesContainer
 @onready var enabler_container = $DTContainer/EnablersPanel/EnablersContainer
 @onready var model_container = $DTContainer/ModelsPanel/ModelsContainer
-@onready var insight_container = $PTContainer/PanelContainer/InsightsContainer
+@onready var provided_things_container = $PTContainer/ProvidedThingsPanel/ProvidedThingsContainer
+@onready var data_transmitted_container = $PTContainer/DataTransmittedPanel/DataTransmittedContainer
 
 #Container side enum
 enum ContainerSide {
@@ -16,7 +17,7 @@ enum ContainerSide {
 }
 
 #Access to fuseki data
-var fuseki_data = null
+var fuseki_data : FusekiData = null
 
 #Load the generic display scene
 const GenericDisplay = preload("res://GenericDisplay/generic_display.tscn")
@@ -63,7 +64,8 @@ func on_fuseki_data_updated():
 	update_node_with(service_container, fuseki_data.service)
 	update_node_with(enabler_container, fuseki_data.enabler)
 	update_node_with(model_container, fuseki_data.model)
-	update_node_with(insight_container, fuseki_data.insight)
+	update_node_with(provided_things_container, fuseki_data.provided_thing)
+	update_node_with(data_transmitted_container, fuseki_data.data_transmitted)
 
 #Update a node with Fuseki element data by creating a generic display node
 func update_node_with(visual_container, fuseki_node_data : Dictionary):
@@ -109,7 +111,7 @@ static func build_displayed_string(attributes : Dictionary):
 
 func get_all_connected_to(element_name : String) -> Array[String]:
 	var all_connected : Array[String]= [element_name]
-	for link in fuseki_data.enabler_to_service + fuseki_data.model_to_enabler + fuseki_data.service_to_insight:
+	for link in fuseki_data.enabler_to_service + fuseki_data.model_to_enabler + fuseki_data.service_to_provided_thing:
 		if link.first_node_name == element_name:
 			all_connected.append(link.second_node_name)
 		if link.second_node_name == element_name:
@@ -121,7 +123,7 @@ func _draw():
 	if (not fuseki_data == null):
 		update_link_with(fuseki_data.enabler_to_service)
 		update_link_with(fuseki_data.model_to_enabler)
-		update_link_with(fuseki_data.service_to_insight, ContainerSide.TOP)
+		update_link_with(fuseki_data.service_to_provided_thing, ContainerSide.TOP)
 
 #With Fuseki link data draw those links
 func update_link_with(fuseki_link_data, force_side_source : ContainerSide = ContainerSide.ANY):

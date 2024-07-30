@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://nqgolpvgp7yg"]
+[gd_scene load_steps=7 format=3 uid="uid://nqgolpvgp7yg"]
 
 [ext_resource type="Script" path="res://DTContainer/DT&PTContainer.gd" id="1_juoha"]
 
@@ -10,6 +10,13 @@ content_margin_bottom = 20.0
 bg_color = Color(1, 1, 0.6, 1)
 corner_radius_top_left = 20
 corner_radius_top_right = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rl1kt"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(1, 1, 0.6, 1)
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 
@@ -54,26 +61,42 @@ script = ExtResource("1_juoha")
 
 [node name="PTContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
+theme_override_constants/separation = 0
 alignment = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="PTContainer"]
+[node name="ProvidedThingsPanel" type="PanelContainer" parent="PTContainer"]
 z_index = -1
 layout_mode = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_sp6md")
 
-[node name="InsightsContainer" type="HBoxContainer" parent="PTContainer/PanelContainer"]
+[node name="ProvidedThingsContainer" type="HBoxContainer" parent="PTContainer/ProvidedThingsPanel"]
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 size_flags_vertical = 3
-alignment = 1
 
-[node name="InsightsLabel" type="Label" parent="PTContainer/PanelContainer/InsightsContainer"]
+[node name="ProvidedThingsLabel" type="Label" parent="PTContainer/ProvidedThingsPanel/ProvidedThingsContainer"]
 layout_mode = 2
-size_flags_horizontal = 2
+size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Insights"
+text = "Provided things"
+
+[node name="DataTransmittedPanel" type="PanelContainer" parent="PTContainer"]
+z_index = -1
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rl1kt")
+
+[node name="DataTransmittedContainer" type="HBoxContainer" parent="PTContainer/DataTransmittedPanel"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+
+[node name="DataTransmittedLabel" type="Label" parent="PTContainer/DataTransmittedPanel/DataTransmittedContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Data transmitted"
 
 [node name="DTContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -88,12 +111,10 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_xj583")
 [node name="ServicesContainer" type="HBoxContainer" parent="DTContainer/ServicesPanel"]
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
-size_flags_vertical = 3
-alignment = 1
 
 [node name="ServicesLabel" type="Label" parent="DTContainer/ServicesPanel/ServicesContainer"]
 layout_mode = 2
-size_flags_horizontal = 2
+size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Services"
@@ -108,11 +129,10 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_ks3ld")
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 size_flags_vertical = 3
-alignment = 1
 
 [node name="EnablersLabel" type="Label" parent="DTContainer/EnablersPanel/EnablersContainer"]
 layout_mode = 2
-size_flags_horizontal = 2
+size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Enablers"
@@ -127,11 +147,10 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_ox2pm")
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 size_flags_vertical = 3
-alignment = 1
 
 [node name="ModelsLabel" type="Label" parent="DTContainer/ModelsPanel/ModelsContainer"]
 layout_mode = 2
-size_flags_horizontal = 2
+size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Models/Data

@@ -16,8 +16,9 @@ class JsonValue:
 var service : Dictionary
 var enabler : Dictionary
 var model : Dictionary
-var insight : Dictionary
-var service_to_insight : Array[GenericLinkedNodes]
+var provided_thing : Dictionary
+var data_transmitted : Dictionary
+var service_to_provided_thing : Array[GenericLinkedNodes]
 var enabler_to_service : Array[GenericLinkedNodes]
 var model_to_enabler : Array[GenericLinkedNodes]
 
@@ -43,17 +44,18 @@ func input_data_from_fuseki_JSON(json):
 		enabler_to_service = parse_fuseki_json(json, true)
 	elif ("model" in json_head && "enabler" in json_head):
 		model_to_enabler = parse_fuseki_json(json, true)
-	elif ("service" in json_head && "insight" in json_head):
-		service_to_insight = parse_fuseki_json(json, true)
-		dump("to_console = true", true)
+	elif ("service" in json_head && "provided" in json_head):
+		service_to_provided_thing = parse_fuseki_json(json, true)
 	elif ("service" in json_head):
 		service = parse_fuseki_json(json)
 	elif("enabler" in json_head):
 		enabler = parse_fuseki_json(json)
 	elif ("model" in json_head):
 		model = parse_fuseki_json(json)
-	elif ("insight" in json_head):
-		insight = parse_fuseki_json(json)
+	elif ("dataT" in json_head):
+		data_transmitted = parse_fuseki_json(json)
+	elif ("provided" in json_head):
+		provided_thing = parse_fuseki_json(json)
 
 #Parse the json from Fuseki into internal data structure
 #Return an Array of GenericLinkedNodes or a Dictionary depending on the data type
@@ -120,7 +122,7 @@ func empty():
 	service = {}
 	enabler = {}
 	model = {}
-	insight = {}
-	service_to_insight = []
+	provided_thing = {}
+	service_to_provided_thing = []
 	enabler_to_service = []
 	model_to_enabler = []

@@ -47,20 +47,29 @@ WHERE {
 	OPTIONAL {?model ?attribute ?value}
 }"
 
-const INSIGHTS_QUERY = "PREFIX DTDFvocab:   <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
+const PROVIDED_THINGS_QUERY = "PREFIX DTDFvocab:   <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
 PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT *
 WHERE {
-	?insight a DTDFvocab:Insight .
-	OPTIONAL {?insight ?attribute ?value}
+	?provided a DTDFvocab:ProvidedThing .
+	OPTIONAL {?provided ?attribute ?value}
 }"
 
-const SERVICES_TO_INSIGHTS_QUERY = "PREFIX DTDFvocab:   <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
+const SERVICES_TO_PROVIDED_THINGS_QUERY = "PREFIX DTDFvocab:   <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
 PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT *
 WHERE {
 	?service a DTDFvocab:Service .
-	?service DTDFvocab:provides ?insight
+	?service DTDFvocab:provides ?provided
+}"
+
+const DATA_TRANSMITTED_QUERY = "PREFIX DTDFvocab:   <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
+PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT *
+WHERE {
+	?dataT a DTDFvocab:DataTransmitted .
+	OPTIONAL {?dataT ?attribute ?value}
 }"
