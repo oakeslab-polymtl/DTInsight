@@ -45,6 +45,7 @@ func input_data_from_fuseki_JSON(json):
 		model_to_enabler = parse_fuseki_json(json, true)
 	elif ("service" in json_head && "insight" in json_head):
 		service_to_insight = parse_fuseki_json(json, true)
+		dump("to_console = true", true)
 	elif ("service" in json_head):
 		service = parse_fuseki_json(json)
 	elif("enabler" in json_head):
@@ -112,8 +113,8 @@ static func parse_element_result(result_agregator) -> Dictionary:
 		formated_result[entry_name].merge(entry_value)
 	return formated_result
 
-func dump(to_console = false):
-	FusekiDataDumper.dump(self, to_console)
+func dump(dump_path : String, to_console : bool = false):
+	FusekiDataDumper.dump(self, dump_path, to_console)
 
 func empty():
 	service = {}
