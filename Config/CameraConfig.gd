@@ -2,12 +2,12 @@ extends Node
 
 #Mouvement config
 class Mouvement:
-	const maxVelocity : float = 20
-	const secondsToReachMaxVelocity : float = 0.2
-	const secondsToStopFromMaxVelocity : float = 0.05
+	const MAX_VELOCITY : float = 20
+	const SECONDS_TO_REACH_MAX_VELOCITY : float = 0.2
+	const SECONDS_TO_STOP_FROM_MAX_VELOCITY : float = 0.05
 
 #Camera config
 class Zoom:
-	const maxZoomInScale : float = 2
-	const maxZoomOutScale : float = 0.3
-	const zoomPerSecond : float = 1
+	const MAX_ZOOM_IN_SCALE : float = 2
+	const MAX_ZOOM_OUT_SCALE : float = 0.3
+	const ZOOM_PER_SECOND : float = 1

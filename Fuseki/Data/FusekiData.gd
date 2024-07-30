@@ -37,7 +37,7 @@ const unwanted_attributes : Array[String] = [
 
 #Teke a json from a Fuseki query and store the resulting informations in 
 #variables reachable from the Godot application
-func inputDataFromFusekiJSON(json):
+func input_data_from_fuseki_JSON(json):
 	var json_head = json["head"]["vars"]
 	if ("service" in json_head && "enabler" in json_head):
 		enabler_to_service = parse_fuseki_json(json, true)

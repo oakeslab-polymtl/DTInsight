@@ -1,52 +1,52 @@
 extends Camera2D
 
-func _process(delta):
+func _process(delta : float):
 	var inputMouvementVector : Vector2 = handle_mouvement_input()
 	moveCamera(inputMouvementVector, delta)
 	var inputZoomVector : Vector2 = handle_zoom_input()
 	zoomCamera(inputZoomVector, delta)
 
 #Mouvement functions -----------------------------------------------------------
-var currentVelocity : Vector2 = Vector2(0, 0)
-const accelerationPerSecond : float = CameraConfig.Mouvement.maxVelocity / CameraConfig.Mouvement.secondsToReachMaxVelocity
-const decelerationPerSecond : float = CameraConfig.Mouvement.maxVelocity / CameraConfig.Mouvement.secondsToStopFromMaxVelocity
+var current_velocity : Vector2 = Vector2(0, 0)
+const ACCELERATION_PER_SECOND : float = CameraConfig.Mouvement.MAX_VELOCITY / CameraConfig.Mouvement.SECONDS_TO_REACH_MAX_VELOCITY
+const DECELERATION_PER_SECOND : float = CameraConfig.Mouvement.MAX_VELOCITY / CameraConfig.Mouvement.SECONDS_TO_STOP_FROM_MAX_VELOCITY
 
 func handle_mouvement_input() -> Vector2:
-	var inputVector : Vector2 = Vector2(0, 0)
+	var input_vector : Vector2 = Vector2(0, 0)
 	if Input.is_action_pressed("cam_move_left"):
-		inputVector += Vector2(-1, 0)
+		input_vector += Vector2(-1, 0)
 	if Input.is_action_pressed("cam_move_right"):
-		inputVector += Vector2(1, 0)
+		input_vector += Vector2(1, 0)
 	if Input.is_action_pressed("cam_move_down"):
-		inputVector += Vector2(0, 1)
+		input_vector += Vector2(0, 1)
 	if Input.is_action_pressed("cam_move_up"):
-		inputVector += Vector2(0, -1)
-	return inputVector.normalized()
+		input_vector += Vector2(0, -1)
+	return input_vector.normalized()
 
-func moveCamera(inputVector : Vector2, delta):
-	var scaledInput : Vector2 = inputVector * accelerationPerSecond * delta
-	if (inputVector != Vector2.ZERO): #acceleration
-		var maxXVelocity = CameraConfig.Mouvement.maxVelocity if inputVector.normalized().x == 0 else CameraConfig.Mouvement.maxVelocity * abs(inputVector.normalized().x)
-		var maxYVelocity = CameraConfig.Mouvement.maxVelocity if inputVector.normalized().y == 0 else CameraConfig.Mouvement.maxVelocity * abs(inputVector.normalized().y)
-		currentVelocity.x = clamp(currentVelocity.x + scaledInput.x, -maxXVelocity, maxXVelocity)
-		currentVelocity.y = clamp(currentVelocity.y + scaledInput.y, -maxYVelocity, maxYVelocity)
-	if(inputVector.x == 0 or opposite_signs(inputVector.x, currentVelocity.x)):
+func moveCamera(input_vector : Vector2, delta : float):
+	var scaled_input : Vector2 = input_vector * ACCELERATION_PER_SECOND * delta
+	if (input_vector != Vector2.ZERO): #acceleration
+		var max_x_velocity = CameraConfig.Mouvement.MAX_VELOCITY if input_vector.normalized().x == 0 else CameraConfig.Mouvement.MAX_VELOCITY * abs(input_vector.normalized().x)
+		var max_y_velocity = CameraConfig.Mouvement.MAX_VELOCITY if input_vector.normalized().y == 0 else CameraConfig.Mouvement.MAX_VELOCITY * abs(input_vector.normalized().y)
+		current_velocity.x = clamp(current_velocity.x + scaled_input.x, -max_x_velocity, max_x_velocity)
+		current_velocity.y = clamp(current_velocity.y + scaled_input.y, -max_y_velocity, max_y_velocity)
+	if(input_vector.x == 0 or opposite_signs(input_vector.x, current_velocity.x)):
 		decelerate_x(delta)
-	if(inputVector.y == 0 or opposite_signs(inputVector.y, currentVelocity.y)):
+	if(input_vector.y == 0 or opposite_signs(input_vector.y, current_velocity.y)):
 		decelerate_y(delta)
-	translate(currentVelocity)
+	translate(current_velocity)
 
-func decelerate_x(delta):
-	var preVelocity = currentVelocity.x
-	currentVelocity.x -= currentVelocity.normalized().x * decelerationPerSecond * delta
-	if (opposite_signs(preVelocity, currentVelocity.x)):
-		currentVelocity.x =0
+func decelerate_x(delta : float):
+	var pre_velocity = current_velocity.x
+	current_velocity.x -= current_velocity.normalized().x * DECELERATION_PER_SECOND * delta
+	if (opposite_signs(pre_velocity, current_velocity.x)):
+		current_velocity.x =0
 
-func decelerate_y(delta):
-	var preVelocity = currentVelocity.y
-	currentVelocity.y -= currentVelocity.normalized().y * decelerationPerSecond * delta
-	if (opposite_signs(preVelocity, currentVelocity.y)):
-		currentVelocity.y =0
+func decelerate_y(delta : float):
+	var pre_velocity = current_velocity.y
+	current_velocity.y -= current_velocity.normalized().y * DECELERATION_PER_SECOND * delta
+	if (opposite_signs(pre_velocity, current_velocity.y)):
+		current_velocity.y =0
 
 func opposite_signs(x:float, y:float) -> bool:
 	return ((x * y) < 0)
@@ -60,13 +60,13 @@ func handle_mouse_mouvement(event : InputEventMouseMotion):
 
 #Camera functions --------------------------------------------------------------
 func handle_zoom_input() -> Vector2:
-	var inputVector : Vector2 = Vector2(0, 0)
+	var input_vector : Vector2 = Vector2(0, 0)
 	if Input.is_action_pressed("cam_zoom_in"):
-		inputVector += Vector2(CameraConfig.Zoom.zoomPerSecond, CameraConfig.Zoom.zoomPerSecond)
+		input_vector += Vector2(CameraConfig.Zoom.ZOOM_PER_SECOND, CameraConfig.Zoom.ZOOM_PER_SECOND)
 	if Input.is_action_pressed("cam_zoom_out"):
-		inputVector += Vector2(-CameraConfig.Zoom.zoomPerSecond, -CameraConfig.Zoom.zoomPerSecond)
-	return inputVector
+		input_vector += Vector2(-CameraConfig.Zoom.ZOOM_PER_SECOND, -CameraConfig.Zoom.ZOOM_PER_SECOND)
+	return input_vector
 
-func zoomCamera(inputVector : Vector2, delta):
-	var scaledInput : Vector2 = inputVector * CameraConfig.Zoom.zoomPerSecond * delta
-	zoom = clamp(zoom + scaledInput, Vector2(CameraConfig.Zoom.maxZoomOutScale, CameraConfig.Zoom.maxZoomOutScale), Vector2(CameraConfig.Zoom.maxZoomInScale, CameraConfig.Zoom.maxZoomInScale))
+func zoomCamera(inputVector : Vector2, delta : float):
+	var scaled_input : Vector2 = inputVector * CameraConfig.Zoom.ZOOM_PER_SECOND * delta
+	zoom = clamp(zoom + scaled_input, Vector2(CameraConfig.Zoom.MAX_ZOOM_OUT_SCALE, CameraConfig.Zoom.MAX_ZOOM_OUT_SCALE), Vector2(CameraConfig.Zoom.MAX_ZOOM_IN_SCALE, CameraConfig.Zoom.MAX_ZOOM_IN_SCALE))

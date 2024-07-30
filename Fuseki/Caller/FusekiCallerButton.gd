@@ -35,4 +35,4 @@ func query_fuseky(query):
 #Parse and store resulting Fuseki json
 func _on_fuseki_completion(_result, _response_code, _headers, body):
 	var json = JSON.parse_string(body.get_string_from_utf8())
-	FusekiDataManager.inputDataFromFusekiJSON(json)
+	FusekiDataManager.input_data_from_fuseki_JSON(json)
