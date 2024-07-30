@@ -1,136 +1,82 @@
 extends Camera2D
 
-signal cam_zoom_in
-signal cam_zoom_out
+#Mouvement config
+const maxVelocity : float = 20
+const secondsToReachMaxVelocity : float = 0.2
+const secondsToStopFromMaxVelocity : float = 0.05
 
-# ZOOM
-
-@export var speed_min_zoom := 40
-@export var speed_max_zoom := 6
-
-var min_zoom := 0.02
-var max_zoom := 40
-var start_zoom := min_zoom * 2
-var _zoom_level := start_zoom
-
-var zoom_factor := 0.01
-var zoom_duration := 0.3
-var zoom_key_down_slowdown := 0.1
-
-
-# PAN
-
-@export var pan_speed_max_zoom := 0.00001
-@export var pan_speed_min_zoom := 30
-var pan_velocity_ratio := 0.06
-
-# BOUNDS
-@export var bound_margin := -40
-
-var camera_bounds := Rect2()
-
-# VELOCITY
-
-var cam_velocity := Vector2()
-var cam_slowdown := 0.9
-
-func _ready():
-	connect("cam_zoom_in", self._on_cam_zoom_in)
-	connect("cam_zoom_out", self._on_cam_zoom_out)
-	
-	#self.zoom = Vector2(_zoom_level, _zoom_level)
+#Camera config
+const maxZoomInScale : float = 2
+const maxZoomOutScale : float = 0.3
+const zoomPerSecond : float = 1
 
 func _process(delta):
+	var inputMouvementVector : Vector2 = handle_mouvement_input()
+	moveCamera(inputMouvementVector, delta)
+	var inputZoomVector : Vector2 = handle_zoom_input()
+	zoomCamera(inputZoomVector, delta)
 
-	#motion = Vector2(0,0)
+#Mouvement functions -----------------------------------------------------------
+var currentVelocity : Vector2 = Vector2(0, 0)
+const accelerationPerSecond : float = maxVelocity / secondsToReachMaxVelocity
+const decelerationPerSecond : float = maxVelocity / secondsToStopFromMaxVelocity
 
-	var input = Vector2(0,0)
-
+func handle_mouvement_input() -> Vector2:
+	var inputVector : Vector2 = Vector2(0, 0)
 	if Input.is_action_pressed("cam_move_left"):
-		input += Vector2(-1, 0)
+		inputVector += Vector2(-1, 0)
 	if Input.is_action_pressed("cam_move_right"):
-		input += Vector2(1, 0)
+		inputVector += Vector2(1, 0)
 	if Input.is_action_pressed("cam_move_down"):
-		input += Vector2(0, 1)
+		inputVector += Vector2(0, 1)
 	if Input.is_action_pressed("cam_move_up"):
-		input += Vector2(0, -1)
+		inputVector += Vector2(0, -1)
+	return inputVector.normalized()
 
-	if input.length() > 0:
-		
-		var ratio = inverse_lerp(min_zoom, max_zoom, _zoom_level)
-		#print(ratio)
-		var curr_speed = lerpf(speed_min_zoom, speed_max_zoom, ratio)
-		#print(curr_speed)
+func moveCamera(inputVector : Vector2, delta):
+	var scaledInput : Vector2 = inputVector * accelerationPerSecond * delta
+	if (inputVector != Vector2.ZERO): #acceleration
+		var maxXVelocity = maxVelocity if inputVector.normalized().x == 0 else maxVelocity * abs(inputVector.normalized().x)
+		var maxYVelocity = maxVelocity if inputVector.normalized().y == 0 else maxVelocity * abs(inputVector.normalized().y)
+		currentVelocity.x = clamp(currentVelocity.x + scaledInput.x, -maxXVelocity, maxXVelocity)
+		currentVelocity.y = clamp(currentVelocity.y + scaledInput.y, -maxYVelocity, maxYVelocity)
+	if(inputVector.x == 0 or opposite_signs(inputVector.x, currentVelocity.x)):
+		decelerate_x(delta)
+	if(inputVector.y == 0 or opposite_signs(inputVector.y, currentVelocity.y)):
+		decelerate_y(delta)
+	translate(currentVelocity)
 
-		input = input.normalized()
-		cam_velocity += Vector2(input.x, input.y) * curr_speed * delta
+func decelerate_x(delta):
+	var preVelocity = currentVelocity.x
+	currentVelocity.x -= currentVelocity.normalized().x * decelerationPerSecond * delta
+	if (opposite_signs(preVelocity, currentVelocity.x)):
+		currentVelocity.x =0
 
-	if not cam_velocity.is_zero_approx():
-		move()
-		
-	if Input.is_action_pressed("cam_zoom_in"):
-		self._on_cam_zoom_in(true)
-	if Input.is_action_pressed("cam_zoom_out"):
-		self._on_cam_zoom_out(true)
-			
-func _unhandled_input(event: InputEvent) -> void:
-	
+func decelerate_y(delta):
+	var preVelocity = currentVelocity.y
+	currentVelocity.y -= currentVelocity.normalized().y * decelerationPerSecond * delta
+	if (opposite_signs(preVelocity, currentVelocity.y)):
+		currentVelocity.y =0
+
+func opposite_signs(x:float, y:float) -> bool:
+	return ((x * y) < 0)
+
+func _unhandled_input(event: InputEvent):
 	if event is InputEventMouseMotion and event.button_mask == MOUSE_BUTTON_LEFT:
-		var ratio = inverse_lerp(min_zoom, max_zoom, _zoom_level)
-		var curr_speed = lerpf(pan_speed_min_zoom, pan_speed_max_zoom, ratio)
-		
-		var change = (event as InputEventMouseMotion).relative * curr_speed
-		
-		cam_velocity -= change * pan_velocity_ratio
-		
-	if event.is_action_pressed("cam_zoom_in"):
-		self._on_cam_zoom_in(false)
-	if event.is_action_pressed("cam_zoom_out"):
-		self._on_cam_zoom_out(false)
-		
+		handle_mouse_mouvement(event)
 
+func handle_mouse_mouvement(event : InputEventMouseMotion):
+	translate(-event.relative)
 
-func move() -> void:
-	#cam_velocity = cam_velocity.normalized()
-	self.translate(cam_velocity)
-	cam_velocity *= cam_slowdown
+#Camera functions --------------------------------------------------------------
+func handle_zoom_input() -> Vector2:
+	var inputVector : Vector2 = Vector2(0, 0)
+	if Input.is_action_pressed("cam_zoom_in"):
+		inputVector += Vector2(zoomPerSecond, zoomPerSecond)
+	if Input.is_action_pressed("cam_zoom_out"):
+		inputVector += Vector2(-zoomPerSecond, -zoomPerSecond)
+	return inputVector
 
-	#if self.camera_bounds != Rect2():
-		#self.bound_camera()
-
-func snap_to_middle(rect: Rect2) -> void:
-	self.position = rect.position + rect.size/2
-
-func set_bounds(rect: Rect2) -> void:
-	self.camera_bounds = rect.grow(self.bound_margin)
-
-func bound_camera() -> void:
-	self.global_position.x = clamp(self.global_position.x,
-		self.camera_bounds.position.x, self.camera_bounds.end.x)
-	self.global_position.y = clamp(self.global_position.y,
-		self.camera_bounds.position.y, self.camera_bounds.end.y)
-
-	
-func _set_zoom_level(value: float):
-	_zoom_level = clamp(value, min_zoom, max_zoom)
-
-	var cam_tween := self.create_tween().set_parallel()
-
-	var cursor_camera_position :=  self.position - get_global_mouse_position()
-	var delta_offset := cursor_camera_position * (1 - _zoom_level / self.zoom.x)
-	var towards_pos := self.position + delta_offset
-
-	cam_tween.tween_property(self, "position", towards_pos, zoom_duration)
-
-	cam_tween.tween_property(self, "zoom", Vector2(_zoom_level, _zoom_level), zoom_duration)# \
-		#.set_trans(Tween.TRANS_SINE) \
-		#.set_ease(Tween.EASE_OUT)
-
-
-func _on_cam_zoom_in(key_down: bool):
-	var new_zoom_factor := zoom_factor * zoom_key_down_slowdown if key_down else zoom_factor
-	_set_zoom_level(_zoom_level + new_zoom_factor)
-
-func _on_cam_zoom_out(key_down: bool):
-	var new_zoom_factor := zoom_factor * zoom_key_down_slowdown if key_down else zoom_factor
-	_set_zoom_level(_zoom_level - new_zoom_factor)
+func zoomCamera(inputVector : Vector2, delta):
+	var scaledInput : Vector2 = inputVector * zoomPerSecond * delta
+	zoom = clamp(zoom + scaledInput, Vector2(maxZoomOutScale, maxZoomOutScale), Vector2(maxZoomInScale, maxZoomInScale))
