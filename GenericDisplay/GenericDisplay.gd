@@ -21,6 +21,11 @@ func _on_mouse_entered():
 func _on_mouse_exited():
 	GenericDisplaySignals.generic_display_over.emit("")
 
+#Text --------------------------------------------------------------------------
+func set_text(text : String):
+	var node = get_node("GenericElementName")
+	node.text = text
+
 #Background style --------------------------------------------------------------
 func set_dimmed_style():
 	set_bg_color(StyleConfig.DTElement.DIMMED_COLOR)

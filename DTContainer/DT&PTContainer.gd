@@ -70,7 +70,7 @@ func update_node_with(visual_container, fuseki_node_data : Dictionary):
 	DT_PT.free_all_child(visual_container)
 	for key in fuseki_node_data.keys():
 		var new_node = GenericDisplay.instantiate()
-		new_node.get_node("GenericElementName").text = key
+		new_node.set_text(key)
 		visual_container.add_child(new_node)
 		var displayed_element = NamedNode.new()
 		displayed_element.name = key
