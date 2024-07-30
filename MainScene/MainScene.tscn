@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://cxj8tr6re2b4t"]
+[gd_scene load_steps=7 format=3 uid="uid://cxj8tr6re2b4t"]
 
 [ext_resource type="PackedScene" uid="uid://nqgolpvgp7yg" path="res://DTContainer/DT&PTContainer.tscn" id="1_lklxr"]
 [ext_resource type="Script" path="res://MainScene/MainSceneController.gd" id="1_r7thu"]
 [ext_resource type="Script" path="res://Camera/Camera2D.gd" id="3_5mxu4"]
-[ext_resource type="PackedScene" uid="uid://ca4ircpbul4vs" path="res://ControlPanel/control_panel.tscn" id="4_bpfsb"]
+[ext_resource type="PackedScene" uid="uid://ca4ircpbul4vs" path="res://ControlPanel/ControlPanel.tscn" id="4_bpfsb"]
 [ext_resource type="PackedScene" uid="uid://bx42q4hl46td1" path="res://Fuseki/Data/FusekiData.tscn" id="5_4e51a"]
+[ext_resource type="PackedScene" uid="uid://cwd5j8qr66eh3" path="res://Legends/Legends.tscn" id="5_8cnmr"]
 
 [node name="MainScene" type="Node"]
 script = ExtResource("1_r7thu")
@@ -35,6 +36,8 @@ color = Color(0.933333, 0.913725, 0.933333, 1)
 [node name="ControlLayer" type="CanvasLayer" parent="."]
 
 [node name="ControlPanel" parent="ControlLayer" instance=ExtResource("4_bpfsb")]
+
+[node name="Legends" parent="ControlLayer" instance=ExtResource("5_8cnmr")]
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 

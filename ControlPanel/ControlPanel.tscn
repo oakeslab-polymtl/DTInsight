@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://ca4ircpbul4vs"]
 
 [ext_resource type="PackedScene" uid="uid://bpja34bbtxgig" path="res://Fuseki/Dump/FusekiDumperController.tscn" id="1_38nkc"]
-[ext_resource type="PackedScene" uid="uid://cowug1mbtod0e" path="res://Fuseki/Caller/fuseki_caller_button.tscn" id="1_nw2ve"]
+[ext_resource type="PackedScene" uid="uid://cowug1mbtod0e" path="res://Fuseki/Caller/FusekiCallerBtton.tscn" id="2_mxvta"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ffs3u"]
 border_width_left = 4
@@ -28,5 +28,5 @@ size_flags_vertical = 0
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 
-[node name="FusekiCallerButton" parent="ControlContainer" instance=ExtResource("1_nw2ve")]
+[node name="FusekiCallerButton" parent="ControlContainer" instance=ExtResource("2_mxvta")]
 layout_mode = 2

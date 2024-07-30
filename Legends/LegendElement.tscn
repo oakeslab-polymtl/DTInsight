@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://bsso17a4d26gy"]
+
+[ext_resource type="Script" path="res://Legends/LegendElement.gd" id="1_w8tvv"]
+
+[node name="LegendElement" type="HBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+script = ExtResource("1_w8tvv")
+
+[node name="Color" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)

@@ -19,3 +19,9 @@ class Link:
 	
 	const DIMMED_COLOR : Color = Color.GRAY
 	const HIGHLIGHT_COLOR : Color = Color.DIM_GRAY
+
+#Legends style
+class Legends:
+	const RETRACT_BUTTON_COLOR : Color = Color.DARK_ORANGE
+	const PANEL_COLOR : Color = Color.GRAY
+	const CATEGORY_ANNONCE_COLOR : Color = Color.DIM_GRAY

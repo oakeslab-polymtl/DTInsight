@@ -23,6 +23,7 @@ FusekiConfig="*res://Config/FusekiConfig.gd"
 FusekiSignals="*res://Fuseki/Data/FusekiSignals.gd"
 GenericDisplaySignals="*res://GenericDisplay/GenericDisplaySignals.gd"
 CameraConfig="*res://Config/CameraConfig.gd"
+LegendsConfig="*res://Config/LegendsConfig.gd"
 
 [input]
 
