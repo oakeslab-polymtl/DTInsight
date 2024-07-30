@@ -49,5 +49,8 @@ func hide_legends():
 	var translate_distance = legends_panel.size.y + 20
 	if (legends_hidden):
 		translate_distance = -translate_distance
+		retract_button.text = StyleConfig.Legends.GO_AWAY_TEXT
+	else:
+		retract_button.text = StyleConfig.Legends.COME_IN_TEXT
 	legends_hidden = !legends_hidden
 	position += Vector2(0, translate_distance)
