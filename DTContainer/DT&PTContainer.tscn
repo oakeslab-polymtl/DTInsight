@@ -59,6 +59,7 @@ alignment = 1
 [node name="PanelContainer" type="PanelContainer" parent="PTContainer"]
 z_index = -1
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_sp6md")
 
 [node name="InsightsContainer" type="HBoxContainer" parent="PTContainer/PanelContainer"]
@@ -81,6 +82,7 @@ alignment = 1
 [node name="ServicesPanel" type="PanelContainer" parent="DTContainer"]
 z_index = -1
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_xj583")
 
 [node name="ServicesContainer" type="HBoxContainer" parent="DTContainer/ServicesPanel"]
@@ -99,6 +101,7 @@ text = "Services"
 [node name="EnablersPanel" type="PanelContainer" parent="DTContainer"]
 z_index = -1
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_ks3ld")
 
 [node name="EnablersContainer" type="HBoxContainer" parent="DTContainer/EnablersPanel"]
@@ -117,6 +120,7 @@ text = "Enablers"
 [node name="ModelsPanel" type="PanelContainer" parent="DTContainer"]
 z_index = -1
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_ox2pm")
 
 [node name="ModelsContainer" type="HBoxContainer" parent="DTContainer/ModelsPanel"]
