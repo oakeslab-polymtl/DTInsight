@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://nqgolpvgp7yg"]
+[gd_scene load_steps=10 format=3 uid="uid://nqgolpvgp7yg"]
 
 [ext_resource type="Script" path="res://DTContainer/DT&PTContainer.gd" id="1_juoha"]
 
@@ -7,8 +7,30 @@ content_margin_left = 20.0
 content_margin_top = 20.0
 content_margin_right = 20.0
 content_margin_bottom = 20.0
-bg_color = Color(1, 1, 0.6, 1)
+bg_color = Color(0.969137, 0.969137, 0.969137, 1)
 corner_radius_top_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ts1y0"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(0.577008, 0.577008, 0.577008, 1)
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5tggx"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(0.737193, 0.737193, 0.737193, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qb31t"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(1, 1, 0.6, 1)
 corner_radius_top_right = 20
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rl1kt"]
@@ -16,9 +38,8 @@ content_margin_left = 20.0
 content_margin_top = 20.0
 content_margin_right = 20.0
 content_margin_bottom = 20.0
-bg_color = Color(1, 1, 0.6, 1)
+bg_color = Color(0.933333, 0.733333, 1, 1)
 corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xj583"]
 content_margin_left = 20.0
@@ -57,41 +78,100 @@ corner_radius_bottom_left = 20
 offset_top = 732.0
 offset_right = 240.0
 offset_bottom = 732.0
+theme_override_constants/separation = 50
 script = ExtResource("1_juoha")
 
-[node name="PTContainer" type="VBoxContainer" parent="."]
+[node name="PTContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="ProvidedThingsPanel" type="PanelContainer" parent="PTContainer"]
+[node name="Operator&EnvContainer" type="VBoxContainer" parent="PTContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="OperatorPanel" type="PanelContainer" parent="PTContainer/Operator&EnvContainer"]
 z_index = -1
 layout_mode = 2
+size_flags_vertical = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_sp6md")
 
-[node name="ProvidedThingsContainer" type="HBoxContainer" parent="PTContainer/ProvidedThingsPanel"]
+[node name="OperatorContainer" type="HBoxContainer" parent="PTContainer/Operator&EnvContainer/OperatorPanel"]
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ProvidedThingsLabel" type="Label" parent="PTContainer/ProvidedThingsPanel/ProvidedThingsContainer"]
+[node name="OperatorLabel" type="Label" parent="PTContainer/Operator&EnvContainer/OperatorPanel/OperatorContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Provided things"
+text = "Operator"
 
-[node name="DataTransmittedPanel" type="PanelContainer" parent="PTContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="PTContainer/Operator&EnvContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="envContainer" type="PanelContainer" parent="PTContainer/Operator&EnvContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_ts1y0")
+
+[node name="EnvLabel" type="Label" parent="PTContainer/Operator&EnvContainer/HBoxContainer/envContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "System environ."
+
+[node name="SystemContainer" type="PanelContainer" parent="PTContainer/Operator&EnvContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_5tggx")
+
+[node name="Label" type="Label" parent="PTContainer/Operator&EnvContainer/HBoxContainer/SystemContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "System
+"
+
+[node name="DataTravelContainer" type="VBoxContainer" parent="PTContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="MachinePanel" type="PanelContainer" parent="PTContainer/DataTravelContainer"]
 z_index = -1
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_rl1kt")
+size_flags_vertical = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_qb31t")
 
-[node name="DataTransmittedContainer" type="HBoxContainer" parent="PTContainer/DataTransmittedPanel"]
+[node name="MachineContainer" type="HBoxContainer" parent="PTContainer/DataTravelContainer/MachinePanel"]
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 
-[node name="DataTransmittedLabel" type="Label" parent="PTContainer/DataTransmittedPanel/DataTransmittedContainer"]
+[node name="MachineLabel" type="Label" parent="PTContainer/DataTravelContainer/MachinePanel/MachineContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Machine"
+
+[node name="DataTransmittedPanel" type="PanelContainer" parent="PTContainer/DataTravelContainer"]
+z_index = -1
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_rl1kt")
+
+[node name="DataTransmittedContainer" type="HBoxContainer" parent="PTContainer/DataTravelContainer/DataTransmittedPanel"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+
+[node name="DataTransmittedLabel" type="Label" parent="PTContainer/DataTravelContainer/DataTransmittedPanel/DataTransmittedContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0

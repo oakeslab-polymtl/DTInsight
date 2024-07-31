@@ -6,8 +6,9 @@ class_name DT_PT
 @onready var service_container = $DTContainer/ServicesPanel/ServicesContainer
 @onready var enabler_container = $DTContainer/EnablersPanel/EnablersContainer
 @onready var model_container = $DTContainer/ModelsPanel/ModelsContainer
-@onready var provided_things_container = $PTContainer/ProvidedThingsPanel/ProvidedThingsContainer
-@onready var data_transmitted_container = $PTContainer/DataTransmittedPanel/DataTransmittedContainer
+@onready var operator_container = $"PTContainer/Operator&EnvContainer/OperatorPanel/OperatorContainer"
+@onready var machine_container = $PTContainer/DataTravelContainer/MachinePanel/MachineContainer
+@onready var data_transmitted_container = $PTContainer/DataTravelContainer/DataTransmittedPanel/DataTransmittedContainer
 
 #Container side enum
 enum ContainerSide {
@@ -37,8 +38,12 @@ var already_drawn_y : Array[int] = []
 #name of highlighted element
 var highlighted_element = null
 
-#border attribute
+#attributes
 const border_attribute : String = "hasTimeScale"
+const type_attribute : String = "type"
+
+#Operator/machine
+const opperator_type : String = "Insight"
 
 #initialization
 func _ready():
@@ -64,13 +69,23 @@ func on_fuseki_data_updated():
 	update_node_with(service_container, fuseki_data.service)
 	update_node_with(enabler_container, fuseki_data.enabler)
 	update_node_with(model_container, fuseki_data.model)
-	update_node_with(provided_things_container, fuseki_data.provided_thing)
+	update_provided_things(operator_container, machine_container, fuseki_data.provided_thing)
 	update_node_with(data_transmitted_container, fuseki_data.data_transmitted)
-	for entry in fuseki_data.provided_thing:
-		print(fuseki_data.provided_thing[entry])
+
+func update_provided_things(operator_container : HBoxContainer, machine_container : HBoxContainer, provided_data : Dictionary):
+	var operator_data : Dictionary = {}
+	var machine_data : Dictionary = {}
+	for entry_name in provided_data.keys():
+		if (type_attribute in provided_data[entry_name].keys()):
+			if (opperator_type in provided_data[entry_name][type_attribute]):
+				operator_data[entry_name] = provided_data[entry_name]
+			else:
+				machine_data[entry_name] = provided_data[entry_name]
+	update_node_with(operator_container, operator_data)
+	update_node_with(machine_container, machine_data)
 
 #Update a node with Fuseki element data by creating a generic display node
-func update_node_with(visual_container, fuseki_node_data : Dictionary):
+func update_node_with(visual_container : HBoxContainer, fuseki_node_data : Dictionary):
 	DT_PT.free_all_child(visual_container)
 	for key in fuseki_node_data.keys():
 		var new_node = GenericDisplay.instantiate()
