@@ -117,6 +117,7 @@ theme_override_constants/separation = 0
 [node name="envContainer" type="PanelContainer" parent="PTContainer/Operator&EnvContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_ts1y0")
 
 [node name="EnvLabel" type="Label" parent="PTContainer/Operator&EnvContainer/HBoxContainer/envContainer"]
@@ -129,6 +130,7 @@ text = "System environ."
 [node name="SystemContainer" type="PanelContainer" parent="PTContainer/Operator&EnvContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_5tggx")
 
 [node name="Label" type="Label" parent="PTContainer/Operator&EnvContainer/HBoxContainer/SystemContainer"]
@@ -165,6 +167,7 @@ text = "Machine"
 z_index = -1
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_rl1kt")
 
 [node name="DataOutContainer" type="VBoxContainer" parent="PTContainer/DataTravelContainer/DataOutPanel"]
