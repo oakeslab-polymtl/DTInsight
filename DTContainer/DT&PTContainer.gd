@@ -8,7 +8,8 @@ class_name DT_PT
 @onready var model_container = $DTContainer/ModelsPanel/ModelsContainer
 @onready var operator_container = $"PTContainer/Operator&EnvContainer/OperatorPanel/OperatorContainer"
 @onready var machine_container = $PTContainer/DataTravelContainer/MachinePanel/MachineContainer
-@onready var data_transmitted_container = $PTContainer/DataTravelContainer/DataTransmittedPanel/DataTransmittedContainer
+@onready var data_transmitted_container = $PTContainer/DataTravelContainer/DataOutPanel/DataOutContainer/DataTransmittedContainer
+@onready var sensor_container = $PTContainer/DataTravelContainer/DataOutPanel/DataOutContainer/SensorsContainer
 
 #Container side enum
 enum ContainerSide {
@@ -71,6 +72,7 @@ func on_fuseki_data_updated():
 	update_node_with(model_container, fuseki_data.model)
 	update_provided_things(operator_container, machine_container, fuseki_data.provided_thing)
 	update_node_with(data_transmitted_container, fuseki_data.data_transmitted)
+	update_node_with(sensor_container, fuseki_data.sensing_component)
 
 func update_provided_things(operator_container : HBoxContainer, machine_container : HBoxContainer, provided_data : Dictionary):
 	var operator_data : Dictionary = {}

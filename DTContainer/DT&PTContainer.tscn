@@ -161,22 +161,37 @@ size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Machine"
 
-[node name="DataTransmittedPanel" type="PanelContainer" parent="PTContainer/DataTravelContainer"]
+[node name="DataOutPanel" type="PanelContainer" parent="PTContainer/DataTravelContainer"]
 z_index = -1
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_rl1kt")
 
-[node name="DataTransmittedContainer" type="HBoxContainer" parent="PTContainer/DataTravelContainer/DataTransmittedPanel"]
+[node name="DataOutContainer" type="VBoxContainer" parent="PTContainer/DataTravelContainer/DataOutPanel"]
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 
-[node name="DataTransmittedLabel" type="Label" parent="PTContainer/DataTravelContainer/DataTransmittedPanel/DataTransmittedContainer"]
+[node name="SensorsContainer" type="HBoxContainer" parent="PTContainer/DataTravelContainer/DataOutPanel/DataOutContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="PTContainer/DataTravelContainer/DataOutPanel/DataOutContainer/SensorsContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Data transmitted"
+text = "Sensors"
+
+[node name="DataTransmittedContainer" type="HBoxContainer" parent="PTContainer/DataTravelContainer/DataOutPanel/DataOutContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="DataTransmittedLabel" type="Label" parent="PTContainer/DataTravelContainer/DataOutPanel/DataOutContainer/DataTransmittedContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Dara transmitted"
 
 [node name="DTContainer" type="VBoxContainer" parent="."]
 layout_mode = 2

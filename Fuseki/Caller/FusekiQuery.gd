@@ -73,3 +73,12 @@ WHERE {
 	?dataT a DTDFvocab:DataTransmitted .
 	OPTIONAL {?dataT ?attribute ?value}
 }"
+
+const SENSORS_QUERY = "PREFIX DTDFvocab:   <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
+PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT *
+WHERE {
+	?sensor a DTDFvocab:SensingComponent .
+	OPTIONAL {?sensor ?attribute ?value}
+}"
