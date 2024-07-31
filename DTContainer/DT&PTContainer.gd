@@ -179,9 +179,9 @@ func get_drawable_y_position_for_container_side(side : ContainerSide, key : Obje
 		ContainerSide.ANY :
 			return get_drawable_y_height(key, links)
 		ContainerSide.TOP :
-			return get_viable_position(get_top_side(key).y - 20 * StyleConfig.Link.WIDTH, already_drawn_y, 1)
+			return get_viable_position(get_top_side(key).y - StyleConfig.Link.MEAN_OUTER_LINK_DISTANCE, already_drawn_y, 1)
 		ContainerSide.BOTTOM :
-			return get_viable_position(get_bottom_side(key).y + 20 * StyleConfig.Link.WIDTH, already_drawn_y, 1)
+			return get_viable_position(get_bottom_side(key).y + StyleConfig.Link.MEAN_OUTER_LINK_DISTANCE, already_drawn_y, 1)
 	return 0
 
 func draw_element_to_lane(node, drawable_y_position : int, color : Color, destination : bool = false) -> int:
