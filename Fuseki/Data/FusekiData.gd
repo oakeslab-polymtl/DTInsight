@@ -22,20 +22,6 @@ var service_to_provided_thing : Array[GenericLinkedNodes]
 var enabler_to_service : Array[GenericLinkedNodes]
 var model_to_enabler : Array[GenericLinkedNodes]
 
-#Data filter
-const unwanted_attributes : Array[String] = [
-	"type",
-	"sameAs",
-	"provides",
-	"providedBy",
-	"enables",
-	"enabledBy",
-	"enables",
-	"hasInput",
-	"inputTo",
-	"fromData"
-]
-
 #Teke a json from a Fuseki query and store the resulting informations in 
 #variables reachable from the Godot application
 func input_data_from_fuseki_JSON(json):
@@ -107,12 +93,13 @@ static func parse_element_result(result_agregator) -> Dictionary:
 		if (not formated_result.has(entry_name)):
 			formated_result[entry_name] = {}
 		var attribute_name = result[1].json_value
-		if(attribute_name in unwanted_attributes):
-			continue
 		var attribute_value = result[2].json_value
-		var entry_value : Dictionary = {}
-		entry_value[attribute_name] = attribute_value
-		formated_result[entry_name].merge(entry_value)
+		if attribute_name in formated_result[entry_name].keys() :
+			formated_result[entry_name][attribute_name].append(attribute_value)
+		else:
+			var entry_value : Dictionary = {}
+			entry_value[attribute_name] = [attribute_value]
+			formated_result[entry_name].merge(entry_value)
 	return formated_result
 
 func dump(dump_path : String, to_console : bool = false):

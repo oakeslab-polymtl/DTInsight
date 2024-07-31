@@ -66,6 +66,8 @@ func on_fuseki_data_updated():
 	update_node_with(model_container, fuseki_data.model)
 	update_node_with(provided_things_container, fuseki_data.provided_thing)
 	update_node_with(data_transmitted_container, fuseki_data.data_transmitted)
+	for entry in fuseki_data.provided_thing:
+		print(fuseki_data.provided_thing[entry])
 
 #Update a node with Fuseki element data by creating a generic display node
 func update_node_with(visual_container, fuseki_node_data : Dictionary):
@@ -84,11 +86,11 @@ func set_starting_node_style(namedNode : NamedNode, attributes : Dictionary):
 	namedNode.node.set_dimmed_style()
 	if (border_attribute in attributes.keys()):
 		match attributes[border_attribute]:
-			"slower_trt":
+			["slower_trt"]:
 				namedNode.node.set_slower_style()
-			"rt":
+			["rt"]:
 				namedNode.node.set_rt_style()
-			"faster_trt":
+			["faster_trt"]:
 				namedNode.node.set_faster_style()
 
 func _process(_delta):
