@@ -13,6 +13,7 @@ const models_indicator = "Models :"
 const provided_thing_indicator = "ProvidedThings :"
 const services_to_provided_thing_indicator = "Services to provided thing :"
 const data_transmitted_indicator = "Data transmitted :"
+const sensors_indicator = "Sensors :"
 const EOF_indicator = ""
 
 #FusekiDataManager
@@ -44,6 +45,8 @@ static func dump(data : FusekiData, dump_path : String, to_console = false):
 	dump_string += dump_array_link(data.service_to_provided_thing)
 	dump_string += data_transmitted_indicator + "\n"
 	dump_string += dump_dictionary(data.data_transmitted)
+	dump_string += sensors_indicator + "\n"
+	dump_string += dump_dictionary(data.sensing_component)
 	
 	if(to_console):
 		print(dump_string)
@@ -89,7 +92,8 @@ static func load_from_dump(fuseki_data : FusekiData, file_path : String):
 	fuseki_data.model = load_dictionary(content.slice(content.find(models_indicator), content.find(provided_thing_indicator)))
 	fuseki_data.provided_thing = load_dictionary(content.slice(content.find(provided_thing_indicator), content.find(services_to_provided_thing_indicator)))
 	fuseki_data.service_to_provided_thing = load_array_link(content.slice(content.find(services_to_provided_thing_indicator), content.find(data_transmitted_indicator)))
-	fuseki_data.data_transmitted = load_dictionary(content.slice(content.find(data_transmitted_indicator), content.find(EOF_indicator)))
+	fuseki_data.data_transmitted = load_dictionary(content.slice(content.find(data_transmitted_indicator), content.find(sensors_indicator)))
+	fuseki_data.sensing_component = load_dictionary(content.slice(content.find(sensors_indicator), content.find(EOF_indicator)))
 	FusekiSignals.fuseki_data_updated.emit()
 
 static func load_dictionary(lines : Array[String]) -> Dictionary:
