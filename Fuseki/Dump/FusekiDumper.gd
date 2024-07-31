@@ -56,8 +56,19 @@ static func dump_dictionary(dict : Dictionary) -> String:
 	for key in dict.keys():
 		dict_string += "	" + key + "\n"
 		for attribute_key in dict[key].keys():
-			dict_string += "		" + attribute_key + " : " + dict[key][attribute_key] + "\n"
+			dict_string += "		" + attribute_key + " : " + array_to_str(dict[key][attribute_key]) + "\n"
 	return dict_string
+
+static func array_to_str(array : Array) -> String:
+	var result_string : String = ""
+	for element in array:
+		if(not result_string.is_empty()):
+			result_string += "/"
+		result_string += element
+	return result_string
+
+static func str_to_array(str : String) -> Array:
+	return str.split("/")
 
 static func dump_array_link(list : Array[FusekiData.GenericLinkedNodes]) -> String:
 	var array_string = ""
@@ -91,7 +102,7 @@ static func load_dictionary(lines : Array[String]) -> Dictionary:
 			var split_attribure = clean_attribute.split(" : ")
 			var attribute_name = split_attribure[0]
 			var attribute_value = split_attribure[1]
-			elements[last_appended_element][attribute_name] = attribute_value
+			elements[last_appended_element][attribute_name] = str_to_array(attribute_value)
 		else : #is a new element
 			var clean_element = clean_line(line)
 			last_appended_element = clean_element
