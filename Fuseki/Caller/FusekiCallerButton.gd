@@ -23,6 +23,10 @@ func _on_pressed():
 	await(SparqlRequest.request_completed)
 	query_fuseky(FusekiQueryManager.SENSORS_QUERY)
 	await(SparqlRequest.request_completed)
+	query_fuseky(FusekiQueryManager.ENV_QUERY)
+	await(SparqlRequest.request_completed)
+	query_fuseky(FusekiQueryManager.SYS_COMPONENT_QUERY)
+	await(SparqlRequest.request_completed)
 	FusekiSignals.fuseki_data_updated.emit()
 	disabled = false
 

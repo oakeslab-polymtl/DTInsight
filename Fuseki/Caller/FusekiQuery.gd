@@ -55,3 +55,27 @@ WHERE {
 	?sensor a DTDFvocab:SensingComponent .
 	OPTIONAL {?sensor ?attribute ?value}
 }"
+
+const ENV_QUERY = "PREFIX DTDFvocab:   <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
+PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX base:        <https://bentleyjoakes.github.io/DTDF/vocab/base#>
+
+SELECT ?env ?attribute ?value
+WHERE {
+	?sus a DTDFvocab:SystemUnderStudy .
+	?sus DTDFvocab:hasEnvironment ?envS .
+	?env base:isContainedIn ?envS .
+	OPTIONAL {?env ?attribute ?value}
+}"
+
+const SYS_COMPONENT_QUERY ="PREFIX DTDFvocab:   <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
+PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX base:        <https://bentleyjoakes.github.io/DTDF/vocab/base#>
+
+SELECT ?sysComponent ?attribute ?value
+WHERE {
+	?sus a DTDFvocab:SystemUnderStudy .
+	?sus DTDFvocab:hasSystem ?sys .
+	?sysComponent base:isContainedIn ?sys .
+	OPTIONAL {?sysComponent ?attribute ?value}
+}"

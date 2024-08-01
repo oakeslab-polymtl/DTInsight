@@ -19,6 +19,9 @@ var model : Dictionary
 var provided_thing : Dictionary
 var data_transmitted : Dictionary
 var sensing_component : Dictionary
+var env : Dictionary
+var sys_component : Dictionary
+
 var service_to_provided_thing : Array[GenericLinkedNodes]
 var enabler_to_service : Array[GenericLinkedNodes]
 var model_to_enabler : Array[GenericLinkedNodes]
@@ -50,6 +53,10 @@ func input_data_from_fuseki_JSON(json):
 			provided_thing = parse_fuseki_json(json)
 		FusekiConfig.JsonHead.SENSOR:
 			sensing_component = parse_fuseki_json(json)
+		FusekiConfig.JsonHead.ENV:
+			env = parse_fuseki_json(json)
+		FusekiConfig.JsonHead.SYSTEM_COMPONENT:
+			sys_component = parse_fuseki_json(json)
 
 #Parse the json from Fuseki into internal data structure
 #Return an Array of GenericLinkedNodes or a Dictionary depending on the data type

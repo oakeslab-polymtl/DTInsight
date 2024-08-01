@@ -14,6 +14,8 @@ class JsonHead:
 	const DATA_TRANSMITTED = "dataT"
 	const PROVIDED = "provided"
 	const SENSOR = "sensor"
+	const ENV = "env"
+	const SYSTEM_COMPONENT = "sysComponent"
 
 class RelationAttribute:
 	const MODEL_TO_ENABLER = "inputTo"
