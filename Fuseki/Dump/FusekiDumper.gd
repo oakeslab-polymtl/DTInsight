@@ -5,16 +5,18 @@ class_name FusekiDataDumper
 @onready var file_path_input = $DumpPathEdit
 
 #Dump file indicators
-const services_indicator = "Services :"
-const enablers_to_services_indicator = "Enablers to services :"
-const enablers_indicator = "Enablers :"
-const models_to_enablers_indicator = "Models to enablers :"
-const models_indicator = "Models :"
-const provided_thing_indicator = "ProvidedThings :"
-const services_to_provided_thing_indicator = "Services to provided thing :"
-const data_transmitted_indicator = "Data transmitted :"
-const sensors_indicator = "Sensors :"
-const EOF_indicator = ""
+const SERVICES_INDICATOR = "Services :"
+const ENABLERS_TO_SERVICES_INDICATOR = "Enablers to services :"
+const ENABLERS_INDICATOR = "Enablers :"
+const MODELS_TO_ENABLERS_INDICATOR = "Models to enablers :"
+const MODELS_INDICATOR = "Models :"
+const PROVIDED_THING_INDICATOR = "ProvidedThings :"
+const SERVICES_TO_PROVIDED_THING_INDICATOR = "Services to provided thing :"
+const DATA_TRANSMITTED_INDICATOR = "Data transmitted :"
+const SENSORS_INDICATOR = "Sensors :"
+const SYS_INDICATOR = "System :"
+const ENV_INDICATOR = "System environnement :"
+const EOF_INDICATOR = ""
 
 #FusekiDataManager
 var FusekiDataManager : FusekiData
@@ -29,25 +31,22 @@ func _on_dump_button_pressed():
 
 static func dump(data : FusekiData, dump_path : String, to_console = false):
 	var dump_string = ""
-	dump_string += services_indicator + "\n"
+	dump_string += SERVICES_INDICATOR + "\n"
 	dump_string += dump_dictionary(data.service)
-	dump_string += enablers_to_services_indicator + "\n"
-	dump_string += dump_array_link(data.enabler_to_service)
-	dump_string += enablers_indicator + "\n"
+	dump_string += ENABLERS_INDICATOR + "\n"
 	dump_string += dump_dictionary(data.enabler)
-	dump_string += models_to_enablers_indicator + "\n"
-	dump_string += dump_array_link(data.model_to_enabler)
-	dump_string += models_indicator + "\n"
+	dump_string += MODELS_INDICATOR + "\n"
 	dump_string += dump_dictionary(data.model)
-	dump_string += provided_thing_indicator + "\n"
+	dump_string += PROVIDED_THING_INDICATOR + "\n"
 	dump_string += dump_dictionary(data.provided_thing)
-	dump_string += services_to_provided_thing_indicator + "\n"
-	dump_string += dump_array_link(data.service_to_provided_thing)
-	dump_string += data_transmitted_indicator + "\n"
+	dump_string += DATA_TRANSMITTED_INDICATOR + "\n"
 	dump_string += dump_dictionary(data.data_transmitted)
-	dump_string += sensors_indicator + "\n"
+	dump_string += SENSORS_INDICATOR + "\n"
 	dump_string += dump_dictionary(data.sensing_component)
-	
+	dump_string += SYS_INDICATOR + "\n"
+	dump_string += dump_dictionary(data.sys_component)
+	dump_string += ENV_INDICATOR + "\n"
+	dump_string += dump_dictionary(data.env)
 	if(to_console):
 		print(dump_string)
 	else:
@@ -73,28 +72,24 @@ static func array_to_str(array : Array) -> String:
 static func str_to_array(str : String) -> Array:
 	return str.split("/")
 
-static func dump_array_link(list : Array[FusekiData.GenericLinkedNodes]) -> String:
-	var array_string = ""
-	for link in list:
-		array_string += "	" + link.first_node_name + " -> " + link.second_node_name + "\n"
-	return array_string
-
 static func load_from_dump(fuseki_data : FusekiData, file_path : String):
 	var file = FileAccess.open(file_path, FileAccess.READ)
 	if (file == null):
 		return
 	fuseki_data.empty()
-	var content = file.get_as_text().split("\n")
-	fuseki_data.service = load_dictionary(content.slice(content.find(services_indicator), content.find(enablers_to_services_indicator)))
-	fuseki_data.enabler_to_service = load_array_link(content.slice(content.find(enablers_to_services_indicator), content.find(enablers_indicator)))
-	fuseki_data.enabler = load_dictionary(content.slice(content.find(enablers_indicator), content.find(models_to_enablers_indicator)))
-	fuseki_data.model_to_enabler = load_array_link(content.slice(content.find(models_to_enablers_indicator), content.find(models_indicator)))
-	fuseki_data.model = load_dictionary(content.slice(content.find(models_indicator), content.find(provided_thing_indicator)))
-	fuseki_data.provided_thing = load_dictionary(content.slice(content.find(provided_thing_indicator), content.find(services_to_provided_thing_indicator)))
-	fuseki_data.service_to_provided_thing = load_array_link(content.slice(content.find(services_to_provided_thing_indicator), content.find(data_transmitted_indicator)))
-	fuseki_data.data_transmitted = load_dictionary(content.slice(content.find(data_transmitted_indicator), content.find(sensors_indicator)))
-	fuseki_data.sensing_component = load_dictionary(content.slice(content.find(sensors_indicator), content.find(EOF_indicator)))
+	var content : PackedStringArray = file.get_as_text().split("\n")
+	fuseki_data.service = load_between(content, SERVICES_INDICATOR, ENABLERS_INDICATOR)
+	fuseki_data.enabler = load_between(content, ENABLERS_INDICATOR, MODELS_INDICATOR)
+	fuseki_data.model = load_between(content, MODELS_INDICATOR, PROVIDED_THING_INDICATOR)
+	fuseki_data.provided_thing = load_between(content, PROVIDED_THING_INDICATOR, DATA_TRANSMITTED_INDICATOR)
+	fuseki_data.data_transmitted = load_between(content, DATA_TRANSMITTED_INDICATOR, SENSORS_INDICATOR)
+	fuseki_data.sensing_component = load_between(content, SENSORS_INDICATOR, SYS_INDICATOR)
+	fuseki_data.sys_component = load_between(content, SYS_INDICATOR, ENV_INDICATOR)
+	fuseki_data.env = load_between(content, ENV_INDICATOR, EOF_INDICATOR)
 	FusekiSignals.fuseki_data_updated.emit()
+
+static func load_between(content : PackedStringArray, start_indicator : String, end_indicator : String) -> Dictionary:
+	return load_dictionary(content.slice(content.find(start_indicator), content.find(end_indicator)))
 
 static func load_dictionary(lines : Array[String]) -> Dictionary:
 	lines.pop_front() #remove indicaor
@@ -112,20 +107,6 @@ static func load_dictionary(lines : Array[String]) -> Dictionary:
 			last_appended_element = clean_element
 			elements[clean_element] = {}
 	return elements
-
-static func load_array_link(lines : Array[String]) -> Array[FusekiData.GenericLinkedNodes]:
-	lines.pop_front() #remove indicator
-	var links : Array[FusekiData.GenericLinkedNodes] = []
-	for line in lines:
-		var clean_line = clean_line(line)
-		var split_line = clean_line.split(" -> ")
-		var first_element = split_line[0]
-		var second_element = split_line[1]
-		var link = FusekiData.GenericLinkedNodes.new()
-		link.first_node_name = first_element
-		link.second_node_name = second_element
-		links.append(link)
-	return links
 
 static func clean_line(str : String) -> String :
 	return str.replace("\t","")

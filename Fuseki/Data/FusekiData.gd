@@ -143,6 +143,12 @@ func empty():
 	enabler = {}
 	model = {}
 	provided_thing = {}
+	data_transmitted = {}
+	sensing_component = {}
+	env = {}
+	sys_component = {}
+	
 	service_to_provided_thing = []
 	enabler_to_service = []
 	model_to_enabler = []
+	sensor_to_data_transmitted = []
