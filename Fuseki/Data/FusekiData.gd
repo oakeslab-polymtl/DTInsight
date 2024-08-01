@@ -22,6 +22,7 @@ var sensing_component : Dictionary
 var service_to_provided_thing : Array[GenericLinkedNodes]
 var enabler_to_service : Array[GenericLinkedNodes]
 var model_to_enabler : Array[GenericLinkedNodes]
+var sensor_to_data_transmitted : Array[GenericLinkedNodes]
 
 func _ready():
 	FusekiSignals.fuseki_data_updated.connect(_on_data_updated)
@@ -113,16 +114,18 @@ func build_relations():
 	model_to_enabler = build_relations_from(model, FusekiConfig.RelationAttribute.MODEL_TO_ENABLER)
 	enabler_to_service = build_relations_from(enabler, FusekiConfig.RelationAttribute.ENABLER_TO_SERVICE)
 	service_to_provided_thing = build_relations_from(service, FusekiConfig.RelationAttribute.SERVICES_TO_PROVIDED)
+	sensor_to_data_transmitted = build_relations_from(data_transmitted, FusekiConfig.RelationAttribute.SENSOR_TO_DATA_TRANSMITTED, true)
 
 func build_relations_from(element_data : Dictionary, link_attribute : String, inversed : bool = false) -> Array[GenericLinkedNodes]:
 	var resulting_relations : Array[GenericLinkedNodes] = []
 	for element_name in element_data.keys():
-		var relation_list : Array = element_data[element_name][link_attribute]
-		for linked_name in relation_list:
-			var new_relation : GenericLinkedNodes = GenericLinkedNodes.new()
-			new_relation.source = element_name if (not inversed) else linked_name
-			new_relation.destination = linked_name if (not inversed) else element_name
-			resulting_relations.append(new_relation)
+		if (link_attribute in element_data[element_name]):
+			var relation_list : Array = element_data[element_name][link_attribute]
+			for linked_name in relation_list:
+				var new_relation : GenericLinkedNodes = GenericLinkedNodes.new()
+				new_relation.source = element_name if (not inversed) else linked_name
+				new_relation.destination = linked_name if (not inversed) else element_name
+				resulting_relations.append(new_relation)
 	return resulting_relations
 
 func dump(dump_path : String, to_console : bool = false):

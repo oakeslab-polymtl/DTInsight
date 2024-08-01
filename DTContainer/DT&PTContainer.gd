@@ -130,7 +130,7 @@ static func build_displayed_string(attributes : Dictionary):
 
 func get_all_connected_to(element_name : String) -> Array[String]:
 	var all_connected : Array[String]= [element_name]
-	for link in fuseki_data.enabler_to_service + fuseki_data.model_to_enabler + fuseki_data.service_to_provided_thing:
+	for link in fuseki_data.enabler_to_service + fuseki_data.model_to_enabler + fuseki_data.service_to_provided_thing + fuseki_data.sensor_to_data_transmitted:
 		if link.source == element_name:
 			all_connected.append(link.destination)
 		if link.destination == element_name:
@@ -143,6 +143,7 @@ func _draw():
 		update_link_with(fuseki_data.enabler_to_service)
 		update_link_with(fuseki_data.model_to_enabler)
 		update_link_with(fuseki_data.service_to_provided_thing, ContainerSide.TOP)
+		update_link_with(fuseki_data.sensor_to_data_transmitted)
 
 #With Fuseki link data draw those links
 func update_link_with(fuseki_link_data, force_side_source : ContainerSide = ContainerSide.ANY):

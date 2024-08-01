@@ -19,3 +19,4 @@ class RelationAttribute:
 	const MODEL_TO_ENABLER = "inputTo"
 	const ENABLER_TO_SERVICE = "enables"
 	const SERVICES_TO_PROVIDED = "provides"
+	const SENSOR_TO_DATA_TRANSMITTED = "producedFrom"
