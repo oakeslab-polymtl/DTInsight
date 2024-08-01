@@ -47,6 +47,15 @@ WHERE {
 	OPTIONAL {?dataT ?attribute ?value}
 }"
 
+const DATA_QUERY = "PREFIX DTDFvocab:   <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
+PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT *
+WHERE {
+	?data a DTDFvocab:Data .
+	OPTIONAL {?data ?attribute ?value}
+}"
+
 const SENSORS_QUERY = "PREFIX DTDFvocab:   <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
 PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
 

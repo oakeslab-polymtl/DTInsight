@@ -16,6 +16,7 @@ const DATA_TRANSMITTED_INDICATOR = "Data transmitted :"
 const SENSORS_INDICATOR = "Sensors :"
 const SYS_INDICATOR = "System :"
 const ENV_INDICATOR = "System environnement :"
+const DATA_INDICATOR = "Data :"
 const EOF_INDICATOR = ""
 
 #FusekiDataManager
@@ -47,6 +48,8 @@ static func dump(data : FusekiData, dump_path : String, to_console = false):
 	dump_string += dump_dictionary(data.sys_component)
 	dump_string += ENV_INDICATOR + "\n"
 	dump_string += dump_dictionary(data.env)
+	dump_string += DATA_INDICATOR + "\n"
+	dump_string += dump_dictionary(data.data)
 	if(to_console):
 		print(dump_string)
 	else:
@@ -85,7 +88,8 @@ static func load_from_dump(fuseki_data : FusekiData, file_path : String):
 	fuseki_data.data_transmitted = load_between(content, DATA_TRANSMITTED_INDICATOR, SENSORS_INDICATOR)
 	fuseki_data.sensing_component = load_between(content, SENSORS_INDICATOR, SYS_INDICATOR)
 	fuseki_data.sys_component = load_between(content, SYS_INDICATOR, ENV_INDICATOR)
-	fuseki_data.env = load_between(content, ENV_INDICATOR, EOF_INDICATOR)
+	fuseki_data.env = load_between(content, ENV_INDICATOR, DATA_INDICATOR)
+	fuseki_data.data = load_between(content, DATA_INDICATOR, EOF_INDICATOR)
 	FusekiSignals.fuseki_data_updated.emit()
 
 static func load_between(content : PackedStringArray, start_indicator : String, end_indicator : String) -> Dictionary:

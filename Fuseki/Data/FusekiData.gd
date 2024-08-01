@@ -21,11 +21,14 @@ var data_transmitted : Dictionary
 var sensing_component : Dictionary
 var env : Dictionary
 var sys_component : Dictionary
+var data : Dictionary
 
 var service_to_provided_thing : Array[GenericLinkedNodes]
 var enabler_to_service : Array[GenericLinkedNodes]
 var model_to_enabler : Array[GenericLinkedNodes]
 var sensor_to_data_transmitted : Array[GenericLinkedNodes]
+var data_to_enabler : Array[GenericLinkedNodes]
+var data_transmitted_to_data : Array[GenericLinkedNodes]
 
 func _ready():
 	FusekiSignals.fuseki_data_updated.connect(_on_data_updated)
@@ -57,6 +60,8 @@ func input_data_from_fuseki_JSON(json):
 			env = parse_fuseki_json(json)
 		FusekiConfig.JsonHead.SYSTEM_COMPONENT:
 			sys_component = parse_fuseki_json(json)
+		FusekiConfig.JsonHead.DATA:
+			data = parse_fuseki_json(json)
 
 #Parse the json from Fuseki into internal data structure
 #Return an Array of GenericLinkedNodes or a Dictionary depending on the data type
@@ -122,6 +127,8 @@ func build_relations():
 	enabler_to_service = build_relations_from(enabler, FusekiConfig.RelationAttribute.ENABLER_TO_SERVICE)
 	service_to_provided_thing = build_relations_from(service, FusekiConfig.RelationAttribute.SERVICES_TO_PROVIDED)
 	sensor_to_data_transmitted = build_relations_from(data_transmitted, FusekiConfig.RelationAttribute.SENSOR_TO_DATA_TRANSMITTED, true)
+	data_transmitted_to_data = build_relations_from(data, FusekiConfig.RelationAttribute.DATA_TRANSMITTED_TO_DATA, true)
+	data_to_enabler = build_relations_from(data, FusekiConfig.RelationAttribute.DATA_TO_ENABLER)
 
 func build_relations_from(element_data : Dictionary, link_attribute : String, inversed : bool = false) -> Array[GenericLinkedNodes]:
 	var resulting_relations : Array[GenericLinkedNodes] = []
@@ -147,8 +154,11 @@ func empty():
 	sensing_component = {}
 	env = {}
 	sys_component = {}
+	data = {}
 	
 	service_to_provided_thing = []
 	enabler_to_service = []
 	model_to_enabler = []
 	sensor_to_data_transmitted = []
+	data_to_enabler = []
+	data_transmitted_to_data = []

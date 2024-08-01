@@ -5,7 +5,8 @@ class_name DT_PT
 #Reference each visual data container
 @onready var service_container = $DTContainer/ServicesPanel/ServicesContainer
 @onready var enabler_container = $DTContainer/EnablersPanel/EnablersContainer
-@onready var model_container = $DTContainer/ModelsPanel/ModelsContainer
+@onready var model_container = $DTContainer/ModelsDAtaPanel/ModelsDataContainer/ModelsContainer
+@onready var data_container = $DTContainer/ModelsDAtaPanel/ModelsDataContainer/DataContainer
 @onready var operator_container = $"PTContainer/Operator&EnvContainer/OperatorPanel/OperatorContainer"
 @onready var machine_container = $PTContainer/DataTravelContainer/MachinePanel/MachineContainer
 @onready var data_transmitted_container = $PTContainer/DataTravelContainer/DataOutPanel/DataOutContainer/DataTransmittedContainer
@@ -77,6 +78,7 @@ func on_fuseki_data_updated():
 	update_node_with(sensor_container, fuseki_data.sensing_component)
 	update_node_with(env_container, fuseki_data.env)
 	update_node_with(sys_container, fuseki_data.sys_component)
+	update_node_with(data_container, fuseki_data.data)
 
 func update_provided_things(operator_container : HBoxContainer, machine_container : HBoxContainer, provided_data : Dictionary):
 	var operator_data : Dictionary = {}
@@ -134,7 +136,7 @@ static func build_displayed_string(attributes : Dictionary):
 
 func get_all_connected_to(element_name : String) -> Array[String]:
 	var all_connected : Array[String]= [element_name]
-	for link in fuseki_data.enabler_to_service + fuseki_data.model_to_enabler + fuseki_data.service_to_provided_thing + fuseki_data.sensor_to_data_transmitted:
+	for link in fuseki_data.enabler_to_service + fuseki_data.model_to_enabler + fuseki_data.service_to_provided_thing + fuseki_data.sensor_to_data_transmitted + fuseki_data.data_transmitted_to_data + fuseki_data.data_to_enabler:
 		if link.source == element_name:
 			all_connected.append(link.destination)
 		if link.destination == element_name:
@@ -148,6 +150,8 @@ func _draw():
 		update_link_with(fuseki_data.model_to_enabler)
 		update_link_with(fuseki_data.service_to_provided_thing, ContainerSide.TOP)
 		update_link_with(fuseki_data.sensor_to_data_transmitted)
+		update_link_with(fuseki_data.data_to_enabler)
+		update_link_with(fuseki_data.data_transmitted_to_data, ContainerSide.BOTTOM)
 
 #With Fuseki link data draw those links
 func update_link_with(fuseki_link_data, force_side_source : ContainerSide = ContainerSide.ANY):

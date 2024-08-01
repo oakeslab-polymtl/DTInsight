@@ -12,6 +12,7 @@ class JsonHead:
 	const ENABLER = "enabler"
 	const MODEL = "model"
 	const DATA_TRANSMITTED = "dataT"
+	const DATA = "data"
 	const PROVIDED = "provided"
 	const SENSOR = "sensor"
 	const ENV = "env"
@@ -22,3 +23,5 @@ class RelationAttribute:
 	const ENABLER_TO_SERVICE = "enables"
 	const SERVICES_TO_PROVIDED = "provides"
 	const SENSOR_TO_DATA_TRANSMITTED = "producedFrom"
+	const DATA_TO_ENABLER = "inputTo"
+	const DATA_TRANSMITTED_TO_DATA = "fromData"
