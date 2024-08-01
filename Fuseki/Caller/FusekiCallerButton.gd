@@ -21,12 +21,6 @@ func _on_pressed():
 	await(SparqlRequest.request_completed)
 	query_fuseky(FusekiQueryManager.PROVIDED_THINGS_QUERY)
 	await(SparqlRequest.request_completed)
-	query_fuseky(FusekiQueryManager.ENABLERS_TO_SERVICES_QUERY)
-	await(SparqlRequest.request_completed)
-	query_fuseky(FusekiQueryManager.MODELS_TO_ENABLERS_QUERY)
-	await(SparqlRequest.request_completed)
-	query_fuseky(FusekiQueryManager.SERVICES_TO_PROVIDED_THINGS_QUERY)
-	await(SparqlRequest.request_completed)
 	query_fuseky(FusekiQueryManager.SENSORS_QUERY)
 	await(SparqlRequest.request_completed)
 	FusekiSignals.fuseki_data_updated.emit()
@@ -34,7 +28,7 @@ func _on_pressed():
 
 #Query the Fuseki Server with a given query
 func query_fuseky(query):
-	SparqlRequest.request(FusekiConfig.URL + FusekiConfig.DATASET + FusekiConfig.ENDPOINT + query.uri_encode())
+	SparqlRequest.request(FusekiConfig.Connection.URL + FusekiConfig.Connection.DATASET + FusekiConfig.Connection.ENDPOINT + query.uri_encode())
 
 #Parse and store resulting Fuseki json
 func _on_fuseki_completion(_result, _response_code, _headers, body):

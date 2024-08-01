@@ -131,10 +131,10 @@ static func build_displayed_string(attributes : Dictionary):
 func get_all_connected_to(element_name : String) -> Array[String]:
 	var all_connected : Array[String]= [element_name]
 	for link in fuseki_data.enabler_to_service + fuseki_data.model_to_enabler + fuseki_data.service_to_provided_thing:
-		if link.first_node_name == element_name:
-			all_connected.append(link.second_node_name)
-		if link.second_node_name == element_name:
-			all_connected.append(link.first_node_name)
+		if link.source == element_name:
+			all_connected.append(link.destination)
+		if link.destination == element_name:
+			all_connected.append(link.source)
 	return all_connected
 
 #Draw all links
@@ -231,10 +231,10 @@ func get_viable_position(potential : int, concerned_list : Array[int], iteration
 func to_link_dictionary(fuseki_link_data) -> Dictionary:
 	var links : Dictionary = {} #desination as key -> list 
 	for link in fuseki_link_data:
-		var source_node = get_node_by_name(link.first_node_name)
+		var source_node = get_node_by_name(link.source)
 		if(not links.has(source_node)):
 			links[source_node] = []
-		links[source_node].append(get_node_by_name(link.second_node_name))
+		links[source_node].append(get_node_by_name(link.destination))
 	return links
 
 static func shift_position(initial_position : Vector2, shift_value) -> Vector2:
