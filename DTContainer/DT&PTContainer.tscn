@@ -264,7 +264,7 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Models/Data
+text = "Models
 "
 
 [node name="DataContainer" type="HBoxContainer" parent="DTContainer/ModelsDAtaPanel/ModelsDataContainer"]
@@ -277,4 +277,4 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Data"
+text = "Datas"
