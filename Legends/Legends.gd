@@ -39,7 +39,7 @@ func instanciate_legend_element(text : String, color : Color):
 	new_legend_element.set_color(color)
 	legends_container.add_child(new_legend_element)
 
-#Hiding function
+#Hiding function ---------------------------------------------------------------------------------
 var legends_hidden : bool  = false
 
 func _on_retract_button_pressed() -> void:

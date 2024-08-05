@@ -122,6 +122,7 @@ static func parse_element_result(result_agregator) -> Dictionary:
 			formated_result[entry_name].merge(entry_value)
 	return formated_result
 
+#Build relations attributes
 func build_relations():
 	model_to_enabler = build_relations_from(model, FusekiConfig.RelationAttribute.MODEL_TO_ENABLER)
 	enabler_to_service = build_relations_from(enabler, FusekiConfig.RelationAttribute.ENABLER_TO_SERVICE)
@@ -130,6 +131,7 @@ func build_relations():
 	data_transmitted_to_data = build_relations_from(data, FusekiConfig.RelationAttribute.DATA_TRANSMITTED_TO_DATA, true)
 	data_to_enabler = build_relations_from(data, FusekiConfig.RelationAttribute.DATA_TO_ENABLER)
 
+#Build relations between two elements from attributes
 func build_relations_from(element_data : Dictionary, link_attribute : String, inversed : bool = false) -> Array[GenericLinkedNodes]:
 	var resulting_relations : Array[GenericLinkedNodes] = []
 	for element_name in element_data.keys():
@@ -142,9 +144,7 @@ func build_relations_from(element_data : Dictionary, link_attribute : String, in
 				resulting_relations.append(new_relation)
 	return resulting_relations
 
-func dump(dump_path : String, to_console : bool = false):
-	FusekiDataDumper.dump(self, dump_path, to_console)
-
+#Empty all elements and relations
 func empty():
 	service = {}
 	enabler = {}
@@ -162,3 +162,7 @@ func empty():
 	sensor_to_data_transmitted = []
 	data_to_enabler = []
 	data_transmitted_to_data = []
+
+#Call dump function
+func dump(dump_path : String, to_console : bool = false):
+	FusekiDataDumper.dump(self, dump_path, to_console)
