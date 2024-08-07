@@ -2,7 +2,8 @@ extends Node
 
 class_name FusekiDataDumper
 
-@onready var file_path_input = $DumpPathEdit
+@onready var file_path_input : TextEdit = $DumpPathEdit
+@onready var file_dialog : FileDialog = $FileDialog
 
 #Dump file indicators
 const SERVICES_INDICATOR = "Services :"
@@ -114,3 +115,10 @@ static func load_dictionary(lines : Array[String]) -> Dictionary:
 
 static func clean_line(str : String) -> String :
 	return str.replace("\t","")
+
+#file picker functions ---------------------------------------------------------
+func _on_pick_button_pressed() -> void:
+	file_dialog.visible = true
+
+func _on_file_dialog_file_selected(path: String) -> void:
+	file_path_input.text = path

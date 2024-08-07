@@ -11,8 +11,11 @@ script = ExtResource("1_wsn3w")
 [node name="DumpPathEdit" type="TextEdit" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "D:/Polytechnique/DTdumpTEst"
 placeholder_text = "Dump file path"
+
+[node name="PickButton" type="Button" parent="."]
+layout_mode = 2
+text = "PIck file"
 
 [node name="ButtonsContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -28,5 +31,19 @@ size_flags_vertical = 3
 text = "Load
 "
 
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Open a File"
+initial_position = 1
+size = Vector2i(600, 500)
+always_on_top = true
+popup_window = true
+min_size = Vector2i(600, 500)
+ok_button_text = "Ouvrir"
+dialog_hide_on_ok = true
+file_mode = 0
+access = 2
+
+[connection signal="pressed" from="PickButton" to="." method="_on_pick_button_pressed"]
 [connection signal="pressed" from="ButtonsContainer/DumpButton" to="." method="_on_dump_button_pressed"]
 [connection signal="pressed" from="ButtonsContainer/LoadButton" to="." method="_on_load_button_pressed"]
+[connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
