@@ -122,3 +122,9 @@ func _on_pick_button_pressed() -> void:
 
 func _on_file_dialog_file_selected(path: String) -> void:
 	file_path_input.text = path
+
+func _on_dump_path_edit_focus_entered() -> void:
+	CameraSignals.disable_camera_mouvement.emit()
+
+func _on_dump_path_edit_focus_exited() -> void:
+	CameraSignals.enable_camera_mouvement.emit()
