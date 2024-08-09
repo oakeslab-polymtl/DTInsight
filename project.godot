@@ -12,7 +12,7 @@ config_version=5
 
 config/name="DigitalTwinVisualisationProject"
 run/main_scene="res://MainScene/MainScene.tscn"
-config/features=PackedStringArray("4.2", "Forward Plus")
+config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 run/low_processor_mode=true
 config/icon="res://icon.svg"
 
@@ -25,6 +25,11 @@ GenericDisplaySignals="*res://GenericDisplay/GenericDisplaySignals.gd"
 CameraConfig="*res://Config/CameraConfig.gd"
 LegendsConfig="*res://Config/LegendsConfig.gd"
 CameraSignals="*res://Camera/CameraSignals.gd"
+RabbitMQConfig="*res://Config/RabbitMQConfig.gd"
+
+[dotnet]
+
+project/assembly_name="DigitalTwinVisualisationProject"
 
 [input]
 
