@@ -6,18 +6,31 @@ using System.Collections.Generic;
 using System.Text;
 
 public partial class RabbitQueue : Node{
+	// Config ------------------------------------------------------------------
 	private const String USER = "incubator";
 	private const String PASS = "incubator";
 	private const String HOST = "localhost";
 	private const int PORT = 5672;
 	
+	private string exchangeName = "Incubator_AMQP";
+	private List<string> routingKeys = new List<string> {
+		"incubator.update.closed_loop_controller.parameters",
+		"incubator.record.kalmanfilter.plant.state",
+		"incubator.record.driver.state",
+		"incubator.record.driver.state",
+		"incubator.hardware.gpio.fan.on",
+		"incubator.record.#	",
+		"incubator.hardware.gpio.heater.on",
+		"incubator.update.kalmanfilter.4params",
+		"incubator.mock.hw.box.G",
+		"incubator.mock.hw.heater.on"
+	};
+	//--------------------------------------------------------------------------
+	
 	private ConnectionFactory factory = new ConnectionFactory();
 	private IConnection connection;
 	private IModel channel;
 	
-	private string exchangeName = "Incubator_AMQP";
-	private string ROUTING_KEY_KF_PLANT_STATE = "incubator.record.kalmanfilter.plant.state";
-	private string ROUTING_KEY_STATE = "incubator.record.driver.state";
 	private string localQueue;
 	private List<string> messages = new();
 	
@@ -45,9 +58,10 @@ public partial class RabbitQueue : Node{
 		channel = connection.CreateModel();
 		
 		
-		localQueue = channel.QueueDeclare(autoDelete: true, exclusive: true); 
-		channel.QueueBind(queue: localQueue, exchange: exchangeName, routingKey: ROUTING_KEY_KF_PLANT_STATE);
-		channel.QueueBind(queue: localQueue, exchange: exchangeName, routingKey: ROUTING_KEY_STATE);
+		localQueue = channel.QueueDeclare(autoDelete: true, exclusive: true);
+		foreach (string routingKey in routingKeys)  {
+			channel.QueueBind(queue: localQueue, exchange: exchangeName, routingKey: routingKey);
+		}
 		ReceiveMessage();
 		
 		if (!connection.IsOpen) {
