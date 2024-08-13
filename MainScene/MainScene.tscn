@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://ca4ircpbul4vs" path="res://ControlPanel/ControlPanel.tscn" id="4_bpfsb"]
 [ext_resource type="PackedScene" uid="uid://bx42q4hl46td1" path="res://Fuseki/Data/FusekiData.tscn" id="5_4e51a"]
 [ext_resource type="PackedScene" uid="uid://cwd5j8qr66eh3" path="res://Legends/Legends.tscn" id="5_8cnmr"]
-[ext_resource type="PackedScene" uid="uid://6crhwyl883nn" path="res://RabbitMQ/RabbitMQ.tscn" id="7_j6wr3"]
+[ext_resource type="PackedScene" uid="uid://6crhwyl883nn" path="res://RabbitMQ/Data/RabbitMQ.tscn" id="7_j6wr3"]
 
 [node name="MainScene" type="Node"]
 script = ExtResource("1_r7thu")

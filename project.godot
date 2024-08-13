@@ -25,7 +25,8 @@ GenericDisplaySignals="*res://GenericDisplay/GenericDisplaySignals.gd"
 CameraConfig="*res://Config/CameraConfig.gd"
 LegendsConfig="*res://Config/LegendsConfig.gd"
 CameraSignals="*res://Camera/CameraSignals.gd"
-RabbitMQConfig="*res://Config/RabbitMQConfig.gd"
+RabbitConfig="*res://Config/RabbitConfig.gd"
+RabbitSignals="*res://RabbitMQ/RabbitSignals.gd"
 
 [dotnet]
 

@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3 uid="uid://6crhwyl883nn"]
+
+[ext_resource type="Script" path="res://RabbitMQ/Data/RabbitData.gd" id="1_h808b"]
+[ext_resource type="Script" path="res://RabbitMQ/Connection/RabbitQueue.cs" id="1_rud4u"]
+[ext_resource type="Script" path="res://RabbitMQ/Connection/RabbitMQController.gd" id="3_etigq"]
+[ext_resource type="Script" path="res://RabbitMQ/Data/Fifo.gd" id="3_mb2gr"]
+
+[node name="RabbitData" type="Node"]
+script = ExtResource("1_h808b")
+
+[node name="Fifo" type="Node" parent="."]
+script = ExtResource("3_mb2gr")
+
+[node name="RabbitMQController" type="Node" parent="."]
+script = ExtResource("3_etigq")
+
+[node name="RabbitMQ" type="Node" parent="RabbitMQController"]
+script = ExtResource("1_rud4u")

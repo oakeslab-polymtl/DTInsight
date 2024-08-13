@@ -7,26 +7,30 @@ using System.Text;
 
 public partial class RabbitQueue : Node{
 	// Config ------------------------------------------------------------------
-	private const String USER = "incubator";
-	private const String PASS = "incubator";
-	private const String HOST = "localhost";
-	private const int PORT = 5672;
+	private String user;
+	private String pass;
+	private String host;
+	private int port;
 	
-	private string exchangeName = "Incubator_AMQP";
-	private List<string> routingKeys = new List<string> {
-		"incubator.update.closed_loop_controller.parameters",
-		"incubator.record.kalmanfilter.plant.state",
-		"incubator.record.driver.state",
-		"incubator.record.driver.state",
-		"incubator.hardware.gpio.fan.on",
-		"incubator.record.#	",
-		"incubator.hardware.gpio.heater.on",
-		"incubator.update.kalmanfilter.4params",
-		"incubator.mock.hw.box.G",
-		"incubator.mock.hw.heater.on"
-	};
+	private string exchangeName;
+	private string[] routingKeys;
+	
+	public void SetParameters(
+		string user,
+		string pass,
+		string host,
+		int port,
+		string exchangeName,
+		string routingKeys
+	){
+		this.user = user;
+		this.pass = pass;
+		this.host = host;
+		this.port = port;
+		this.exchangeName = exchangeName;
+		this.routingKeys = routingKeys.Split('/');
+	}
 	//--------------------------------------------------------------------------
-	
 	private ConnectionFactory factory = new ConnectionFactory();
 	private IConnection connection;
 	private IModel channel;
@@ -36,10 +40,6 @@ public partial class RabbitQueue : Node{
 	
 	[Signal]
 	public delegate void UpdatedRabbitEventHandler(string message);
-	
-	public override void _Ready(){
-		ConnectToRabbitMQ();
-	}
 
 	public override void _Process(double delta) {
 		for (int i = 0; i < messages.Count; i++) {
@@ -49,10 +49,10 @@ public partial class RabbitQueue : Node{
 	}
 	
 	public bool ConnectToRabbitMQ() {
-		factory.UserName = USER;
-		factory.Password = PASS;
-		factory.HostName = HOST;
-		factory.Port = PORT;
+		factory.UserName = user;
+		factory.Password = pass;
+		factory.HostName = host;
+		factory.Port = port;
 	
 		connection = factory.CreateConnection();
 		channel = connection.CreateModel();
@@ -69,6 +69,11 @@ public partial class RabbitQueue : Node{
 		}
 
 		return true;
+	}
+	
+	public void DisconnectRabbitMQ() {
+		channel.Close();
+		connection.Close();
 	}
 	
 	private void ReceiveMessage() {
