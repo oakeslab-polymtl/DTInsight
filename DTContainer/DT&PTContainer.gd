@@ -4,16 +4,16 @@ class_name DT_PT
 
 #Getting ready and general variables ---------------------------------------------------------------
 #Reference each visual data container
-@onready var service_container = $DTContainer/ServicesPanel/ServicesContainer
-@onready var enabler_container = $DTContainer/EnablersPanel/EnablersContainer
-@onready var model_container = $DTContainer/ModelsDAtaPanel/ModelsDataContainer/ModelsContainer
-@onready var data_container = $DTContainer/ModelsDAtaPanel/ModelsDataContainer/DataContainer
-@onready var operator_container = $"PTContainer/Operator&EnvContainer/OperatorPanel/OperatorContainer"
-@onready var machine_container = $PTContainer/DataTravelContainer/MachinePanel/MachineContainer
-@onready var data_transmitted_container = $PTContainer/DataTravelContainer/DataOutPanel/DataOutContainer/DataTransmittedContainer
-@onready var sensor_container = $PTContainer/DataTravelContainer/DataOutPanel/DataOutContainer/SensorsContainer
-@onready var env_container = $"PTContainer/Operator&EnvContainer/HBoxContainer/EnvPanel/EnvContainer"
-@onready var sys_container = $"PTContainer/Operator&EnvContainer/HBoxContainer/SystemPanel/SystemContainer"
+@onready var service_container = $DTContainer/ServicesPanel/ServicesOrganizer/ServicesContainer
+@onready var enabler_container = $DTContainer/EnablersPanel/EnablerOrganizer/EnablersContainer
+@onready var model_container = $DTContainer/ModelsDataPanel/ModelsDataContainer/ModelsContainer
+@onready var data_container = $DTContainer/ModelsDataPanel/ModelsDataContainer/DataContainer
+@onready var operator_container = $"PTContainer/Operator&EnvContainer/OperatorPanel/OperatorOrganizer/OperatorContainer"
+@onready var machine_container = $PTContainer/DataTravelContainer/MachinePanel/MachineOrganizer/MachineContainer
+@onready var data_transmitted_container = $PTContainer/DataTravelContainer/DataOutPanel/DataOutContainer/DataTransmittedOrganizer/DataTransmittedContainer
+@onready var sensor_container = $PTContainer/DataTravelContainer/DataOutPanel/DataOutContainer/SensorsOrganizer/SensorsContainer
+@onready var env_container = $"PTContainer/Operator&EnvContainer/ExperimentContainer/EnvPanel/EnvOrganizer/EnvContainer"
+@onready var sys_container = $"PTContainer/Operator&EnvContainer/ExperimentContainer/SystemPanel/SystemOrganizer/SystemContainer"
 
 #Access to fuseki data
 var fuseki_data : FusekiData = null
@@ -293,4 +293,3 @@ func _draw():
 func _on_rabbit_data_updated(container_name, data):
 	var container : GenericDisplay = get_node_by_name(container_name)
 	container.set_info(data[data.size() - 1])
-	print(data)
