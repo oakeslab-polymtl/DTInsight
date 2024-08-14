@@ -1,13 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://ibm0fjlp0shm"]
+[gd_scene load_steps=2 format=3 uid="uid://ibm0fjlp0shm"]
 
 [ext_resource type="Script" path="res://RabbitMQ/Control/RabbitButton.gd" id="1_8euv6"]
-[ext_resource type="PackedScene" uid="uid://6crhwyl883nn" path="res://RabbitMQ/Data/RabbitMQ.tscn" id="2_u4xx8"]
 
 [node name="RabbitControl" type="HBoxContainer"]
 offset_right = 40.0
 offset_bottom = 40.0
-
-[node name="RabbitData" parent="." instance=ExtResource("2_u4xx8")]
 
 [node name="RabbitLabel" type="Label" parent="."]
 layout_mode = 2
