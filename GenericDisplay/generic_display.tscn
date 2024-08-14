@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://GenericDisplay/GenericDisplay.gd" id="1_5lixw"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q36xm"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2niug"]
 content_margin_left = 20.0
 content_margin_top = 10.0
 content_margin_right = 20.0
@@ -13,24 +13,30 @@ corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 
-[node name="GenericDisplay" type="BoxContainer"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = -1055.0
-offset_bottom = -605.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
+[node name="GenericDisplayContainer" type="PanelContainer"]
+offset_right = 97.0
+offset_bottom = 43.0
 size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_2niug")
 script = ExtResource("1_5lixw")
 
-[node name="GenericElementName" type="Label" parent="."]
+[node name="GenericDisplay" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="GenericElementName" type="Label" parent="GenericDisplay"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.129558, 0.129558, 0.129558, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_q36xm")
 text = "Default"
+horizontal_alignment = 1
+vertical_alignment = 3
+
+[node name="GenericElementAttributes" type="Label" parent="GenericDisplay"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.43134, 0.43134, 0.43134, 1)
 horizontal_alignment = 1
 vertical_alignment = 3
 

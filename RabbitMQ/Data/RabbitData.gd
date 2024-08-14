@@ -18,8 +18,12 @@ func _on_updated_rabbit(rabbit_data : String) -> void:
 	
 	if data.measurement != null && data.measurement == "low_level_driver":
 		t1_record.add_element(data.fields.t1)
+		RabbitSignals.updated_data.emit(RabbitConfig.InfoContainers.T1_CONTAINER, t1_record.get_content())
 		t2_record.add_element(data.fields.t2)
+		RabbitSignals.updated_data.emit(RabbitConfig.InfoContainers.T2_CONTAINER, t2_record.get_content())
 		t3_record.add_element(data.fields.t3)
+		RabbitSignals.updated_data.emit(RabbitConfig.InfoContainers.T3_CONTAINER, t3_record.get_content())
 		heater_record.add_element(data.fields.heater_on)
+		RabbitSignals.updated_data.emit(RabbitConfig.InfoContainers.HEATER_CONTAINER, heater_record.get_content())		
 		fan_record.add_element(data.fields.fan_on)
-	print(t1_record.get_content())
+		RabbitSignals.updated_data.emit(RabbitConfig.InfoContainers.FAN_CONTAINER, fan_record.get_content())		

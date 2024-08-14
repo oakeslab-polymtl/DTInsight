@@ -27,6 +27,7 @@ var highlighted_element = null
 #initialization
 func _ready():
 	GenericDisplaySignals.generic_display_over.connect(_on_element_over)
+	RabbitSignals.updated_data.connect(_on_rabbit_data_updated)
 
 #Node and element manipulation functions -----------------------------------------------------------
 
@@ -67,7 +68,7 @@ func _on_element_over(element_name):
 		GenericDisplaySignals.generic_display_highlight.emit(get_all_connected_to(element_name))
 
 #Return a node by its nale in the displayes_node_list
-func get_node_by_name(node_name : String):
+func get_node_by_name(node_name : String) -> GenericDisplay:
 	for displayed_node in displayed_node_list:
 		if (displayed_node.name == node_name && displayed_node.node != null):
 			return displayed_node.node
@@ -287,3 +288,9 @@ func _draw():
 		update_link_with(fuseki_data.sensor_to_data_transmitted)
 		update_link_with(fuseki_data.data_to_enabler)
 		update_link_with(fuseki_data.data_transmitted_to_data, ContainerSide.BOTTOM)
+
+# Rabbit MQ data integration ---------------------------------------------------
+func _on_rabbit_data_updated(container_name, data):
+	var container : GenericDisplay = get_node_by_name(container_name)
+	container.set_info(data[data.size() - 1])
+	print(data)

@@ -77,7 +77,6 @@ public partial class RabbitQueue : Node{
 	}
 	
 	private void ReceiveMessage() {
-		GD.Print("Waiting for messages");
 		var consumer = new EventingBasicConsumer(channel);
 
 		consumer.Received += (model, ea) => {

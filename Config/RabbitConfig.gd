@@ -12,3 +12,11 @@ const ROUTING_KEYS : Array[String] = [
 ]
 
 const MESSAGES_LIMIT : int = 10
+
+class InfoContainers:
+	const T1_CONTAINER : String = "temp_sensor_1"
+	const T2_CONTAINER : String = "temp_sensor_2"
+	const T3_CONTAINER : String = "temp_sensor_3"
+	const HEATER_CONTAINER : String = "fan"
+	const FAN_CONTAINER : String = "heater"
+
