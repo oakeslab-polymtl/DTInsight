@@ -7,11 +7,10 @@ const PORT : int = 5672
 
 const EXCHANGE_NAME : String = "Incubator_AMQP"
 const ROUTING_KEYS : Array[String] = [
-	"incubator.record.kalmanfilter.plant.state",
 	"incubator.record.driver.state"
 ]
 
-const MESSAGES_LIMIT : int = 10
+const MESSAGES_LIMIT : int = 100
 
 class InfoContainers:
 	const T1_CONTAINER : String = "temp_sensor_1"
@@ -19,4 +18,3 @@ class InfoContainers:
 	const T3_CONTAINER : String = "temp_sensor_3"
 	const HEATER_CONTAINER : String = "fan"
 	const FAN_CONTAINER : String = "heater"
-
