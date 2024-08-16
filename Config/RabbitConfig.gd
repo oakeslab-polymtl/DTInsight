@@ -5,12 +5,15 @@ const PASS : String = "incubator"
 const HOST : String = "localhost"
 const PORT : int = 5672
 
+const MESSAGES_LIMIT : int = 100
+const MIN_TEMPS_PLOTTED : int = 0
+const MAX_TEMPS_PLOTTED : int = 40
+const CHART_NULL_VALUE : int = 0
+
 const EXCHANGE_NAME : String = "Incubator_AMQP"
 const ROUTING_KEYS : Array[String] = [
 	"incubator.record.driver.state"
 ]
-
-const MESSAGES_LIMIT : int = 100
 
 class InfoContainers:
 	const T1_CONTAINER : String = "temp_sensor_1"

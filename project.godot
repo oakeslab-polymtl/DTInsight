@@ -27,6 +27,7 @@ LegendsConfig="*res://Config/LegendsConfig.gd"
 CameraSignals="*res://Camera/CameraSignals.gd"
 RabbitConfig="*res://Config/RabbitConfig.gd"
 RabbitSignals="*res://RabbitMQ/RabbitSignals.gd"
+ChartSignals="*res://GenericDisplay/PopUpChart/ChartSignals.gd"
 
 [dotnet]
 

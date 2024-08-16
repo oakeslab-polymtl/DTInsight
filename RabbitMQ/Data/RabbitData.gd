@@ -1,5 +1,7 @@
 extends Node
 
+class_name RabbitMQ
+
 @onready var rabbit_mq = $RabbitMQController/RabbitMQ
 
 var connected : bool

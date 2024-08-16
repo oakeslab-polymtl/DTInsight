@@ -290,6 +290,8 @@ func _draw():
 		update_link_with(fuseki_data.data_transmitted_to_data, ContainerSide.BOTTOM)
 
 # Rabbit MQ data integration ---------------------------------------------------
-func _on_rabbit_data_updated(container_name, data):
+func _on_rabbit_data_updated(container_name: String, data : Array[String]):
 	var container : GenericDisplay = get_node_by_name(container_name)
-	container.set_info(data[data.size() - 1])
+	var last_data = data[data.size() - 1]
+	var is_bool : bool = last_data == "true" or last_data == "false"
+	container.set_info(data, is_bool)

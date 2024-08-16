@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://tvcjlrt40n0q"]
+[gd_scene load_steps=4 format=3 uid="uid://tvcjlrt40n0q"]
 
 [ext_resource type="Script" path="res://GenericDisplay/GenericDisplay.gd" id="1_5lixw"]
+[ext_resource type="PackedScene" uid="uid://dxhbsp0l566d6" path="res://GenericDisplay/PopUpChart/PopUpChart.tscn" id="2_fnxtv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2niug"]
 content_margin_left = 20.0
@@ -33,12 +34,28 @@ text = "Default"
 horizontal_alignment = 1
 vertical_alignment = 3
 
-[node name="GenericElementAttributes" type="Label" parent="GenericDisplay"]
+[node name="RealTimeContainer" type="VBoxContainer" parent="GenericDisplay"]
 visible = false
+layout_mode = 2
+
+[node name="GenericElementAttributes" type="Label" parent="GenericDisplay/RealTimeContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.43134, 0.43134, 0.43134, 1)
 horizontal_alignment = 1
 vertical_alignment = 3
 
+[node name="PopUpButton" type="Button" parent="GenericDisplay/RealTimeContainer"]
+layout_mode = 2
+text = "Show Realtime Graph"
+
+[node name="Popup" type="Popup" parent="."]
+disable_3d = true
+initial_position = 2
+size = Vector2i(631, 629)
+unresizable = false
+
+[node name="ChartControl" parent="Popup" instance=ExtResource("2_fnxtv")]
+
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="pressed" from="GenericDisplay/RealTimeContainer/PopUpButton" to="." method="_on_pop_up_button_pressed"]
