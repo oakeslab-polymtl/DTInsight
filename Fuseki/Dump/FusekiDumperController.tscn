@@ -11,7 +11,7 @@ script = ExtResource("1_wsn3w")
 [node name="DumpPathEdit" type="TextEdit" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "Dump file path"
+placeholder_text = "Dump file path..."
 
 [node name="PickButton" type="Button" parent="."]
 layout_mode = 2

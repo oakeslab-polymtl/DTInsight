@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://bkgqmtunv5x7n"]
+
+[ext_resource type="Script" path="res://ControlPanel/StandaloneControl/ScriptFileSelectof/ScriptFileSelector.gd" id="1_dbbty"]
+
+[node name="ScriptFileSelector" type="HBoxContainer"]
+custom_minimum_size = Vector2(350, 78)
+script = ExtResource("1_dbbty")
+
+[node name="SoftwarePathEdit" type="TextEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Software folder path..."
+
+[node name="PickButton" type="Button" parent="."]
+layout_mode = 2
+text = "Pick folder"
+
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Open a Directory"
+initial_position = 1
+size = Vector2i(600, 500)
+ok_button_text = "Select Current Folder"
+dialog_hide_on_ok = true
+file_mode = 2
+access = 2
+
+[connection signal="focus_entered" from="SoftwarePathEdit" to="." method="_on_path_edit_focus_entered"]
+[connection signal="focus_exited" from="SoftwarePathEdit" to="." method="_on_path_edit_focus_exited"]
+[connection signal="pressed" from="PickButton" to="." method="_on_pick_button_pressed"]
+[connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
