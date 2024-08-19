@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://tvcjlrt40n0q"]
+[gd_scene load_steps=5 format=3 uid="uid://tvcjlrt40n0q"]
 
 [ext_resource type="Script" path="res://GenericDisplay/GenericDisplay.gd" id="1_5lixw"]
 [ext_resource type="PackedScene" uid="uid://dxhbsp0l566d6" path="res://GenericDisplay/PopUpChart/PopUpChart.tscn" id="2_fnxtv"]
+[ext_resource type="PackedScene" uid="uid://cspiwjvdyi8ce" path="res://GenericDisplay/PopUpScript/PopUpScript.tscn" id="3_o18us"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2niug"]
 content_margin_left = 20.0
@@ -26,13 +27,21 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 
-[node name="GenericElementName" type="Label" parent="GenericDisplay"]
+[node name="PresentationBox" type="HBoxContainer" parent="GenericDisplay"]
+layout_mode = 2
+
+[node name="GenericElementName" type="Label" parent="GenericDisplay/PresentationBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.129558, 0.129558, 0.129558, 1)
 text = "Default"
 horizontal_alignment = 1
 vertical_alignment = 3
+
+[node name="ScriptButton" type="Button" parent="GenericDisplay/PresentationBox"]
+visible = false
+layout_mode = 2
+text = "Script"
 
 [node name="RealTimeContainer" type="VBoxContainer" parent="GenericDisplay"]
 visible = false
@@ -48,14 +57,22 @@ vertical_alignment = 3
 layout_mode = 2
 text = "Show Realtime Graph"
 
-[node name="Popup" type="Popup" parent="."]
+[node name="PopupChart" type="Popup" parent="."]
 disable_3d = true
 initial_position = 2
-size = Vector2i(631, 629)
+size = Vector2i(700, 700)
 unresizable = false
 
-[node name="ChartControl" parent="Popup" instance=ExtResource("2_fnxtv")]
+[node name="ChartControl" parent="PopupChart" instance=ExtResource("2_fnxtv")]
+
+[node name="PopupScript" type="Popup" parent="."]
+disable_3d = true
+initial_position = 2
+size = Vector2i(700, 700)
+
+[node name="ScriptControl" parent="PopupScript" instance=ExtResource("3_o18us")]
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="pressed" from="GenericDisplay/PresentationBox/ScriptButton" to="." method="_on_script_button_pressed"]
 [connection signal="pressed" from="GenericDisplay/RealTimeContainer/PopUpButton" to="." method="_on_pop_up_button_pressed"]

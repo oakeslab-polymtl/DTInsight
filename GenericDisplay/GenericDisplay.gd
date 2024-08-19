@@ -2,17 +2,22 @@ extends PanelContainer
 
 class_name GenericDisplay
 
-@onready var element : Label = $GenericDisplay/GenericElementName
+@onready var element : Label = $GenericDisplay/PresentationBox/GenericElementName
+@onready var script_button = $GenericDisplay/PresentationBox/ScriptButton
 @onready var real_time_container = $GenericDisplay/RealTimeContainer
 @onready var attributes : Label = $GenericDisplay/RealTimeContainer/GenericElementAttributes
-@onready var pop_up : Popup = $Popup
-@onready var chart : ChartControl = $Popup/ChartControl
+@onready var pop_up_chart : Popup = $PopupChart
+@onready var chart : ChartControl = $PopupChart/ChartControl
+@onready var pop_up_script : Popup = $PopupScript
+@onready var script_control = $PopupScript/ScriptControl
 
+var script_file_path : String = ""
 var data : Array = []
 
 func _ready():
 	GenericDisplaySignals.generic_display_highlight.connect(_on_display_highlight)
-	ChartSignals.hide.connect(_on_hide_pop_up_signal)
+	ChartSignals.hide.connect(_on_hide_chart_pop_up_signal)
+	ScriptSignals.hide.connect(_on_hide_script_pop_up_signal)
 
 #Signal handling ---------------------------------------------------------------
 func _on_display_highlight(highlighted_elements_names : Array):
@@ -29,17 +34,33 @@ func _on_mouse_exited():
 
 func _on_pop_up_button_pressed() -> void:
 	chart.feed_historic(data)
-	pop_up.show()
+	pop_up_chart.show()
 
-func _on_hide_pop_up_signal() -> void:
-	pop_up.hide()
+func _on_hide_chart_pop_up_signal() -> void:
+	pop_up_chart.hide()
+
+func _on_script_button_pressed() -> void:
+	script_control.set_script_file(script_file_path)
+	pop_up_script.show()
+
+func _on_hide_script_pop_up_signal() -> void:
+	pop_up_script.hide()
 
 #Informations ------------------------------------------------------------------
-func set_text(text : String):
-	var node : Label = get_node("GenericDisplay/GenericElementName")
+func set_text(text : String) -> void:
+	var node : Label = get_node("GenericDisplay/PresentationBox/GenericElementName")
 	node.text = text
+	set_python_script(text)
 
-func set_info(new_data : Array[String], is_bool = false):
+func set_python_script(element_name : String) -> void:
+	if element_name in PythonConfig.PYTHON_PATH.keys():
+		script_file_path = PythonConfig.SOFTWARE_PATH + PythonConfig.PYTHON_PATH[element_name]
+		var script_name = script_file_path.split("\\")[script_file_path.split("\\").size() - 1]
+		var python_button : Button = get_node("GenericDisplay/PresentationBox/ScriptButton")
+		python_button.text = script_name
+		python_button.show()
+
+func set_info(new_data : Array[String], is_bool = false) -> void:
 	data = to_int_array(new_data, is_bool)
 	var node : Label = get_node("GenericDisplay/RealTimeContainer/GenericElementAttributes")
 	var last_data = data[data.size() - 1]
@@ -58,7 +79,7 @@ func to_int_array(str_array : Array[String], is_bool) -> Array:
 		return int_array
 
 func update_chart(last_data) -> void:
-	if pop_up.visible == false :
+	if pop_up_chart.visible == false :
 		return
 	if not chart.up_to_date:
 		chart.feed_historic(data)

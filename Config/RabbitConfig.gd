@@ -10,6 +10,7 @@ const MIN_TEMPS_PLOTTED : int = 0
 const MAX_TEMPS_PLOTTED : int = 40
 const CHART_NULL_VALUE : int = 0
 
+#TODO put following values in ontology
 const EXCHANGE_NAME : String = "Incubator_AMQP"
 const ROUTING_KEYS : Array[String] = [
 	"incubator.record.driver.state"

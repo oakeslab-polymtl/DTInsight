@@ -15,6 +15,9 @@ func _ready():
 	ChartSignals.hide.connect(hide_pop_up)
 	reset()
 
+func _on_hide_button_pressed() -> void:
+	ChartSignals.hide.emit()
+
 func hide_pop_up() -> void:
 	reset()
 
@@ -80,7 +83,3 @@ func reset():
 	
 	# Now let's plot our data
 	chart.plot([f1], cp)
-
-
-func _on_hide_button_pressed() -> void:
-	ChartSignals.hide.emit()

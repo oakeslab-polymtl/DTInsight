@@ -28,6 +28,8 @@ CameraSignals="*res://Camera/CameraSignals.gd"
 RabbitConfig="*res://Config/RabbitConfig.gd"
 RabbitSignals="*res://RabbitMQ/RabbitSignals.gd"
 ChartSignals="*res://GenericDisplay/PopUpChart/ChartSignals.gd"
+ScriptSignals="*res://GenericDisplay/PopUpScript/ScriptSignals.gd"
+PythonConfig="*res://Config/PythonConfig.gd"
 
 [dotnet]
 
