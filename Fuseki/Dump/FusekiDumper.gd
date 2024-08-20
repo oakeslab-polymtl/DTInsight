@@ -18,6 +18,10 @@ const SENSORS_INDICATOR = "Sensors :"
 const SYS_INDICATOR = "System :"
 const ENV_INDICATOR = "System environnement :"
 const DATA_INDICATOR = "Data :"
+const RABBIT_EXCHANGE_INDICATOR = "Rabbit exchange :"
+const RABBIT_ROUTE_INDICATOR = "Rabbit route :"
+const RABBIT_SOURCE_INDICATOR = "Rabbit source :"
+const RABBIT_ML_INDICATOR = "Rabbit message listener :"
 const EOF_INDICATOR = ""
 
 #FusekiDataManager
@@ -51,6 +55,14 @@ static func dump(data : FusekiData, dump_path : String, to_console = false):
 	dump_string += dump_dictionary(data.env)
 	dump_string += DATA_INDICATOR + "\n"
 	dump_string += dump_dictionary(data.data)
+	dump_string += RABBIT_EXCHANGE_INDICATOR + "\n"
+	dump_string += dump_dictionary(data.rabbit_exchange)
+	dump_string += RABBIT_ROUTE_INDICATOR + "\n"
+	dump_string += dump_dictionary(data.rabbit_route)
+	dump_string += RABBIT_SOURCE_INDICATOR + "\n"
+	dump_string += dump_dictionary(data.rabbit_source)
+	dump_string += RABBIT_ML_INDICATOR + "\n"
+	dump_string += dump_dictionary(data.rabbit_message_listener)
 	if(to_console):
 		print(dump_string)
 	else:
@@ -80,7 +92,7 @@ static func load_from_dump(fuseki_data : FusekiData, file_path : String):
 	var file = FileAccess.open(file_path, FileAccess.READ)
 	if (file == null):
 		return
-	fuseki_data.empty()
+	FusekiSignals.fuseki_data_clear.emit()
 	var content : PackedStringArray = file.get_as_text().split("\n")
 	fuseki_data.service = load_between(content, SERVICES_INDICATOR, ENABLERS_INDICATOR)
 	fuseki_data.enabler = load_between(content, ENABLERS_INDICATOR, MODELS_INDICATOR)
@@ -90,7 +102,12 @@ static func load_from_dump(fuseki_data : FusekiData, file_path : String):
 	fuseki_data.sensing_component = load_between(content, SENSORS_INDICATOR, SYS_INDICATOR)
 	fuseki_data.sys_component = load_between(content, SYS_INDICATOR, ENV_INDICATOR)
 	fuseki_data.env = load_between(content, ENV_INDICATOR, DATA_INDICATOR)
-	fuseki_data.data = load_between(content, DATA_INDICATOR, EOF_INDICATOR)
+	fuseki_data.data = load_between(content, DATA_INDICATOR, RABBIT_EXCHANGE_INDICATOR)
+	fuseki_data.rabbit_exchange = load_between(content, RABBIT_EXCHANGE_INDICATOR, RABBIT_ROUTE_INDICATOR)
+	fuseki_data.rabbit_route = load_between(content, RABBIT_ROUTE_INDICATOR, RABBIT_SOURCE_INDICATOR)
+	fuseki_data.rabbit_source = load_between(content, RABBIT_SOURCE_INDICATOR, RABBIT_ML_INDICATOR)
+	fuseki_data.rabbit_message_listener = load_between(content, RABBIT_ML_INDICATOR, EOF_INDICATOR)
+	
 	FusekiSignals.fuseki_data_updated.emit()
 
 static func load_between(content : PackedStringArray, start_indicator : String, end_indicator : String) -> Dictionary:

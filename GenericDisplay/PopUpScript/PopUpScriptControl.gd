@@ -12,6 +12,7 @@ func _on_hide_button_pressed() -> void:
 	ScriptSignals.hide.emit()
 
 func set_script_file(file_path : String) -> void:
+	print(file_path)
 	var file = FileAccess.open(file_path, FileAccess.READ)
 	if (file == null):
 		return

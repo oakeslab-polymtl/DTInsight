@@ -28,7 +28,6 @@ func add_value(value : int) -> void:
 	chart.queue_redraw() # This will force the Chart to be updated
 
 func feed_historic(historic : Array) -> void:
-	print(historic)
 	for element in historic:
 		add_value(element)
 	up_to_date = true

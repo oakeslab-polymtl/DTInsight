@@ -2,6 +2,8 @@ extends Node
 
 #Sparql queries intended to interact with the Fuseki Server
 
+#Dt/PT objects -------------------------------------------------------------------------------------
+
 const SERVICES_QUERY = "PREFIX DTDFvocab:   <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
 PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
 
@@ -87,4 +89,38 @@ WHERE {
 	?sus DTDFvocab:hasSystem ?sys .
 	?sysComponent base:isContainedIn ?sys .
 	OPTIONAL {?sysComponent ?attribute ?value}
+}"
+
+#Rabbit objects ------------------------------------------------------------------------------------
+
+const RABBIT_EXCHANGE_QUERY = "PREFIX rabbit:		<https://bentleyjoakes.github.io/DTaaS/RabbitMQVocab#>
+
+SELECT ?exc ?attribute ?value
+WHERE {
+	?exc a rabbit:ExchangeName .
+	?exc ?attribute ?value
+}"
+
+const RABBIT_ROUTING_KEY_QUERY ="PREFIX rabbit:		<https://bentleyjoakes.github.io/DTaaS/RabbitMQVocab#>
+
+SELECT ?route ?attribute ?value
+WHERE {
+	?route a rabbit:RoutingKey  .
+	?route ?attribute ?value
+}"
+
+const RABBIT_SOURCE_QUERY = "PREFIX rabbit:		<https://bentleyjoakes.github.io/DTaaS/RabbitMQVocab#>
+
+SELECT ?source ?attribute ?value
+WHERE {
+	?source a rabbit:Source  .
+	?source ?attribute ?value
+}"
+
+const RABBIT_MESSAGE_LISTENER_QUERY = "PREFIX rabbit:		<https://bentleyjoakes.github.io/DTaaS/RabbitMQVocab#>
+
+SELECT ?ml ?attribute ?value
+WHERE {
+	?ml a rabbit:MessageListener   .
+	?ml ?attribute ?value
 }"

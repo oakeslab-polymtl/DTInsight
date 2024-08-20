@@ -17,6 +17,10 @@ class JsonHead:
 	const SENSOR = "sensor"
 	const ENV = "env"
 	const SYSTEM_COMPONENT = "sysComponent"
+	const RABBIT_EXCHANGE = "exc"
+	const RABBIT_ROUTE = "route"
+	const RABBIT_SOURCE = "source"
+	const RABBIT_MESSAGE_LISTENER = "ml"
 
 class RelationAttribute:
 	const MODEL_TO_ENABLER = "inputTo"

@@ -2,9 +2,15 @@ extends Node
 
 @onready var rabbit = $RabbitMQ
 
+var exchange_name : String = ""
+var routing_keys : Array[String] = []
+
 func _ready() -> void:
-	set_rabbit_parameters()
 	RabbitSignals.rabbit_connect.connect(_on_connect_order)
+
+func get_rabbit_parameters(exchange : String, routing : Array[String]) -> void:
+	exchange_name = exchange
+	routing_keys = routing
 
 func set_rabbit_parameters() -> void:
 	rabbit.SetParameters(
@@ -12,8 +18,8 @@ func set_rabbit_parameters() -> void:
 		RabbitConfig.PASS,
 		RabbitConfig.HOST,
 		RabbitConfig.PORT,
-		RabbitConfig.EXCHANGE_NAME,
-		array_to_str(RabbitConfig.ROUTING_KEYS)
+		exchange_name,
+		array_to_str(routing_keys)
 	)
 
 static func array_to_str(array : Array) -> String:
@@ -25,6 +31,7 @@ static func array_to_str(array : Array) -> String:
 	return result_string
 
 func _on_connect_order(order : bool) -> void:
+	set_rabbit_parameters()
 	if (order):
 		rabbit.ConnectToRabbitMQ()
 	else :

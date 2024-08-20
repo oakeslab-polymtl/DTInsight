@@ -14,6 +14,7 @@ extends Node
 func _ready():
 	fuseki_caller.set_fuseki_data_manager(fuseki_data)
 	fuseki_dumper.set_fuseki_data_manager(fuseki_data)
+	rabbit_data.set_fuseki_data_manager(fuseki_data)
 	FusekiSignals.fuseki_data_updated.connect(_update_fuseki_data)
 
 func _update_fuseki_data():

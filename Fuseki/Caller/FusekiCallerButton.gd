@@ -10,6 +10,7 @@ func set_fuseki_data_manager(fuseki_data_manager : FusekiData):
 
 #On pressed call all queries and emit a signal
 func _on_pressed():
+	FusekiSignals.fuseki_data_clear.emit()
 	disabled = true
 	query_fuseky(FusekiQueryManager.SERVICES_QUERY)
 	await(SparqlRequest.request_completed)
@@ -28,6 +29,14 @@ func _on_pressed():
 	query_fuseky(FusekiQueryManager.SYS_COMPONENT_QUERY)
 	await(SparqlRequest.request_completed)
 	query_fuseky(FusekiQueryManager.DATA_QUERY)
+	await(SparqlRequest.request_completed)
+	query_fuseky(FusekiQueryManager.RABBIT_EXCHANGE_QUERY)
+	await(SparqlRequest.request_completed)
+	query_fuseky(FusekiQueryManager.RABBIT_ROUTING_KEY_QUERY)
+	await(SparqlRequest.request_completed)
+	query_fuseky(FusekiQueryManager.RABBIT_SOURCE_QUERY)
+	await(SparqlRequest.request_completed)
+	query_fuseky(FusekiQueryManager.RABBIT_MESSAGE_LISTENER_QUERY)
 	await(SparqlRequest.request_completed)
 	FusekiSignals.fuseki_data_updated.emit()
 	disabled = false

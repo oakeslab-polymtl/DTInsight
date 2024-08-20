@@ -30,8 +30,14 @@ var sensor_to_data_transmitted : Array[GenericLinkedNodes]
 var data_to_enabler : Array[GenericLinkedNodes]
 var data_transmitted_to_data : Array[GenericLinkedNodes]
 
+var rabbit_exchange : Dictionary
+var rabbit_route : Dictionary
+var rabbit_source : Dictionary
+var rabbit_message_listener : Dictionary
+
 func _ready():
 	FusekiSignals.fuseki_data_updated.connect(_on_data_updated)
+	FusekiSignals.fuseki_data_clear.connect(empty)
 
 func _on_data_updated():
 	build_relations()
@@ -62,6 +68,14 @@ func input_data_from_fuseki_JSON(json):
 			sys_component = parse_fuseki_json(json)
 		FusekiConfig.JsonHead.DATA:
 			data = parse_fuseki_json(json)
+		FusekiConfig.JsonHead.RABBIT_EXCHANGE:
+			rabbit_exchange = parse_fuseki_json(json)
+		FusekiConfig.JsonHead.RABBIT_ROUTE:
+			rabbit_route = parse_fuseki_json(json)
+		FusekiConfig.JsonHead.RABBIT_SOURCE:
+			rabbit_source = parse_fuseki_json(json)
+		FusekiConfig.JsonHead.RABBIT_MESSAGE_LISTENER:
+			rabbit_message_listener = parse_fuseki_json(json)
 
 #Parse the json from Fuseki into internal data structure
 #Return an Array of GenericLinkedNodes or a Dictionary depending on the data type
@@ -162,6 +176,11 @@ func empty():
 	sensor_to_data_transmitted = []
 	data_to_enabler = []
 	data_transmitted_to_data = []
+	
+	rabbit_exchange = {}
+	rabbit_route = {}
+	rabbit_source = {}
+	rabbit_message_listener = {}
 
 #Call dump function
 func dump(dump_path : String, to_console : bool = false):

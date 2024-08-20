@@ -276,7 +276,7 @@ func _process(_delta):
 #Free all childs of a node
 static func free_all_child(node : Node):
 	for child in node.get_children():
-		if (child.get_class() == "BoxContainer"):
+		if (child.get_class() == "PanelContainer"):
 			child.free()
 
 #Draw all links

@@ -5,7 +5,7 @@ var SOFTWARE_PATH : String = ""
 
 #TODO relative file from software in ontology
 const PYTHON_PATH : Dictionary = {
-	"four_para_model" : "\\incubator\\models\\plant_models\\four_parameters_model\\four_parameter_model.py"
+	"four_para_model" : "/incubator/models/plant_models/four_parameters_model/four_parameter_model.py"
 }
 
 func _ready() -> void:

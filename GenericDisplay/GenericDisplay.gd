@@ -55,7 +55,7 @@ func set_text(text : String) -> void:
 func set_python_script(element_name : String) -> void:
 	if element_name in PythonConfig.PYTHON_PATH.keys():
 		script_file_path = PythonConfig.SOFTWARE_PATH + PythonConfig.PYTHON_PATH[element_name]
-		var script_name = script_file_path.split("\\")[script_file_path.split("\\").size() - 1]
+		var script_name = script_file_path.split("/")[script_file_path.split("\\").size() - 1]
 		var python_button : Button = get_node("GenericDisplay/PresentationBox/ScriptButton")
 		python_button.text = script_name
 		python_button.show()
