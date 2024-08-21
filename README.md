@@ -93,3 +93,8 @@ To allow for better compatibility, the ontology should only contain relative pat
 Once loaded if a script is associated with a Digital Twin component, a new button will be displayed in this component with the name of the script and by clicking it you will have access to the corresponding script.
 
 <img width="366" alt="image" src="https://github.com/user-attachments/assets/f01d9038-facd-4854-b922-830af1a2e467">
+
+# Credits
+
+@Ryskann / Louis Malassigné-Onfroy \
+Under the supervision of Benley Oakes
