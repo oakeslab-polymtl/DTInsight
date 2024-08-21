@@ -11,6 +11,7 @@ class_name GenericDisplay
 @onready var pop_up_script : Popup = $PopupScript
 @onready var script_control = $PopupScript/ScriptControl
 
+var script_software_directory : String = ""
 var script_file_path : String = ""
 var data : Array = []
 
@@ -18,6 +19,7 @@ func _ready():
 	GenericDisplaySignals.generic_display_highlight.connect(_on_display_highlight)
 	ChartSignals.hide.connect(_on_hide_chart_pop_up_signal)
 	ScriptSignals.hide.connect(_on_hide_script_pop_up_signal)
+	ScriptSignals.scripts_folder_selected.connect(_on_script_folder_updated)
 
 #Signal handling ---------------------------------------------------------------
 func _on_display_highlight(highlighted_elements_names : Array):
@@ -46,6 +48,10 @@ func _on_script_button_pressed() -> void:
 func _on_hide_script_pop_up_signal() -> void:
 	pop_up_script.hide()
 
+func _on_script_folder_updated(dir : String) -> void:
+	script_software_directory = dir
+	set_python_script(element.text)
+
 #Informations ------------------------------------------------------------------
 func set_text(text : String) -> void:
 	var node : Label = get_node("GenericDisplay/PresentationBox/GenericElementName")
@@ -54,8 +60,8 @@ func set_text(text : String) -> void:
 
 func set_python_script(element_name : String) -> void:
 	if element_name in PythonConfig.PYTHON_PATH.keys():
-		script_file_path = PythonConfig.SOFTWARE_PATH + PythonConfig.PYTHON_PATH[element_name]
-		var script_name = script_file_path.split("/")[script_file_path.split("\\").size() - 1]
+		script_file_path = (script_software_directory if (script_software_directory != "") else PythonConfig.SOFTWARE_PATH) + PythonConfig.PYTHON_PATH[element_name]
+		var script_name = script_file_path.split("/")[script_file_path.split("/").size() - 1]
 		var python_button : Button = get_node("GenericDisplay/PresentationBox/ScriptButton")
 		python_button.text = script_name
 		python_button.show()

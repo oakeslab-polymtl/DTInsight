@@ -1,6 +1,5 @@
 extends Node
 
-#TODO Software path selection
 var SOFTWARE_PATH : String = ""
 
 #TODO relative file from software in ontology
