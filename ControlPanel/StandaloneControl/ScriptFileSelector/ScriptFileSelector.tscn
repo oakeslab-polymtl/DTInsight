@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bkgqmtunv5x7n"]
 
-[ext_resource type="Script" path="res://ControlPanel/StandaloneControl/ScriptFileSelectof/ScriptFileSelector.gd" id="1_dbbty"]
+[ext_resource type="Script" path="res://ControlPanel/StandaloneControl/ScriptFileSelector/ScriptFileSelector.gd" id="1_dbbty"]
 
 [node name="ScriptFileSelector" type="HBoxContainer"]
 custom_minimum_size = Vector2(350, 78)

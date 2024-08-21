@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bpja34bbtxgig" path="res://Fuseki/Dump/FusekiDumperController.tscn" id="1_38nkc"]
 [ext_resource type="Script" path="res://ControlPanel/ControlPanelSuperviser.gd" id="1_hxofy"]
 [ext_resource type="PackedScene" uid="uid://cowug1mbtod0e" path="res://Fuseki/Caller/FusekiCallerBtton.tscn" id="2_mxvta"]
-[ext_resource type="PackedScene" uid="uid://bkgqmtunv5x7n" path="res://ControlPanel/StandaloneControl/ScriptFileSelectof/ScriptFileSelector.tscn" id="2_oxflb"]
+[ext_resource type="PackedScene" uid="uid://bkgqmtunv5x7n" path="res://ControlPanel/StandaloneControl/ScriptFileSelector/ScriptFileSelector.tscn" id="2_oxflb"]
 [ext_resource type="PackedScene" uid="uid://ibm0fjlp0shm" path="res://RabbitMQ/Control/RabbitControl.tscn" id="3_g7fl5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ffs3u"]
