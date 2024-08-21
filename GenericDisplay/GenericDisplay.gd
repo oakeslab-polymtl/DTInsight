@@ -13,6 +13,7 @@ class_name GenericDisplay
 
 var script_software_directory : String = ""
 var script_file_path : String = ""
+var absolute_path : String = ""
 var data : Array = []
 
 func _ready():
@@ -42,7 +43,7 @@ func _on_hide_chart_pop_up_signal() -> void:
 	pop_up_chart.hide()
 
 func _on_script_button_pressed() -> void:
-	script_control.set_script_file(script_file_path)
+	script_control.set_script_file(absolute_path)
 	pop_up_script.show()
 
 func _on_hide_script_pop_up_signal() -> void:
@@ -50,17 +51,21 @@ func _on_hide_script_pop_up_signal() -> void:
 
 func _on_script_folder_updated(dir : String) -> void:
 	script_software_directory = dir
-	set_python_script(element.text)
+	set_python_script()
 
 #Informations ------------------------------------------------------------------
 func set_text(text : String) -> void:
 	var node : Label = get_node("GenericDisplay/PresentationBox/GenericElementName")
 	node.text = text
-	set_python_script(text)
 
-func set_python_script(element_name : String) -> void:
-	if element_name in PythonConfig.PYTHON_PATH.keys():
-		script_file_path = (script_software_directory if (script_software_directory != "") else PythonConfig.SOFTWARE_PATH) + PythonConfig.PYTHON_PATH[element_name]
+func set_python_script_location(path : String) -> void:
+	script_file_path = path
+	set_python_script()
+
+func set_python_script() -> void:
+	if (not script_file_path.is_empty()):
+		var folder_path = script_software_directory if (script_software_directory != "") else PythonConfig.SOFTWARE_PATH
+		absolute_path = folder_path + "/" + script_file_path
 		var script_name = script_file_path.split("/")[script_file_path.split("/").size() - 1]
 		var python_button : Button = get_node("GenericDisplay/PresentationBox/ScriptButton")
 		python_button.text = script_name
