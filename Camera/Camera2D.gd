@@ -1,6 +1,7 @@
 extends Camera2D
 
 var mouvement_enabled : bool = true
+var currently_zooming : bool = false
 
 func _ready() -> void:
 	CameraSignals.disable_camera_mouvement.connect(_disable_camera_mouvement)
@@ -10,10 +11,10 @@ func _process(delta : float):
 	if (mouvement_enabled):
 		var inputMouvementVector : Vector2 = handle_mouvement_input()
 		moveCamera(inputMouvementVector, delta)
-		var inputZoomVector : Vector2 = handle_zoom_input()
-		zoomCamera(inputZoomVector, delta)
+	var inputZoomVector : Vector2 = handle_zoom_input()
+	zoom_camera(inputZoomVector)
 
-#Mouvement functions -----------------------------------------------------------
+#Movement functions -----------------------------------------------------------
 var current_velocity : Vector2 = Vector2(0, 0)
 const ACCELERATION_PER_SECOND : float = CameraConfig.Mouvement.MAX_VELOCITY / CameraConfig.Mouvement.SECONDS_TO_REACH_MAX_VELOCITY
 const DECELERATION_PER_SECOND : float = CameraConfig.Mouvement.MAX_VELOCITY / CameraConfig.Mouvement.SECONDS_TO_STOP_FROM_MAX_VELOCITY
@@ -66,17 +67,20 @@ func handle_mouse_mouvement(event : InputEventMouseMotion) -> void:
 	translate(-event.relative)
 
 #Camera functions --------------------------------------------------------------
-func handle_zoom_input() -> Vector2:
+func handle_zoom_input():
 	var input_vector : Vector2 = Vector2(0, 0)
 	if Input.is_action_pressed("cam_zoom_in"):
-		input_vector += Vector2(CameraConfig.Zoom.ZOOM_PER_SECOND, CameraConfig.Zoom.ZOOM_PER_SECOND)
+		input_vector += Vector2(CameraConfig.Zoom.ZOOM_KEY_SPEED, CameraConfig.Zoom.ZOOM_KEY_SPEED)
 	if Input.is_action_pressed("cam_zoom_out"):
-		input_vector += Vector2(-CameraConfig.Zoom.ZOOM_PER_SECOND, -CameraConfig.Zoom.ZOOM_PER_SECOND)
+		input_vector += Vector2(-CameraConfig.Zoom.ZOOM_KEY_SPEED, -CameraConfig.Zoom.ZOOM_KEY_SPEED)
+	if Input.is_action_just_released("cam_scroll_zoom_in"):
+		input_vector += Vector2(CameraConfig.Zoom.ZOOM_SCROLL_SPEED, CameraConfig.Zoom.ZOOM_SCROLL_SPEED)
+	if Input.is_action_just_released("cam_scroll_zoom_out"):
+		input_vector += Vector2(-CameraConfig.Zoom.ZOOM_SCROLL_SPEED, -CameraConfig.Zoom.ZOOM_SCROLL_SPEED)
 	return input_vector
 
-func zoomCamera(inputVector : Vector2, delta : float) -> void:
-	var scaled_input : Vector2 = inputVector * CameraConfig.Zoom.ZOOM_PER_SECOND * delta
-	zoom = clamp(zoom + scaled_input, Vector2(CameraConfig.Zoom.MAX_ZOOM_OUT_SCALE, CameraConfig.Zoom.MAX_ZOOM_OUT_SCALE), Vector2(CameraConfig.Zoom.MAX_ZOOM_IN_SCALE, CameraConfig.Zoom.MAX_ZOOM_IN_SCALE))
+func zoom_camera(input_vector: Vector2):
+	zoom = clamp(lerp(zoom, zoom + input_vector, 0.01), Vector2(CameraConfig.Zoom.MAX_ZOOM_OUT_SCALE, CameraConfig.Zoom.MAX_ZOOM_OUT_SCALE), Vector2(CameraConfig.Zoom.MAX_ZOOM_IN_SCALE, CameraConfig.Zoom.MAX_ZOOM_IN_SCALE))
 
 #Signal handling ---------------------------------------------------------------
 func _disable_camera_mouvement() -> void:
