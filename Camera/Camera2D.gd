@@ -64,7 +64,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		handle_mouse_mouvement(event)
 
 func handle_mouse_mouvement(event : InputEventMouseMotion) -> void:
-	translate(-event.relative)
+	translate(-event.relative / zoom)
 
 #Camera functions --------------------------------------------------------------
 func handle_zoom_input():
