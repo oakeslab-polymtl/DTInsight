@@ -1,6 +1,6 @@
 extends Camera2D
 
-var mouvement_enabled : bool = true
+@export var mouvement_enabled : bool = true
 
 func _ready() -> void:
 	CameraSignals.disable_camera_mouvement.connect(_disable_camera_mouvement)

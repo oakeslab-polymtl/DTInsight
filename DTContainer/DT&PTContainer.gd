@@ -67,7 +67,7 @@ func _on_element_over(element_name):
 		highlighted_element = get_node_by_name(element_name)
 		GenericDisplaySignals.generic_display_highlight.emit(get_all_connected_to(element_name))
 
-#Return a node by its nale in the displayes_node_list
+#Return a node by its name in the displayed_node_list
 func get_node_by_name(node_name : String) -> GenericDisplay:
 	for displayed_node in displayed_node_list:
 		if (displayed_node.name == node_name && displayed_node.node != null):

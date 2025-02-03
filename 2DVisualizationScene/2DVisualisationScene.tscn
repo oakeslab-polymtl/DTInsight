@@ -1,0 +1,45 @@
+[gd_scene load_steps=7 format=3 uid="uid://cxj8tr6re2b4t"]
+
+[ext_resource type="Script" path="res://2DVisualizationScene/2DVisualisationSceneController.gd" id="1_yatri"]
+[ext_resource type="PackedScene" uid="uid://nqgolpvgp7yg" path="res://DTContainer/DT&PTContainer.tscn" id="2_f7ftg"]
+[ext_resource type="Script" path="res://Camera/Camera2D.gd" id="3_hobv0"]
+[ext_resource type="PackedScene" uid="uid://ca4ircpbul4vs" path="res://ControlPanel/ControlPanel.tscn" id="4_xn2fw"]
+[ext_resource type="PackedScene" uid="uid://cwd5j8qr66eh3" path="res://Legends/Legends.tscn" id="5_4osnd"]
+[ext_resource type="PackedScene" uid="uid://6crhwyl883nn" path="res://RabbitMQ/Data/RabbitMQ.tscn" id="7_jqv72"]
+
+[node name="2DVisualisationScene" type="Node"]
+script = ExtResource("1_yatri")
+
+[node name="DTContainer" parent="." instance=ExtResource("2_f7ftg")]
+z_as_relative = false
+offset_left = -9.0
+offset_top = -2.0
+offset_right = -9.0
+offset_bottom = -2.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(575, 326)
+script = ExtResource("3_hobv0")
+mouvement_enabled = false
+
+[node name="BackgroundLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="BackgroundLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(0.933333, 0.913725, 0.933333, 1)
+
+[node name="ControlLayer" type="CanvasLayer" parent="."]
+
+[node name="ControlPanel" parent="ControlLayer" instance=ExtResource("4_xn2fw")]
+
+[node name="Legends" parent="ControlLayer" instance=ExtResource("5_4osnd")]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="RabbitMq" parent="." instance=ExtResource("7_jqv72")]

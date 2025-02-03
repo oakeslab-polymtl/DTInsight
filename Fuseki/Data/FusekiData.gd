@@ -42,7 +42,7 @@ func _ready():
 func _on_data_updated():
 	build_relations()
 
-#Teke a json from a Fuseki query and store the resulting informations in 
+#Take a json from a Fuseki query and store the resulting informations in 
 #variables reachable from the Godot application
 func input_data_from_fuseki_JSON(json):
 	if(not json["head"]["vars"].size() == 3):

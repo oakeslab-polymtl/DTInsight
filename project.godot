@@ -11,13 +11,14 @@ config_version=5
 [application]
 
 config/name="DigitalTwinVisualisationProject"
-run/main_scene="res://MainScene/MainScene.tscn"
+run/main_scene="res://2DVisualizationScene/2DVisualisationScene.tscn"
 config/features=PackedStringArray("4.3", "C#", "Forward Plus")
 run/low_processor_mode=true
 config/icon="res://icon.svg"
 
 [autoload]
 
+LogDuck="*res://addons/LogDuck/LogDuck.gd"
 StyleConfig="*res://Config/StyleConfig.gd"
 FusekiConfig="*res://Config/FusekiConfig.gd"
 FusekiSignals="*res://Fuseki/Data/FusekiSignals.gd"
@@ -30,10 +31,25 @@ RabbitSignals="*res://RabbitMQ/RabbitSignals.gd"
 ChartSignals="*res://GenericDisplay/PopUpChart/ChartSignals.gd"
 ScriptSignals="*res://GenericDisplay/PopUpScript/ScriptSignals.gd"
 PythonConfig="*res://Config/PythonConfig.gd"
+DebugCam="*res://addons/debug_camera/scripts/DebugCamAutoload.gd"
+FusekiDataGlobal="*res://Fuseki/Data/FusekiData.gd"
 
 [dotnet]
 
 project/assembly_name="DigitalTwinVisualisationProject"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/LogDuck/plugin.cfg", "res://addons/debug_camera/plugin.cfg", "res://addons/easy_charts/plugin.cfg", "res://addons/godot_llm_framework/plugin.cfg")
+
+[global_group]
+
+text_generators=""
+
+[gui]
+
+theme/default_font_multichannel_signed_distance_field=true
+theme/default_font_generate_mipmaps=true
 
 [input]
 
@@ -74,3 +90,7 @@ cam_pan={
 "events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":1,"canceled":false,"pressed":false,"double_click":false,"script":null)
 ]
 }
+
+[rendering]
+
+environment/screen_space_reflection/roughness_quality=2

@@ -1,0 +1,121 @@
+[gd_scene load_steps=12 format=3 uid="uid://cpuch0jqhgkwl"]
+
+[ext_resource type="Script" path="res://visual_manager.gd" id="2_2b207"]
+[ext_resource type="Script" path="res://gui_3d.gd" id="3_b0ejj"]
+[ext_resource type="PackedScene" uid="uid://c12vkmcbp0j0x" path="res://llm_chat.tscn" id="4_lkja4"]
+[ext_resource type="PackedScene" uid="uid://cxj8tr6re2b4t" path="res://2DVisualizationScene/2DVisualisationScene.tscn" id="5_b2u2y"]
+
+[sub_resource type="Environment" id="Environment_5ieky"]
+background_color = Color(0.225039, 0.312888, 0.398959, 1)
+tonemap_mode = 2
+ssil_enabled = true
+
+[sub_resource type="QuadMesh" id="1"]
+size = Vector2(3, 2)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_0dxve"]
+viewport_path = NodePath("GUIPanel3D2/SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qlchx"]
+resource_local_to_scene = true
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_0dxve")
+proximity_fade_distance = 0.01
+
+[sub_resource type="BoxShape3D" id="4"]
+size = Vector3(3, 2, 0.1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_stnxs"]
+viewport_path = NodePath("GUIPanel3D3/SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fgi3p"]
+resource_local_to_scene = true
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_stnxs")
+proximity_fade_distance = 0.01
+
+[node name="root" type="Node"]
+
+[node name="Cam" type="Camera3D" parent="."]
+transform = Transform3D(1, 0.0007453, -0.000310549, -0.000745252, 1, 0.00014499, 0.000310664, -0.000144744, 1, 0.0177705, 1.40809, 4.35502)
+environment = SubResource("Environment_5ieky")
+
+[node name="Ground" type="CSGBox3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 1, 0, 0, 0, 10, 1.3128, -0.47437, -0.88916)
+size = Vector3(1.2626, 1, 1.17603)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.852706, 0.47181, 0.224249, -0.474072, 0.518596, 0.711557, 0.219425, -0.713059, 0.665882, 0.811849, 9.44979, 4.46504)
+light_color = Color(1, 1, 0.952941, 1)
+shadow_enabled = true
+
+[node name="GUIPanel3D2" type="Node3D" parent="."]
+process_mode = 3
+transform = Transform3D(0.981087, 0, 0.193567, 0, 1, 0, -0.193567, 0, 0.981087, -0.786104, 1.04178, 2.22221)
+script = ExtResource("3_b0ejj")
+
+[node name="SubViewport" type="SubViewport" parent="GUIPanel3D2"]
+gui_embed_subwindows = true
+size = Vector2i(1605, 820)
+size_2d_override_stretch = true
+render_target_update_mode = 4
+
+[node name="GUI" type="Control" parent="GUIPanel3D2/SubViewport"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1605.0
+offset_bottom = 820.0
+mouse_filter = 1
+
+[node name="LLM_dialog" parent="GUIPanel3D2/SubViewport/GUI" instance=ExtResource("4_lkja4")]
+layout_mode = 1
+
+[node name="Quad" type="MeshInstance3D" parent="GUIPanel3D2"]
+mesh = SubResource("1")
+surface_material_override/0 = SubResource("StandardMaterial3D_qlchx")
+
+[node name="Area3D" type="Area3D" parent="GUIPanel3D2/Quad"]
+collision_layer = 2
+input_capture_on_drag = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GUIPanel3D2/Quad/Area3D"]
+shape = SubResource("4")
+
+[node name="GUIPanel3D3" type="Node3D" parent="."]
+process_mode = 3
+transform = Transform3D(0.99414, 0, -0.108103, 0, 1, 0, 0.108103, 0, 0.99414, 3.24639, 1.04178, -0.733903)
+script = ExtResource("3_b0ejj")
+
+[node name="SubViewport" type="SubViewport" parent="GUIPanel3D3"]
+gui_embed_subwindows = true
+size = Vector2i(1605, 820)
+size_2d_override_stretch = true
+render_target_update_mode = 4
+
+[node name="GUI" type="Control" parent="GUIPanel3D3/SubViewport"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1605.0
+offset_bottom = 820.0
+mouse_filter = 1
+
+[node name="2DVisualisationScene" parent="GUIPanel3D3/SubViewport/GUI" instance=ExtResource("5_b2u2y")]
+
+[node name="Quad" type="MeshInstance3D" parent="GUIPanel3D3"]
+mesh = SubResource("1")
+surface_material_override/0 = SubResource("StandardMaterial3D_fgi3p")
+
+[node name="Area3D" type="Area3D" parent="GUIPanel3D3/Quad"]
+collision_layer = 2
+input_capture_on_drag = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GUIPanel3D3/Quad/Area3D"]
+shape = SubResource("4")
+
+[node name="VisualsManager" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.06349, 0.5, 0.634184)
+script = ExtResource("2_2b207")

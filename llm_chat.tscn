@@ -1,0 +1,125 @@
+[gd_scene load_steps=7 format=3 uid="uid://c12vkmcbp0j0x"]
+
+[ext_resource type="Script" path="res://addons/godot_llm_framework/llm.gd" id="1_ni5lj"]
+[ext_resource type="Script" path="res://text_edit_pressed.gd" id="2_1tagw"]
+[ext_resource type="Script" path="res://addons/godot_llm_framework/llm_config.gd" id="2_ah1ai"]
+[ext_resource type="Script" path="res://llm_prompt_logic.gd" id="3_0uvxb"]
+[ext_resource type="PackedScene" uid="uid://cowug1mbtod0e" path="res://Fuseki/Caller/FusekiCallerBtton.tscn" id="6_e6y7y"]
+
+[sub_resource type="Resource" id="Resource_m02aw"]
+script = ExtResource("2_ah1ai")
+provider = 3
+api_key = "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"
+model = "qwen2.5-7b-instruct-1m"
+temperature = 0.7
+max_message_history = 20
+additional_parameters = {}
+system_prompt = ""
+
+[node name="Example" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_0uvxb")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.165656, 0.165656, 0.165656, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Control" type="Control" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -117.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 2
+theme_override_font_sizes/bold_italics_font_size = 21
+theme_override_font_sizes/italics_font_size = 21
+theme_override_font_sizes/mono_font_size = 21
+theme_override_font_sizes/normal_font_size = 21
+theme_override_font_sizes/bold_font_size = 21
+scroll_following = true
+context_menu_enabled = true
+selection_enabled = true
+
+[node name="TextEdit" type="TextEdit" parent="MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -107.0
+offset_right = -157.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 21
+placeholder_text = "Type your question"
+wrap_mode = 1
+script = ExtResource("2_1tagw")
+
+[node name="Button" type="Button" parent="MarginContainer/Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -138.0
+offset_top = -79.0
+offset_right = -3.0
+offset_bottom = -21.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 21
+text = "Send"
+
+[node name="FusekiCallerButton" parent="MarginContainer/Control" instance=ExtResource("6_e6y7y")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+offset_left = -229.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 78.0
+grow_horizontal = 0
+grow_vertical = 1
+text = "Automatic Scene Generation"
+
+[node name="LLM" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("1_ni5lj")
+config = SubResource("Resource_m02aw")
+debug = true
+
+[connection signal="submitted" from="MarginContainer/Control/TextEdit" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="MarginContainer/Control/Button" to="." method="_on_button_pressed"]

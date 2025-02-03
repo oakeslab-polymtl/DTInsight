@@ -3,7 +3,7 @@ extends Node
 #scene ressources
 @onready var fuseki_caller = $ControlLayer/ControlPanel/ControlContainer/FusekiCallerButton
 @onready var fuseki_dumper = $ControlLayer/ControlPanel/ControlContainer/FusekiDumperController
-@onready var fuseki_data : FusekiData = $FusekiData
+@onready var fuseki_data : FusekiData = FusekiDataGlobal
 @onready var rabbit_data : RabbitMQ = $RabbitMq
 @onready var dt_container : BoxContainer = $DTContainer
 

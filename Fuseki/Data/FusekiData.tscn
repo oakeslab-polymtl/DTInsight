@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bx42q4hl46td1"]
-
-[ext_resource type="Script" path="res://Fuseki/Data/FusekiData.gd" id="1_5y0ts"]
-
-[node name="FusekiData" type="Node"]
-script = ExtResource("1_5y0ts")
