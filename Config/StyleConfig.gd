@@ -24,8 +24,8 @@ class Link:
 
 #Legends style
 class Legends:
-	const GO_AWAY_TEXT : String = "VVV"
-	const COME_IN_TEXT : String = "ΛΛΛ"
+	const GO_AWAY_TEXT : String = "Hide legend"
+	const COME_IN_TEXT : String = "Show legend"
 	
 	const RETRACT_BUTTON_COLOR : Color = Color.DARK_ORANGE
 	const PANEL_COLOR : Color = Color.GRAY

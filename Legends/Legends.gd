@@ -10,6 +10,7 @@ func _ready() -> void:
 	set_retract_button_color(StyleConfig.Legends.RETRACT_BUTTON_COLOR)
 	set_panel_color(StyleConfig.Legends.PANEL_COLOR)
 	build_legends(LegendsConfig.LEGENDS)
+	retract_button.text = StyleConfig.Legends.GO_AWAY_TEXT
 
 func set_retract_button_color(color : Color):
 	var buttonStylebox : StyleBoxFlat = retract_button.get_theme_stylebox("normal").duplicate()

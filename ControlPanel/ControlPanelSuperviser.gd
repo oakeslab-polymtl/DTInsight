@@ -1,6 +1,6 @@
 extends PanelContainer
 
-@onready var rabbit_button = $ControlContainer/RabbitButton
+@onready var rabbit_button = $%RabbitButton
 
 func _ready() -> void:
 	FusekiSignals.fuseki_data_updated.connect(_on_fuseki_updated)

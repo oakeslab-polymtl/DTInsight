@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cxj8tr6re2b4t"]
+[gd_scene load_steps=9 format=3 uid="uid://cxj8tr6re2b4t"]
 
 [ext_resource type="PackedScene" uid="uid://nqgolpvgp7yg" path="res://DTContainer/DT&PTContainer.tscn" id="1_lklxr"]
 [ext_resource type="Script" path="res://MainScene/MainSceneController.gd" id="1_r7thu"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://ca4ircpbul4vs" path="res://ControlPanel/ControlPanel.tscn" id="4_bpfsb"]
 [ext_resource type="PackedScene" uid="uid://bx42q4hl46td1" path="res://Fuseki/Data/FusekiData.tscn" id="5_4e51a"]
 [ext_resource type="PackedScene" uid="uid://cwd5j8qr66eh3" path="res://Legends/Legends.tscn" id="5_8cnmr"]
+[ext_resource type="Script" path="res://help_button.gd" id="6_tgjmw"]
 [ext_resource type="PackedScene" uid="uid://6crhwyl883nn" path="res://RabbitMQ/Data/RabbitMQ.tscn" id="7_j6wr3"]
 
 [node name="MainScene" type="Node"]
@@ -15,8 +16,8 @@ script = ExtResource("1_r7thu")
 z_as_relative = false
 offset_left = -9.0
 offset_top = -2.0
-offset_right = -9.0
-offset_bottom = -2.0
+offset_right = 1710.0
+offset_bottom = 726.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(575, 326)
@@ -40,8 +41,44 @@ color = Color(0.933333, 0.913725, 0.933333, 1)
 
 [node name="Legends" parent="ControlLayer" instance=ExtResource("5_8cnmr")]
 
+[node name="HelpButton" type="Button" parent="ControlLayer"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = -41.0
+offset_right = 41.0
+offset_bottom = -10.0
+grow_vertical = 0
+tooltip_text = "Get help"
+text = "?"
+icon_alignment = 1
+script = ExtResource("6_tgjmw")
+
+[node name="HelpPopup" type="PopupPanel" parent="ControlLayer/HelpButton"]
+title = "Help"
+position = Vector2i(18, 129)
+size = Vector2i(305, 455)
+unresizable = false
+borderless = false
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ControlLayer/HelpButton/HelpPopup"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 301.0
+offset_bottom = 451.0
+text = "DTInsight allows you to visualize the architecture of your Digital Twin. It does by gathering its ontological structure through a Fuseki server, and displaying the incoming RabbitMQ data.
+
+To get started, either:
+- Connect to Fuseki by clicking on the \"Call Fuseki\" button.
+- Load an existing dump by picking a dump file and selecting \"Load\"
+
+Once the graph is generated, hover on the nodes (clickable) to highlight connections."
+
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 
 [node name="FusekiData" parent="." instance=ExtResource("5_4e51a")]
 
 [node name="RabbitMq" parent="." instance=ExtResource("7_j6wr3")]
+
+[connection signal="pressed" from="ControlLayer/HelpButton" to="ControlLayer/HelpButton" method="_on_help_button_pressed"]

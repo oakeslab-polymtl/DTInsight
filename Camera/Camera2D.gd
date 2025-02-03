@@ -11,7 +11,7 @@ func _process(delta : float):
 	if (mouvement_enabled):
 		var inputMouvementVector : Vector2 = handle_mouvement_input()
 		moveCamera(inputMouvementVector, delta)
-	var inputZoomVector : Vector2 = handle_zoom_input()
+	var inputZoomVector : Vector2 = handle_zoom_input(false)
 	zoom_camera(inputZoomVector)
 
 #Movement functions -----------------------------------------------------------
@@ -62,21 +62,25 @@ func opposite_signs(x:float, y:float) -> bool:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask == MOUSE_BUTTON_LEFT:
 		handle_mouse_mouvement(event)
+	var inputZoomVector : Vector2 = handle_zoom_input(true)
+	zoom_camera(inputZoomVector)
 
 func handle_mouse_mouvement(event : InputEventMouseMotion) -> void:
 	translate(-event.relative / zoom)
 
 #Camera functions --------------------------------------------------------------
-func handle_zoom_input():
+func handle_zoom_input(using_mouse : bool):
 	var input_vector : Vector2 = Vector2(0, 0)
-	if Input.is_action_pressed("cam_zoom_in"):
-		input_vector += Vector2(CameraConfig.Zoom.ZOOM_KEY_SPEED, CameraConfig.Zoom.ZOOM_KEY_SPEED)
-	if Input.is_action_pressed("cam_zoom_out"):
-		input_vector += Vector2(-CameraConfig.Zoom.ZOOM_KEY_SPEED, -CameraConfig.Zoom.ZOOM_KEY_SPEED)
-	if Input.is_action_just_released("cam_scroll_zoom_in"):
-		input_vector += Vector2(CameraConfig.Zoom.ZOOM_SCROLL_SPEED, CameraConfig.Zoom.ZOOM_SCROLL_SPEED)
-	if Input.is_action_just_released("cam_scroll_zoom_out"):
-		input_vector += Vector2(-CameraConfig.Zoom.ZOOM_SCROLL_SPEED, -CameraConfig.Zoom.ZOOM_SCROLL_SPEED)
+	if not using_mouse:
+		if Input.is_action_pressed("cam_zoom_in"):
+			input_vector += Vector2(CameraConfig.Zoom.ZOOM_KEY_SPEED, CameraConfig.Zoom.ZOOM_KEY_SPEED)
+		if Input.is_action_pressed("cam_zoom_out"):
+			input_vector += Vector2(-CameraConfig.Zoom.ZOOM_KEY_SPEED, -CameraConfig.Zoom.ZOOM_KEY_SPEED)
+	else:
+		if Input.is_action_just_released("cam_scroll_zoom_in"):
+			input_vector += Vector2(CameraConfig.Zoom.ZOOM_SCROLL_SPEED, CameraConfig.Zoom.ZOOM_SCROLL_SPEED)
+		if Input.is_action_just_released("cam_scroll_zoom_out"):
+			input_vector += Vector2(-CameraConfig.Zoom.ZOOM_SCROLL_SPEED, -CameraConfig.Zoom.ZOOM_SCROLL_SPEED)
 	return input_vector
 
 func zoom_camera(input_vector: Vector2):

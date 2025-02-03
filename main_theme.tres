@@ -1,0 +1,12 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://xukk6lvgcpaa"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_2ptns"]
+thickness = 0
+vertical = true
+
+[resource]
+MarginContainer/constants/margin_bottom = 5
+MarginContainer/constants/margin_left = 4
+MarginContainer/constants/margin_right = 4
+MarginContainer/constants/margin_top = 3
+VSeparator/styles/separator = SubResource("StyleBoxLine_2ptns")
