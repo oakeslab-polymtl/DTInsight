@@ -30,10 +30,14 @@ func _on_display_highlight(highlighted_elements_names : Array):
 		set_dimmed_style()
 
 func _on_mouse_entered():
-	GenericDisplaySignals.generic_display_over.emit(element.text)
+	GenericDisplaySignals.generic_display_over.emit(element.text, false)
 
 func _on_mouse_exited():
-	GenericDisplaySignals.generic_display_over.emit("")
+	GenericDisplaySignals.generic_display_over.emit("", false)
+	
+func _gui_input(event: InputEvent) -> void:
+	if event.button_mask == MOUSE_BUTTON_LEFT:
+		GenericDisplaySignals.generic_display_over.emit(element.text, true)
 
 func _on_pop_up_button_pressed() -> void:
 	chart.feed_historic(data)
