@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cxj8tr6re2b4t"]
+[gd_scene load_steps=11 format=3 uid="uid://cxj8tr6re2b4t"]
 
 [ext_resource type="PackedScene" uid="uid://nqgolpvgp7yg" path="res://DTContainer/DT&PTContainer.tscn" id="1_lklxr"]
 [ext_resource type="Script" path="res://MainScene/MainSceneController.gd" id="1_r7thu"]
@@ -7,7 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://bx42q4hl46td1" path="res://Fuseki/Data/FusekiData.tscn" id="5_4e51a"]
 [ext_resource type="PackedScene" uid="uid://cwd5j8qr66eh3" path="res://Legends/Legends.tscn" id="5_8cnmr"]
 [ext_resource type="Script" path="res://help_button.gd" id="6_tgjmw"]
+[ext_resource type="Script" path="res://settings_button.gd" id="7_gs64f"]
 [ext_resource type="PackedScene" uid="uid://6crhwyl883nn" path="res://RabbitMQ/Data/RabbitMQ.tscn" id="7_j6wr3"]
+[ext_resource type="PackedScene" uid="uid://px6a2dg8cawb" path="res://addons/modular-settings-menu/scenes/settings.tscn" id="8_ixws2"]
 
 [node name="MainScene" type="Node"]
 script = ExtResource("1_r7thu")
@@ -75,6 +77,64 @@ To get started, either:
 
 Once the graph is generated, hover on the nodes (clickable) to highlight connections."
 
+[node name="SettingsButton" type="Button" parent="ControlLayer"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = -81.0
+offset_right = 41.0
+offset_bottom = -50.0
+grow_vertical = 0
+tooltip_text = "Settings"
+text = "⚙️"
+icon_alignment = 1
+script = ExtResource("7_gs64f")
+
+[node name="SettingsPopup" type="PopupPanel" parent="ControlLayer/SettingsButton"]
+auto_translate_mode = 1
+mode = 2
+title = "Settings"
+initial_position = 1
+size = Vector2i(490, 560)
+borderless = false
+always_on_top = true
+
+[node name="TabContainer" type="TabContainer" parent="ControlLayer/SettingsButton/SettingsPopup"]
+visible = false
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 486.0
+offset_bottom = 556.0
+current_tab = 0
+
+[node name="General" type="VBoxContainer" parent="ControlLayer/SettingsButton/SettingsPopup/TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="RabbitMQ" type="VBoxContainer" parent="ControlLayer/SettingsButton/SettingsPopup/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="SettingsBackground" type="ColorRect" parent="ControlLayer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.639216)
+
+[node name="Settings" parent="ControlLayer/SettingsBackground" instance=ExtResource("8_ixws2")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+IS_IN_GAME_MENU = false
+
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 
 [node name="FusekiData" parent="." instance=ExtResource("5_4e51a")]
@@ -82,3 +142,5 @@ Once the graph is generated, hover on the nodes (clickable) to highlight connect
 [node name="RabbitMq" parent="." instance=ExtResource("7_j6wr3")]
 
 [connection signal="pressed" from="ControlLayer/HelpButton" to="ControlLayer/HelpButton" method="_on_help_button_pressed"]
+[connection signal="pressed" from="ControlLayer/SettingsButton" to="ControlLayer/SettingsButton" method="_on_pressed"]
+[connection signal="settings_menu_closed" from="ControlLayer/SettingsBackground/Settings" to="ControlLayer/SettingsButton" method="_on_settings_settings_menu_closed"]

@@ -15,6 +15,7 @@ var script_software_directory : String = ""
 var script_file_path : String = ""
 var absolute_path : String = ""
 var data : Array = []
+var highlightable : bool = true
 
 func _ready():
 	GenericDisplaySignals.generic_display_highlight.connect(_on_display_highlight)
@@ -36,8 +37,11 @@ func _on_mouse_exited():
 	GenericDisplaySignals.generic_display_over.emit("", false)
 	
 func _gui_input(event: InputEvent) -> void:
-	if event.button_mask == MOUSE_BUTTON_LEFT:
+	if event.button_mask == MOUSE_BUTTON_LEFT and highlightable:
+		highlightable = false
 		GenericDisplaySignals.generic_display_over.emit(element.text, true)
+		await get_tree().create_timer(0.2).timeout
+		highlightable = true
 
 func _on_pop_up_button_pressed() -> void:
 	chart.feed_historic(data)
