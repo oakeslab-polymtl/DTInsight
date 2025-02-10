@@ -1,17 +1,49 @@
-[gd_scene load_steps=4 format=3 uid="uid://byoys8cpmn66u"]
+[gd_scene load_steps=6 format=3 uid="uid://byoys8cpmn66u"]
 
 [ext_resource type="Script" path="res://addons/modular-settings-menu/scripts/settings_section.gd" id="1_hlcra"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v0fou"]
 
-[sub_resource type="GDScript" id="GDScript_q864m"]
-resource_name = "user"
+[sub_resource type="GDScript" id="GDScript_2v3nf"]
+resource_name = "url"
 script/source = "extends TextElement
 
+func init_element() -> void:
+	super.init_element()
+	return
 
 # Called to apply the setting to the game
 func _apply_settings() -> void:
-	pass
+	FusekiConfig.URL = currentValue
+	return
+"
+
+[sub_resource type="GDScript" id="GDScript_rs1wk"]
+resource_name = "dataset"
+script/source = "extends TextElement
+
+func init_element() -> void:
+	super.init_element()
+	return
+
+# Called to apply the setting to the game
+func _apply_settings() -> void:
+	FusekiConfig.DATASET = currentValue
+	return
+"
+
+[sub_resource type="GDScript" id="GDScript_lvpno"]
+resource_name = "endpoint"
+script/source = "extends TextElement
+
+func init_element() -> void:
+	super.init_element()
+	return
+
+# Called to apply the setting to the game
+func _apply_settings() -> void:
+	FusekiConfig.ENDPOINT = currentValue
+	return
 "
 
 [node name="Fuseki" type="TabBar"]
@@ -67,7 +99,7 @@ layout_mode = 2
 
 [node name="Url" type="HBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements" node_paths=PackedStringArray("TextRef")]
 layout_mode = 2
-script = SubResource("GDScript_q864m")
+script = SubResource("GDScript_2v3nf")
 DEFAULT_VALUE = "http://127.0.0.1:3030"
 TextRef = NodePath("LineEdit")
 IDENTIFIER = "Url"
@@ -87,8 +119,8 @@ alignment = 2
 
 [node name="Dataset" type="HBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements" node_paths=PackedStringArray("TextRef")]
 layout_mode = 2
-script = SubResource("GDScript_q864m")
-DEFAULT_VALUE = "/DTDF"
+script = SubResource("GDScript_rs1wk")
+DEFAULT_VALUE = "/DTD"
 TextRef = NodePath("LineEdit")
 IDENTIFIER = "Dataset"
 
@@ -106,7 +138,7 @@ alignment = 2
 
 [node name="Endpoint" type="HBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements" node_paths=PackedStringArray("TextRef")]
 layout_mode = 2
-script = SubResource("GDScript_q864m")
+script = SubResource("GDScript_lvpno")
 DEFAULT_VALUE = "/sparql?query="
 TextRef = NodePath("LineEdit")
 IDENTIFIER = "Endpoint"

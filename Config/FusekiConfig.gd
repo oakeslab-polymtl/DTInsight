@@ -1,10 +1,9 @@
 extends Node
 
 #Fuseki endpoint data
-class Connection:
-	const URL = "http://127.0.0.1:3030" #Fuseki server, localhost if started from openCAESAR on this machine
-	const DATASET = "/DTDF" #FUseki endpoint defined in fuseki.ttl in the project
-	const ENDPOINT = "/sparql?query=" #sparql endpoint
+var URL = "http://127.0.0.1:3030" #Fuseki server, localhost if started from openCAESAR on this machine
+var DATASET = "/DTDF" #FUseki endpoint defined in fuseki.ttl in the project
+var ENDPOINT = "/sparql?query=" #sparql endpoint
 
 #JSON match
 class JsonHead:
