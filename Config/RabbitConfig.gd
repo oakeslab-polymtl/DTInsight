@@ -1,11 +1,11 @@
 extends Node
 
-const USER : String = "incubator"
-const PASS : String = "incubator"
-const HOST : String = "localhost"
-const PORT : int = 5672
+var USER : String = "incubator"
+var PASS : String = "incubator"
+var HOST : String = "localhost"
+var PORT : int = 5672
 
-const MESSAGES_LIMIT : int = 100
-const MIN_TEMPS_PLOTTED : int = 0
-const MAX_TEMPS_PLOTTED : int = 40
-const CHART_NULL_VALUE : int = 0
+var MESSAGES_LIMIT : int = 100
+var MIN_TEMPS_PLOTTED : int = 0
+var MAX_TEMPS_PLOTTED : int = 40
+var CHART_NULL_VALUE : int = 0

@@ -2,7 +2,7 @@ extends Node
 
 class_name Fifo
 
-const SIZE_LIMIT : int = RabbitConfig.MESSAGES_LIMIT
+var SIZE_LIMIT : int = RabbitConfig.MESSAGES_LIMIT
 var content : Array[String] = []
 
 func add_element(element) -> void:

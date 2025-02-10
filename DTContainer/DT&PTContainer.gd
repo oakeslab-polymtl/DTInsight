@@ -33,7 +33,7 @@ func _ready():
 
 #Node and element manipulation functions -----------------------------------------------------------
 
-#Displayes node referenced by its name
+#Displays node referenced by its name
 class NamedNode:
 	var name : String
 	var node : GenericDisplay
@@ -41,7 +41,7 @@ class NamedNode:
 #Array of displayes nodes
 var displayed_node_list: Array[NamedNode]
 
-#attributes
+#Attributes
 const border_attribute : String = "hasTimeScale"
 const type_attribute : String = "type"
 
@@ -60,7 +60,7 @@ func set_starting_node_style(namedNode : NamedNode, attributes : Dictionary):
 			["faster_trt"]:
 				namedNode.node.set_faster_style()
 
-#set highlighted element on signal
+#Set highlighted element on signal
 func _on_element_over(element_name, click: bool):
 	if element_name == "":
 		if not click and highlighted_with_click:
