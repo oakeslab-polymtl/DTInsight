@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cxj8tr6re2b4t"]
+[gd_scene load_steps=12 format=3 uid="uid://cxj8tr6re2b4t"]
 
 [ext_resource type="PackedScene" uid="uid://nqgolpvgp7yg" path="res://DTContainer/DT&PTContainer.tscn" id="1_lklxr"]
 [ext_resource type="Script" path="res://MainScene/MainSceneController.gd" id="1_r7thu"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://settings_button.gd" id="7_gs64f"]
 [ext_resource type="PackedScene" uid="uid://6crhwyl883nn" path="res://RabbitMQ/Data/RabbitMQ.tscn" id="7_j6wr3"]
 [ext_resource type="PackedScene" uid="uid://px6a2dg8cawb" path="res://addons/modular-settings-menu/scenes/settings.tscn" id="8_ixws2"]
+[ext_resource type="Script" path="res://ScreenshotServer.gd" id="11_cueep"]
 
 [node name="MainScene" type="Node"]
 script = ExtResource("1_r7thu")
@@ -40,6 +41,9 @@ color = Color(0.933333, 0.913725, 0.933333, 1)
 [node name="ControlLayer" type="CanvasLayer" parent="."]
 
 [node name="ControlPanel" parent="ControlLayer" instance=ExtResource("4_bpfsb")]
+offset_left = -11.0
+offset_right = 11.0
+offset_bottom = 86.0
 
 [node name="Legends" parent="ControlLayer" instance=ExtResource("5_8cnmr")]
 
@@ -140,6 +144,9 @@ IS_IN_GAME_MENU = false
 [node name="FusekiData" parent="." instance=ExtResource("5_4e51a")]
 
 [node name="RabbitMq" parent="." instance=ExtResource("7_j6wr3")]
+
+[node name="ScreenshotServer" type="Node" parent="."]
+script = ExtResource("11_cueep")
 
 [connection signal="pressed" from="ControlLayer/HelpButton" to="ControlLayer/HelpButton" method="_on_help_button_pressed"]
 [connection signal="pressed" from="ControlLayer/SettingsButton" to="ControlLayer/SettingsButton" method="_on_pressed"]

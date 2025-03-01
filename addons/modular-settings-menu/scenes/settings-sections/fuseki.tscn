@@ -120,7 +120,7 @@ alignment = 2
 [node name="Dataset" type="HBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements" node_paths=PackedStringArray("TextRef")]
 layout_mode = 2
 script = SubResource("GDScript_rs1wk")
-DEFAULT_VALUE = "/DTD"
+DEFAULT_VALUE = "/DTDF"
 TextRef = NodePath("LineEdit")
 IDENTIFIER = "Dataset"
 
