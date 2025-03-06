@@ -1,16 +1,16 @@
 [gd_scene load_steps=12 format=3 uid="uid://cxj8tr6re2b4t"]
 
 [ext_resource type="PackedScene" uid="uid://nqgolpvgp7yg" path="res://DTContainer/DT&PTContainer.tscn" id="1_lklxr"]
-[ext_resource type="Script" path="res://MainScene/MainSceneController.gd" id="1_r7thu"]
-[ext_resource type="Script" path="res://Camera/Camera2D.gd" id="3_5mxu4"]
+[ext_resource type="Script" uid="uid://dfun6prbhxg7c" path="res://MainScene/MainSceneController.gd" id="1_r7thu"]
+[ext_resource type="Script" uid="uid://chsxi3pvlcut1" path="res://Camera/Camera2D.gd" id="3_5mxu4"]
 [ext_resource type="PackedScene" uid="uid://ca4ircpbul4vs" path="res://ControlPanel/ControlPanel.tscn" id="4_bpfsb"]
 [ext_resource type="PackedScene" uid="uid://bx42q4hl46td1" path="res://Fuseki/Data/FusekiData.tscn" id="5_4e51a"]
 [ext_resource type="PackedScene" uid="uid://cwd5j8qr66eh3" path="res://Legends/Legends.tscn" id="5_8cnmr"]
-[ext_resource type="Script" path="res://help_button.gd" id="6_tgjmw"]
-[ext_resource type="Script" path="res://settings_button.gd" id="7_gs64f"]
+[ext_resource type="Script" uid="uid://wfoj63h06hpx" path="res://help_button.gd" id="6_tgjmw"]
+[ext_resource type="Script" uid="uid://b0mon1bk14hp6" path="res://settings_button.gd" id="7_gs64f"]
 [ext_resource type="PackedScene" uid="uid://6crhwyl883nn" path="res://RabbitMQ/Data/RabbitMQ.tscn" id="7_j6wr3"]
 [ext_resource type="PackedScene" uid="uid://px6a2dg8cawb" path="res://addons/modular-settings-menu/scenes/settings.tscn" id="8_ixws2"]
-[ext_resource type="Script" path="res://ScreenshotServer.gd" id="11_cueep"]
+[ext_resource type="Script" uid="uid://0b3cap3tphwi" path="res://ScreenshotServer.gd" id="11_cueep"]
 
 [node name="MainScene" type="Node"]
 script = ExtResource("1_r7thu")

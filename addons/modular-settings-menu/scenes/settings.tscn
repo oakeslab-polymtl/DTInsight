@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://px6a2dg8cawb"]
 
-[ext_resource type="Script" path="res://addons/modular-settings-menu/scripts/settings_menu.gd" id="1_crapp"]
+[ext_resource type="Script" uid="uid://cj71y2lip0wby" path="res://addons/modular-settings-menu/scripts/settings_menu.gd" id="1_crapp"]
 [ext_resource type="PackedScene" uid="uid://c1rsvqsv63cco" path="res://addons/modular-settings-menu/scenes/settings-sections/rabbitmq.tscn" id="2_qpphr"]
 [ext_resource type="PackedScene" uid="uid://buqq0kms2dbb4" path="res://addons/modular-settings-menu/scenes/settings-sections/graphics.tscn" id="3_8fcn6"]
 [ext_resource type="PackedScene" uid="uid://byoys8cpmn66u" path="res://addons/modular-settings-menu/scenes/settings-sections/fuseki.tscn" id="3_i2jv1"]

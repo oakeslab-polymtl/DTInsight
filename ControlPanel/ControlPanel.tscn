@@ -1,11 +1,11 @@
 [gd_scene load_steps=8 format=3 uid="uid://ca4ircpbul4vs"]
 
 [ext_resource type="PackedScene" uid="uid://bpja34bbtxgig" path="res://Fuseki/Dump/FusekiDumperController.tscn" id="1_38nkc"]
-[ext_resource type="Script" path="res://ControlPanel/ControlPanelSuperviser.gd" id="1_hxofy"]
+[ext_resource type="Script" uid="uid://cwl13x3trg1o3" path="res://ControlPanel/ControlPanelSuperviser.gd" id="1_hxofy"]
 [ext_resource type="Theme" uid="uid://xukk6lvgcpaa" path="res://main_theme.tres" id="2_fqp38"]
 [ext_resource type="PackedScene" uid="uid://cowug1mbtod0e" path="res://Fuseki/Caller/FusekiCallerBtton.tscn" id="2_mxvta"]
 [ext_resource type="PackedScene" uid="uid://bkgqmtunv5x7n" path="res://ControlPanel/StandaloneControl/ScriptFileSelector/ScriptFileSelector.tscn" id="2_oxflb"]
-[ext_resource type="Script" path="res://RabbitMQ/Control/RabbitButton.gd" id="6_28e17"]
+[ext_resource type="Script" uid="uid://cfkgtkfhl06v5" path="res://RabbitMQ/Control/RabbitButton.gd" id="6_28e17"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ffs3u"]
 border_color = Color(0.259294, 0.259294, 0.259294, 1)

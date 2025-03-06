@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://c1rsvqsv63cco"]
 
-[ext_resource type="Script" path="res://addons/modular-settings-menu/scripts/settings_section.gd" id="1_vgygy"]
+[ext_resource type="Script" uid="uid://b2uskv7m4kmgm" path="res://addons/modular-settings-menu/scripts/settings_section.gd" id="1_vgygy"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v0fou"]
 
