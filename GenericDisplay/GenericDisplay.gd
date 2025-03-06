@@ -7,7 +7,7 @@ class_name GenericDisplay
 @onready var real_time_container = $GenericDisplay/RealTimeContainer
 @onready var attributes : Label = $GenericDisplay/RealTimeContainer/GenericElementAttributes
 @onready var pop_up_chart : Popup = $PopupChart
-@onready var chart : ChartControl = $PopupChart/ChartControl
+@onready var chart = $PopupChart/ChartControl
 @onready var pop_up_script : Popup = $PopupScript
 @onready var script_control = $PopupScript/ScriptControl
 
