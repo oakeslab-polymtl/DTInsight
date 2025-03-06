@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://nqgolpvgp7yg" path="res://DTContainer/DT&PTContainer.tscn" id="1_lklxr"]
 [ext_resource type="Script" uid="uid://dfun6prbhxg7c" path="res://MainScene/MainSceneController.gd" id="1_r7thu"]
-[ext_resource type="Script" uid="uid://chsxi3pvlcut1" path="res://Camera/Camera2D.gd" id="3_5mxu4"]
+[ext_resource type="Script" uid="uid://chsxi3pvlcut1" path="res://Camera/CameraControl.gd" id="3_5mxu4"]
 [ext_resource type="PackedScene" uid="uid://ca4ircpbul4vs" path="res://ControlPanel/ControlPanel.tscn" id="4_bpfsb"]
 [ext_resource type="PackedScene" uid="uid://bx42q4hl46td1" path="res://Fuseki/Data/FusekiData.tscn" id="5_4e51a"]
 [ext_resource type="PackedScene" uid="uid://cwd5j8qr66eh3" path="res://Legends/Legends.tscn" id="5_8cnmr"]
@@ -25,6 +25,7 @@ offset_bottom = 726.0
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(575, 326)
 script = ExtResource("3_5mxu4")
+metadata/_custom_type_script = "uid://chsxi3pvlcut1"
 
 [node name="BackgroundLayer" type="CanvasLayer" parent="."]
 layer = -1
@@ -145,8 +146,10 @@ IS_IN_GAME_MENU = false
 
 [node name="RabbitMq" parent="." instance=ExtResource("7_j6wr3")]
 
-[node name="ScreenshotServer" type="Node" parent="."]
+[node name="ScreenshotServer" type="Node" parent="." node_paths=PackedStringArray("container", "to_hide")]
 script = ExtResource("11_cueep")
+container = NodePath("../DTContainer")
+to_hide = [NodePath("../ControlLayer")]
 
 [connection signal="pressed" from="ControlLayer/HelpButton" to="ControlLayer/HelpButton" method="_on_help_button_pressed"]
 [connection signal="pressed" from="ControlLayer/SettingsButton" to="ControlLayer/SettingsButton" method="_on_pressed"]

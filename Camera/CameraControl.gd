@@ -1,5 +1,7 @@
 extends Camera2D
 
+class_name CameraControl
+
 var mouvement_enabled : bool = true
 var currently_zooming : bool = false
 
@@ -92,3 +94,15 @@ func _disable_camera_mouvement() -> void:
 
 func _enable_camera_mouvement() -> void:
 	mouvement_enabled = true
+
+func zoom_to_fit(target_rect: Rect2):
+	var viewport_size = get_viewport_rect().size
+	var scale_x = viewport_size.x / target_rect.size.x
+	var scale_y = viewport_size.y / target_rect.size.y
+
+	# Use the smaller scale to ensure the whole target fits
+	var zoom_factor = min(scale_x, scale_y)
+	zoom = Vector2(zoom_factor, zoom_factor)
+
+	# Center the camera on the target
+	position = target_rect.position + target_rect.size * 0.5
