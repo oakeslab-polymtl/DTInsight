@@ -1,5 +1,8 @@
 name: DTInsight_CI
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
@@ -21,13 +24,19 @@ jobs:
 
     - name: Download DTInsight executable
       run: |
-        curl -L -o DTInsight.x86_64 https://github.com/oakeslab-polymtl/DTInsight/releases/download/v0.0.1/DTInsight.x86_64
+        curl -L -o DTInsight.x86_64 -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+        https://github.com/oakeslab-polymtl/DTInsight/releases/download/v0.0.1/DTInsight.x86_64
         file DTInsight.x86_64
         ls -l DTInsight.x86_64
     
     - name: Set execute permissions for the Godot binary
       run: chmod +x ./DTInsight.x86_64
     
-    - name: Run Godot project with virtual display
+    - name: Run Godot and trigger screenshot
       run: |
-        xvfb-run --server-args="-screen 0 1024x768x24" ./DTInsight.x86_64 -- --ci-mode
+        # Start virtual display
+        xvfb-run --server-args="-screen 0 1024x768x24" ./DTInsight.x86_64 -- --ci-mode &
+        sleep 5 # Give time for the HTTP server to start
+
+        # Send HTTP request to trigger screenshot
+        curl -s http://localhost:9090
