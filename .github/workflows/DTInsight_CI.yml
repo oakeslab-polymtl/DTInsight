@@ -1,0 +1,32 @@
+name: DTInsight_CI
+
+on:
+  push:
+    branches:
+      - test-actions
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y xvfb
+        
+    - uses: actions/checkout@v2
+
+    - name: Download Godot binary from release
+      run: |
+        curl -L -o DTInsight.x86_64 \
+        https://github.com/oakeslab-polymtl/DTInsight/releases/download/v0.0.1/DTInsight.x86_64
+    
+    - name: Set execute permissions for the Godot binary
+      run: chmod +x ./DTInsight.x86_64
+    
+    - name: Run Godot project with virtual display
+      run: |
+        xvfb-run --server-args="-screen 0 1024x768x24" ./DTInsight.x86_64 -- --ci-mode
