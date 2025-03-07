@@ -19,10 +19,11 @@ jobs:
         
     - uses: actions/checkout@v2
 
-    - name: Download Godot binary from release
+    - name: Download DTInsight executable
       run: |
-        curl -L -o DTInsight.x86_64 \
-        https://github.com/oakeslab-polymtl/DTInsight/releases/download/v0.0.1/DTInsight.x86_64
+        curl -L -o DTInsight.x86_64 https://github.com/oakeslab-polymtl/DTInsight/releases/download/v0.0.1/DTInsight.x86_64
+        file DTInsight.x86_64
+        ls -l DTInsight.x86_64
     
     - name: Set execute permissions for the Godot binary
       run: chmod +x ./DTInsight.x86_64
