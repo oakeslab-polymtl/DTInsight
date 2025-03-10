@@ -33,10 +33,7 @@ jobs:
         relative_project_path: ./
         cache: true
         archive_output: true
-  screenshot:
-    runs-on: ubuntu-latest
     
-    steps:
     - name: Install dependencies
       run: |
         sudo apt-get update
