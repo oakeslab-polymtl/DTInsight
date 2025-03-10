@@ -33,32 +33,27 @@ jobs:
         relative_project_path: ./
         cache: true
         archive_output: true
-  # screenshot:
-  #   runs-on: ubuntu-latest
+  screenshot:
+    runs-on: ubuntu-latest
     
-  #   steps:
-  #   - name: Install dependencies
-  #     run: |
-  #       sudo apt-get update
-  #       sudo apt-get install -y xvfb
+    steps:
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y xvfb
         
-  #   - uses: actions/checkout@v2
-
-  #   - name: Download DTInsight executable
-  #     run: |
-  #       curl -L -o DTInsight_v0.0.2.tar.gz -H "Authorization: token $GITHUB_TOKEN" https://github.com/oakeslab-polymtl/DTInsight/releases/download/v0.0.2/DTInsight_v0.0.2.tar.gz
-  #       tar -xzvf DTInsight_v0.0.2.tar.gz
-  #       file /release/DTInsight.x86_64
-  #       ls -l
+    - uses: actions/checkout@v2
     
-  #   - name: Set execute permissions for the Godot binary
-  #     run: chmod +x ./release/DTInsight.x86_64
+    - name: Unzip and set permissions
+      run: |
+        unzip /home/runner/.local/share/godot/archives/Linux.zip -d /home/runner/.local/share/godot/archives/
+        chmod +x /home/runner/.local/share/godot/archives/Linux/DTInsight.x86_64
     
-  #   - name: Run Godot and trigger screenshot
-  #     run: |
-  #       # Start virtual display
-  #       xvfb-run --server-args="-screen 0 1024x768x24" ./release/DTInsight.x86_64 -- --ci-mode &
-  #       sleep 5 # Give time for the HTTP server to start
+    - name: Run Godot and trigger screenshot
+      run: |
+        # Start virtual display
+        xvfb-run --server-args="-screen 0 1024x768x24" /home/runner/.local/share/godot/archives/Linux/DTInsight.x86_64 -- --ci-mode &
+        sleep 5 # Give time for the HTTP server to start
 
-  #       # Send HTTP request to trigger screenshot
-  #       curl -s http://localhost:9090
+        # Send HTTP request to trigger screenshot
+        curl -s http://localhost:9090
