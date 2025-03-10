@@ -1,0 +1,64 @@
+name: DTInsight_CI
+
+permissions:
+  contents: write
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  export_game:
+    # Always use ubuntu-latest for this action
+    runs-on: ubuntu-latest
+    # Add permission for release creation. Can be made narrower according to your needs
+    permissions: write-all
+    name: Export Game
+    steps:
+      # Always include the checkout step so that 
+      # your project is available for Godot to export
+    - name: checkout
+      uses: actions/checkout@v4
+  
+    - name: export game
+      id: export
+      # Use latest version (see releases for all versions)
+      uses: firebelley/godot-export@master
+      with:
+        # Defining all the required inputs
+        godot_executable_download_url: https://github.com/godotengine/godot-builds/releases/download/4.4-stable/Godot_v4.4-stable_mono_linux_x86_64.zip
+        godot_export_templates_download_url: https://github.com/godotengine/godot-builds/releases/download/4.4-stable/Godot_v4.4-stable_mono_export_templates.tpz
+        relative_project_path: ./
+        cache: true
+        archive_output: true
+  # screenshot:
+  #   runs-on: ubuntu-latest
+    
+  #   steps:
+  #   - name: Install dependencies
+  #     run: |
+  #       sudo apt-get update
+  #       sudo apt-get install -y xvfb
+        
+  #   - uses: actions/checkout@v2
+
+  #   - name: Download DTInsight executable
+  #     run: |
+  #       curl -L -o DTInsight_v0.0.2.tar.gz -H "Authorization: token $GITHUB_TOKEN" https://github.com/oakeslab-polymtl/DTInsight/releases/download/v0.0.2/DTInsight_v0.0.2.tar.gz
+  #       tar -xzvf DTInsight_v0.0.2.tar.gz
+  #       file /release/DTInsight.x86_64
+  #       ls -l
+    
+  #   - name: Set execute permissions for the Godot binary
+  #     run: chmod +x ./release/DTInsight.x86_64
+    
+  #   - name: Run Godot and trigger screenshot
+  #     run: |
+  #       # Start virtual display
+  #       xvfb-run --server-args="-screen 0 1024x768x24" ./release/DTInsight.x86_64 -- --ci-mode &
+  #       sleep 5 # Give time for the HTTP server to start
+
+  #       # Send HTTP request to trigger screenshot
+  #       curl -s http://localhost:9090
