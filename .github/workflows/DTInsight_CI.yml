@@ -44,12 +44,12 @@ jobs:
     - name: Unzip and set permissions
       run: |
         unzip /home/runner/.local/share/godot/archives/Linux.zip -d /home/runner/.local/share/godot/archives/
-        chmod +x /home/runner/.local/share/godot/archives/Linux/DTInsight.x86_64
+        chmod +x /home/runner/.local/share/godot/archives/DTInsight.x86_64
     
     - name: Run Godot and trigger screenshot
       run: |
         # Start virtual display
-        xvfb-run --server-args="-screen 0 1024x768x24" /home/runner/.local/share/godot/archives/Linux/DTInsight.x86_64 -- --ci-mode &
+        xvfb-run --server-args="-screen 0 1024x768x24" /home/runner/.local/share/godot/archives/DTInsight.x86_64 -- --ci-mode &
         sleep 5 # Give time for the HTTP server to start
 
         # Send HTTP request to trigger screenshot
