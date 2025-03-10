@@ -53,4 +53,4 @@ jobs:
         sleep 5 # Give time for the HTTP server to start
 
         # Send HTTP request to trigger screenshot
-        curl -s http://localhost:9090
+        curl -s http://127.0.0.1:9090
