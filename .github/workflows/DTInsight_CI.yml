@@ -24,8 +24,9 @@ jobs:
 
     - name: Download DTInsight executable
       run: |
-        curl -L -o DTInsight.x86_64 -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-        https://github.com/oakeslab-polymtl/DTInsight/releases/download/v0.0.1/DTInsight.x86_64
+        curl -L -o DTInsight_v0.0.2.tar.gz -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+        https://github.com/oakeslab-polymtl/DTInsight/releases/download/v0.0.2/DTInsight_v0.0.2.tar.gz
+        tar -xzvf DTInsight_v0.0.2.tar.gz
         file DTInsight.x86_64
         ls -l DTInsight.x86_64
     
