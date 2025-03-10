@@ -89,4 +89,4 @@ func capture_image():
 	for node_to_hide: Node in to_hide:
 		node_to_hide.visible = true
 	
-	print("[END   Capture...]")
+	print("[END Capture...]")
