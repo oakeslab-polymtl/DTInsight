@@ -1,23 +1,39 @@
 name: DTInsight_CI
-
 permissions:
   contents: write
-
 on:
   push:
     tags:
       - "v*"
   workflow_dispatch:
-
 jobs:
   export_game:
     runs-on: ubuntu-latest
     permissions: write-all
     name: Export Game
     steps:
-      - name: Checkout repository
+      - name: Checkout DTInsight repository
         uses: actions/checkout@v4
-
+      - name: Checkout DTOnto repository
+        uses: actions/checkout@v4
+        with:
+          repository: oakeslab-polymtl/DTOnto
+          path: DTOnto
+      - name: Set up Gradle
+        uses: gradle/gradle-build-action@v2
+      - name: Run Fuseki server with DTOnto data
+        run: |
+          cd DTOnto
+          chmod +x gradlew
+          # Start Fuseki server
+          ./gradlew startFuseki &
+          # Give Fuseki time to start
+          sleep 20
+          # Verify Fuseki is running
+          curl -v http://localhost:3030
+          # Load data into Fuseki
+          ./gradlew owlLoad
+          sleep 10
       - name: Export game
         id: export
         uses: firebelley/godot-export@master
@@ -27,38 +43,30 @@ jobs:
           relative_project_path: ./
           cache: true
           archive_output: true
-
       - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y xvfb
-
       - name: Unzip and set permissions
         run: |
           unzip /home/runner/.local/share/godot/archives/Linux.zip -d /home/runner/.local/share/godot/archives/
           chmod +x /home/runner/.local/share/godot/archives/DTInsight.x86_64
-
       - name: Run Godot and trigger screenshot
         run: |
           xvfb-run --server-args="-screen 0 1024x768x24" /home/runner/.local/share/godot/archives/DTInsight.x86_64 -- --ci-mode &
-          sleep 5  # Give time for the HTTP server to start
-
+          sleep 5
       - name: Take a screenshot
         run: |
           mkdir -p ci_screenshots
           COMMIT_HASH=$(git rev-parse --short HEAD)
           DATE=$(date +'%Y-%m-%d')
           SCREENSHOT_NAME="ci_screenshots/${DATE}_${COMMIT_HASH}.png"
-
           curl -v http://localhost:9090 --output "$SCREENSHOT_NAME"
-
           echo "SCREENSHOT_NAME=$SCREENSHOT_NAME" >> $GITHUB_ENV
-
       - name: Commit screenshot
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-
           git add "$SCREENSHOT_NAME"
           git commit -m "Add CI screenshot for commit ${GITHUB_SHA}"
           git push
