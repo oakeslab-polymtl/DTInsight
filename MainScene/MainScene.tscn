@@ -1,16 +1,26 @@
-[gd_scene load_steps=12 format=3 uid="uid://cxj8tr6re2b4t"]
+[gd_scene load_steps=18 format=3 uid="uid://cxj8tr6re2b4t"]
 
 [ext_resource type="PackedScene" uid="uid://nqgolpvgp7yg" path="res://DTContainer/DT&PTContainer.tscn" id="1_lklxr"]
 [ext_resource type="Script" uid="uid://dfun6prbhxg7c" path="res://MainScene/MainSceneController.gd" id="1_r7thu"]
 [ext_resource type="Script" uid="uid://chsxi3pvlcut1" path="res://Camera/CameraControl.gd" id="3_5mxu4"]
-[ext_resource type="PackedScene" uid="uid://ca4ircpbul4vs" path="res://ControlPanel/ControlPanel.tscn" id="4_bpfsb"]
+[ext_resource type="Script" uid="uid://cwl13x3trg1o3" path="res://ControlPanel/ControlPanelSuperviser.gd" id="4_xqnle"]
 [ext_resource type="PackedScene" uid="uid://bx42q4hl46td1" path="res://Fuseki/Data/FusekiData.tscn" id="5_4e51a"]
 [ext_resource type="PackedScene" uid="uid://cwd5j8qr66eh3" path="res://Legends/Legends.tscn" id="5_8cnmr"]
+[ext_resource type="Theme" uid="uid://xukk6lvgcpaa" path="res://main_theme.tres" id="5_77ryg"]
+[ext_resource type="PackedScene" uid="uid://bkgqmtunv5x7n" path="res://ControlPanel/StandaloneControl/ScriptFileSelector/ScriptFileSelector.tscn" id="6_74x34"]
 [ext_resource type="Script" uid="uid://wfoj63h06hpx" path="res://help_button.gd" id="6_tgjmw"]
+[ext_resource type="PackedScene" uid="uid://bpja34bbtxgig" path="res://Fuseki/Dump/FusekiDumperController.tscn" id="7_8t617"]
 [ext_resource type="Script" uid="uid://b0mon1bk14hp6" path="res://settings_button.gd" id="7_gs64f"]
 [ext_resource type="PackedScene" uid="uid://6crhwyl883nn" path="res://RabbitMQ/Data/RabbitMQ.tscn" id="7_j6wr3"]
 [ext_resource type="PackedScene" uid="uid://px6a2dg8cawb" path="res://addons/modular-settings-menu/scenes/settings.tscn" id="8_ixws2"]
+[ext_resource type="PackedScene" uid="uid://cowug1mbtod0e" path="res://Fuseki/Caller/FusekiCallerBtton.tscn" id="8_ped26"]
+[ext_resource type="Script" uid="uid://cfkgtkfhl06v5" path="res://RabbitMQ/Control/RabbitButton.gd" id="9_qda1k"]
 [ext_resource type="Script" uid="uid://0b3cap3tphwi" path="res://ScreenshotServer.gd" id="11_cueep"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ffs3u"]
+border_color = Color(0.259294, 0.259294, 0.259294, 1)
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
 
 [node name="MainScene" type="Node"]
 script = ExtResource("1_r7thu")
@@ -41,10 +51,64 @@ color = Color(0.933333, 0.913725, 0.933333, 1)
 
 [node name="ControlLayer" type="CanvasLayer" parent="."]
 
-[node name="ControlPanel" parent="ControlLayer" instance=ExtResource("4_bpfsb")]
+[node name="ControlPanel" type="PanelContainer" parent="ControlLayer"]
+anchors_preset = 10
+anchor_right = 1.0
 offset_left = -11.0
 offset_right = 11.0
 offset_bottom = 86.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ffs3u")
+script = ExtResource("4_xqnle")
+
+[node name="MarginContainer" type="MarginContainer" parent="ControlLayer/ControlPanel"]
+layout_mode = 2
+theme = ExtResource("5_77ryg")
+
+[node name="ControlContainer" type="HBoxContainer" parent="ControlLayer/ControlPanel/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme = ExtResource("5_77ryg")
+
+[node name="VSeparator5" type="VSeparator" parent="ControlLayer/ControlPanel/MarginContainer/ControlContainer"]
+layout_mode = 2
+theme = ExtResource("5_77ryg")
+
+[node name="ScriptFileSelector" parent="ControlLayer/ControlPanel/MarginContainer/ControlContainer" instance=ExtResource("6_74x34")]
+layout_mode = 2
+
+[node name="VSeparator" type="VSeparator" parent="ControlLayer/ControlPanel/MarginContainer/ControlContainer"]
+layout_mode = 2
+theme = ExtResource("5_77ryg")
+
+[node name="FusekiDumperController" parent="ControlLayer/ControlPanel/MarginContainer/ControlContainer" instance=ExtResource("7_8t617")]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+
+[node name="VSeparator2" type="VSeparator" parent="ControlLayer/ControlPanel/MarginContainer/ControlContainer"]
+layout_mode = 2
+theme = ExtResource("5_77ryg")
+
+[node name="FusekiCallerButton" parent="ControlLayer/ControlPanel/MarginContainer/ControlContainer" instance=ExtResource("8_ped26")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Call the Fuseki server to load the ontological data"
+
+[node name="VSeparator3" type="VSeparator" parent="ControlLayer/ControlPanel/MarginContainer/ControlContainer"]
+layout_mode = 2
+theme = ExtResource("5_77ryg")
+
+[node name="RabbitButton" type="CheckButton" parent="ControlLayer/ControlPanel/MarginContainer/ControlContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "Record data form RabbitMQ :"
+script = ExtResource("9_qda1k")
+
+[node name="VSeparator4" type="VSeparator" parent="ControlLayer/ControlPanel/MarginContainer/ControlContainer"]
+layout_mode = 2
+theme = ExtResource("5_77ryg")
 
 [node name="Legends" parent="ControlLayer" instance=ExtResource("5_8cnmr")]
 
@@ -151,6 +215,7 @@ script = ExtResource("11_cueep")
 container = NodePath("../DTContainer")
 to_hide = [NodePath("../ControlLayer")]
 
+[connection signal="toggled" from="ControlLayer/ControlPanel/MarginContainer/ControlContainer/RabbitButton" to="ControlLayer/ControlPanel/MarginContainer/ControlContainer/RabbitButton" method="_on_toggled"]
 [connection signal="pressed" from="ControlLayer/HelpButton" to="ControlLayer/HelpButton" method="_on_help_button_pressed"]
 [connection signal="pressed" from="ControlLayer/SettingsButton" to="ControlLayer/SettingsButton" method="_on_pressed"]
 [connection signal="settings_menu_closed" from="ControlLayer/SettingsBackground/Settings" to="ControlLayer/SettingsButton" method="_on_settings_settings_menu_closed"]

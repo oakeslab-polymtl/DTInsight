@@ -6,7 +6,7 @@ extends Node
 
 var server := TCPServer.new()
 @export var port = 9090
-var save_path = OS.get_user_data_dir() + "/latest_screenshot.png"
+var save_path = OS.get_user_data_dir() + "latest_screenshot.png"
 
 func _ready():
 	start_server()
@@ -23,26 +23,19 @@ func _process(_delta):
 		handle_request(client)
 
 func handle_request(client: StreamPeerTCP):
+	# Call the Fuseki server
+	var fuseki_button = get_tree().root.get_node("MainScene/%FusekiCallerButton")
+	fuseki_button._on_pressed()
+	
+	await get_tree().create_timer(1).timeout
+	
 	capture_image()
 	
+	client.put_data("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nScreenshot taken!".to_utf8_buffer())
+	
 	# Wait until the image is saved
-	await get_tree().create_timer(0.5).timeout
-	
-	# Read the saved image data
-	var file = FileAccess.open(save_path, FileAccess.READ)
-	var image_data = file.get_buffer(file.get_length())
-	file.close()
-	
-	# Build HTTP response headers
-	var headers = "HTTP/1.1 200 OK\r\n"
-	headers += "Content-Type: image/png\r\n"
-	headers += "Content-Length: " + str(image_data.size()) + "\r\n"
-	headers += "Connection: close\r\n\r\n"
+	await get_tree().create_timer(0.2).timeout
 
-	# Send headers and image data
-	client.put_data(headers.to_utf8_buffer())
-	client.put_data(image_data)
-	
 	# Disconnect client
 	client.disconnect_from_host()
 
