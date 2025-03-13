@@ -31,8 +31,7 @@ func handle_request(client: StreamPeerTCP):
 	
 	capture_image()
 	
-	client.put_data("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nScreenshot taken!".to_utf8_buffer())
-	
+	client.put_data("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 17\r\n\r\nScreenshot taken!".to_utf8_buffer())	
 	# Wait until the image is saved
 	await get_tree().create_timer(0.2).timeout
 
