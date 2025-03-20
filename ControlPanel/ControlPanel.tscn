@@ -1,43 +1,71 @@
-[gd_scene load_steps=7 format=3 uid="uid://ca4ircpbul4vs"]
+[gd_scene load_steps=8 format=3 uid="uid://yil70a604sjq"]
 
 [ext_resource type="PackedScene" uid="uid://bpja34bbtxgig" path="res://Fuseki/Dump/FusekiDumperController.tscn" id="1_38nkc"]
-[ext_resource type="Script" path="res://ControlPanel/ControlPanelSuperviser.gd" id="1_hxofy"]
+[ext_resource type="Script" uid="uid://cwl13x3trg1o3" path="res://ControlPanel/ControlPanelSuperviser.gd" id="1_hxofy"]
+[ext_resource type="Theme" uid="uid://xukk6lvgcpaa" path="res://main_theme.tres" id="2_fqp38"]
 [ext_resource type="PackedScene" uid="uid://cowug1mbtod0e" path="res://Fuseki/Caller/FusekiCallerBtton.tscn" id="2_mxvta"]
 [ext_resource type="PackedScene" uid="uid://bkgqmtunv5x7n" path="res://ControlPanel/StandaloneControl/ScriptFileSelector/ScriptFileSelector.tscn" id="2_oxflb"]
-[ext_resource type="PackedScene" uid="uid://ibm0fjlp0shm" path="res://RabbitMQ/Control/RabbitControl.tscn" id="3_g7fl5"]
+[ext_resource type="Script" uid="uid://cfkgtkfhl06v5" path="res://RabbitMQ/Control/RabbitButton.gd" id="6_28e17"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ffs3u"]
-border_width_left = 4
-border_width_right = 4
-border_width_bottom = 4
 border_color = Color(0.259294, 0.259294, 0.259294, 1)
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 
 [node name="ControlPanel" type="PanelContainer"]
-custom_minimum_size = Vector2(0, 100)
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 35.0
+offset_bottom = 82.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ffs3u")
 script = ExtResource("1_hxofy")
 
-[node name="ControlContainer" type="HBoxContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme = ExtResource("2_fqp38")
+
+[node name="ControlContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
+theme = ExtResource("2_fqp38")
 
-[node name="ScriptFileSelector" parent="ControlContainer" instance=ExtResource("2_oxflb")]
+[node name="VSeparator5" type="VSeparator" parent="MarginContainer/ControlContainer"]
+layout_mode = 2
+theme = ExtResource("2_fqp38")
+
+[node name="ScriptFileSelector" parent="MarginContainer/ControlContainer" instance=ExtResource("2_oxflb")]
 layout_mode = 2
 
-[node name="FusekiDumperController" parent="ControlContainer" instance=ExtResource("1_38nkc")]
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/ControlContainer"]
+layout_mode = 2
+theme = ExtResource("2_fqp38")
+
+[node name="FusekiDumperController" parent="MarginContainer/ControlContainer" instance=ExtResource("1_38nkc")]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 
-[node name="FusekiCallerButton" parent="ControlContainer" instance=ExtResource("2_mxvta")]
+[node name="VSeparator2" type="VSeparator" parent="MarginContainer/ControlContainer"]
 layout_mode = 2
+theme = ExtResource("2_fqp38")
 
-[node name="RabbitButton" parent="ControlContainer" instance=ExtResource("3_g7fl5")]
-visible = false
+[node name="FusekiCallerButton" parent="MarginContainer/ControlContainer" instance=ExtResource("2_mxvta")]
 layout_mode = 2
+tooltip_text = "Call the Fuseki server to load the ontological data"
+
+[node name="VSeparator3" type="VSeparator" parent="MarginContainer/ControlContainer"]
+layout_mode = 2
+theme = ExtResource("2_fqp38")
+
+[node name="RabbitButton" type="CheckButton" parent="MarginContainer/ControlContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "Record data form RabbitMQ :"
+script = ExtResource("6_28e17")
+
+[node name="VSeparator4" type="VSeparator" parent="MarginContainer/ControlContainer"]
+layout_mode = 2
+theme = ExtResource("2_fqp38")
+
+[connection signal="toggled" from="MarginContainer/ControlContainer/RabbitButton" to="MarginContainer/ControlContainer/RabbitButton" method="_on_toggled"]

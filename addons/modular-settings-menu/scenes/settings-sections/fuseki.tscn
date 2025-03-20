@@ -1,0 +1,171 @@
+[gd_scene load_steps=6 format=3 uid="uid://byoys8cpmn66u"]
+
+[ext_resource type="Script" uid="uid://b2uskv7m4kmgm" path="res://addons/modular-settings-menu/scripts/settings_section.gd" id="1_hlcra"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v0fou"]
+
+[sub_resource type="GDScript" id="GDScript_2v3nf"]
+resource_name = "url"
+script/source = "extends TextElement
+
+func init_element() -> void:
+	super.init_element()
+	return
+
+# Called to apply the setting to the game
+func _apply_settings() -> void:
+	FusekiConfig.URL = currentValue
+	return
+"
+
+[sub_resource type="GDScript" id="GDScript_rs1wk"]
+resource_name = "dataset"
+script/source = "extends TextElement
+
+func init_element() -> void:
+	super.init_element()
+	return
+
+# Called to apply the setting to the game
+func _apply_settings() -> void:
+	FusekiConfig.DATASET = currentValue
+	return
+"
+
+[sub_resource type="GDScript" id="GDScript_lvpno"]
+resource_name = "endpoint"
+script/source = "extends TextElement
+
+func init_element() -> void:
+	super.init_element()
+	return
+
+# Called to apply the setting to the game
+func _apply_settings() -> void:
+	FusekiConfig.ENDPOINT = currentValue
+	return
+"
+
+[node name="Fuseki" type="TabBar"]
+theme_override_styles/tab_focus = SubResource("StyleBoxEmpty_v0fou")
+script = ExtResource("1_hlcra")
+IDENTIFIER = "Fuseki"
+metadata/_tab_index = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="ElementList" type="VBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 24
+
+[node name="BasicSettings" type="VBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList"]
+layout_mode = 2
+
+[node name="SubSectionName" type="Label" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Basic Settings"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings"]
+layout_mode = 2
+
+[node name="SubSectionElements" type="VBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings"]
+layout_mode = 2
+
+[node name="Url" type="HBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements" node_paths=PackedStringArray("TextRef")]
+layout_mode = 2
+script = SubResource("GDScript_2v3nf")
+DEFAULT_VALUE = "http://127.0.0.1:3030"
+TextRef = NodePath("LineEdit")
+IDENTIFIER = "Url"
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements/Url"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Url
+"
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements/Url"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="Dataset" type="HBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements" node_paths=PackedStringArray("TextRef")]
+layout_mode = 2
+script = SubResource("GDScript_rs1wk")
+DEFAULT_VALUE = "/DTDF"
+TextRef = NodePath("LineEdit")
+IDENTIFIER = "Dataset"
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements/Dataset"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Dataset"
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements/Dataset"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="Endpoint" type="HBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements" node_paths=PackedStringArray("TextRef")]
+layout_mode = 2
+script = SubResource("GDScript_lvpno")
+DEFAULT_VALUE = "/sparql?query="
+TextRef = NodePath("LineEdit")
+IDENTIFIER = "Endpoint"
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements/Endpoint"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Endpoint"
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements/Endpoint"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="AdvancedSettings" type="VBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList"]
+layout_mode = 2
+
+[node name="SubSectionName" type="Label" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/AdvancedSettings"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Advanced Settings
+"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/AdvancedSettings"]
+layout_mode = 2
+
+[node name="SubSectionElements" type="VBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/AdvancedSettings"]
+layout_mode = 2

@@ -23,6 +23,8 @@ const GenericDisplay = preload("res://GenericDisplay/generic_display.tscn")
 
 #name of highlighted element
 var highlighted_element = null
+var all_highlighted_element = []
+var highlighted_with_click = false
 
 #initialization
 func _ready():
@@ -31,7 +33,7 @@ func _ready():
 
 #Node and element manipulation functions -----------------------------------------------------------
 
-#Displayes node referenced by its name
+#Displays node referenced by its name
 class NamedNode:
 	var name : String
 	var node : GenericDisplay
@@ -39,7 +41,7 @@ class NamedNode:
 #Array of displayes nodes
 var displayed_node_list: Array[NamedNode]
 
-#attributes
+#Attributes
 const border_attribute : String = "hasTimeScale"
 const type_attribute : String = "type"
 
@@ -58,14 +60,36 @@ func set_starting_node_style(namedNode : NamedNode, attributes : Dictionary):
 			["faster_trt"]:
 				namedNode.node.set_faster_style()
 
-#set highlighted element on signal
-func _on_element_over(element_name):
-	if (element_name == ""):
+#Set highlighted element on signal
+func _on_element_over(element_name, click: bool):
+	if element_name == "":
+		if not click and highlighted_with_click:
+			return
+		elif click:
+			highlighted_with_click = false
 		highlighted_element = null
+		all_highlighted_element = []
 		GenericDisplaySignals.generic_display_highlight.emit([])
 	else:
-		highlighted_element = get_node_by_name(element_name)
-		GenericDisplaySignals.generic_display_highlight.emit(get_all_connected_to(element_name))
+		if click:
+			# Clicking again on an highlighted node deactivates highlights
+			if element_name in all_highlighted_element and highlighted_with_click:
+				highlighted_element = null
+				all_highlighted_element = []
+				GenericDisplaySignals.generic_display_highlight.emit([])
+				highlighted_with_click = false
+				return
+			else:
+				highlighted_element = get_node_by_name(element_name)
+				all_highlighted_element = get_all_connected_to(element_name)
+				GenericDisplaySignals.generic_display_highlight.emit(all_highlighted_element)
+				highlighted_with_click = true
+				return
+		# If mouse exits and nothing was highlighted by click
+		if not highlighted_with_click:
+			highlighted_element = get_node_by_name(element_name)
+			all_highlighted_element = get_all_connected_to(element_name)
+			GenericDisplaySignals.generic_display_highlight.emit(all_highlighted_element)
 
 #Return a node by its nale in the displayes_node_list
 func get_node_by_name(node_name : String) -> GenericDisplay:

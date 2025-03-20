@@ -43,7 +43,7 @@ func _on_pressed():
 
 #Query the Fuseki Server with a given query
 func query_fuseky(query):
-	SparqlRequest.request(FusekiConfig.Connection.URL + FusekiConfig.Connection.DATASET + FusekiConfig.Connection.ENDPOINT + query.uri_encode())
+	SparqlRequest.request(FusekiConfig.URL + FusekiConfig.DATASET + FusekiConfig.ENDPOINT + query.uri_encode())
 
 #Parse and store resulting Fuseki json
 func _on_fuseki_completion(_result, _response_code, _headers, body):

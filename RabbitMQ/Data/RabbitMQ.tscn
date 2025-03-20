@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://6crhwyl883nn"]
 
-[ext_resource type="Script" path="res://RabbitMQ/Data/RabbitData.gd" id="1_h808b"]
-[ext_resource type="Script" path="res://RabbitMQ/Connection/RabbitQueue.cs" id="1_rud4u"]
-[ext_resource type="Script" path="res://RabbitMQ/Connection/RabbitMQController.gd" id="3_etigq"]
-[ext_resource type="Script" path="res://RabbitMQ/Data/Fifo.gd" id="3_mb2gr"]
+[ext_resource type="Script" uid="uid://v678v878shyu" path="res://RabbitMQ/Data/RabbitData.gd" id="1_h808b"]
+[ext_resource type="Script" uid="uid://byssy00y1vkdl" path="res://RabbitMQ/Connection/RabbitQueue.cs" id="1_rud4u"]
+[ext_resource type="Script" uid="uid://c2w4yppgegm4g" path="res://RabbitMQ/Connection/RabbitMQController.gd" id="3_etigq"]
+[ext_resource type="Script" uid="uid://6khm3um44r82" path="res://RabbitMQ/Data/Fifo.gd" id="3_mb2gr"]
 
 [node name="RabbitData" type="Node"]
 script = ExtResource("1_h808b")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bsso17a4d26gy"]
 
-[ext_resource type="Script" path="res://Legends/LegendElement.gd" id="1_w8tvv"]
+[ext_resource type="Script" uid="uid://ea5sf2yj6hh" path="res://Legends/LegendElement.gd" id="1_w8tvv"]
 
 [node name="LegendElement" type="HBoxContainer"]
 custom_minimum_size = Vector2(0, 20)

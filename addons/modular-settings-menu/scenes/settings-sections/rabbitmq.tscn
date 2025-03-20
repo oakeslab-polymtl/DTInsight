@@ -1,0 +1,465 @@
+[gd_scene load_steps=13 format=3 uid="uid://c1rsvqsv63cco"]
+
+[ext_resource type="Script" uid="uid://b2uskv7m4kmgm" path="res://addons/modular-settings-menu/scripts/settings_section.gd" id="1_vgygy"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v0fou"]
+
+[sub_resource type="GDScript" id="GDScript_q864m"]
+resource_name = "user"
+script/source = "extends TextElement
+
+func init_element() -> void:
+	super.init_element()
+	return
+
+# Called to apply the setting to the game
+func _apply_settings() -> void:
+	RabbitConfig.USER = currentValue
+	return
+"
+
+[sub_resource type="GDScript" id="GDScript_5774h"]
+resource_name = "password"
+script/source = "extends TextElement
+
+func init_element() -> void:
+	super.init_element()
+	return
+
+# Called to apply the setting to the game
+func _apply_settings() -> void:
+	RabbitConfig.PASS = currentValue
+	return
+"
+
+[sub_resource type="GDScript" id="GDScript_p1dxy"]
+resource_name = "host"
+script/source = "extends TextElement
+
+func init_element() -> void:
+	super.init_element()
+	return
+
+# Called to apply the setting to the game
+func _apply_settings() -> void:
+	RabbitConfig.HOST = currentValue
+	return
+"
+
+[sub_resource type="GDScript" id="GDScript_6t3qu"]
+resource_name = "port"
+script/source = "extends SliderElement
+
+func init_element() -> void:
+	super.init_element()
+	return
+
+# Called to apply the setting to the game
+func _apply_settings() -> void:
+	RabbitConfig.PORT = int(currentValue)
+	return
+"
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_hlot4"]
+size = Vector2(0, 0)
+
+[sub_resource type="Theme" id="Theme_4i2xw"]
+SpinBox/icons/updown = SubResource("PlaceholderTexture2D_hlot4")
+
+[sub_resource type="GDScript" id="GDScript_1jfa2"]
+resource_name = "message_limit"
+script/source = "extends SliderElement
+
+func init_element() -> void:
+	super.init_element()
+	return
+
+# Called to apply the setting to the game
+func _apply_settings() -> void:
+	RabbitConfig.MESSAGES_LIMIT = int(currentValue)
+	return
+"
+
+[sub_resource type="GDScript" id="GDScript_w1n2m"]
+resource_name = "min_time_plotted"
+script/source = "extends SliderElement
+
+func init_element() -> void:
+	super.init_element()
+	return
+
+# Called to apply the setting to the game
+func _apply_settings() -> void:
+	RabbitConfig.MIN_TEMPS_PLOTTED = float(currentValue)
+	return
+"
+
+[sub_resource type="GDScript" id="GDScript_8yddh"]
+resource_name = "max_time_plotted"
+script/source = "extends SliderElement
+
+func init_element() -> void:
+	super.init_element()
+	return
+
+# Called to apply the setting to the game
+func _apply_settings() -> void:
+	RabbitConfig.MAX_TEMPS_PLOTTED = float(currentValue)
+	return
+"
+
+[sub_resource type="GDScript" id="GDScript_5cxcb"]
+resource_name = "chart_null_value"
+script/source = "extends SliderElement
+
+func init_element() -> void:
+	super.init_element()
+	return
+
+# Called to apply the setting to the game
+func _apply_settings() -> void:
+	RabbitConfig.CHART_NULL_VALUE = float(currentValue)
+	return
+"
+
+[node name="RabbitMQ" type="TabBar"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/tab_focus = SubResource("StyleBoxEmpty_v0fou")
+script = ExtResource("1_vgygy")
+IDENTIFIER = "RabbitMQ"
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="ElementList" type="VBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 24
+
+[node name="BasicSettings" type="VBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList"]
+layout_mode = 2
+
+[node name="SubSectionName" type="Label" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Basic Settings"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings"]
+layout_mode = 2
+
+[node name="SubSectionElements" type="VBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings"]
+layout_mode = 2
+
+[node name="User" type="HBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements" node_paths=PackedStringArray("TextRef")]
+layout_mode = 2
+script = SubResource("GDScript_q864m")
+DEFAULT_VALUE = "incubator"
+TextRef = NodePath("LineEdit")
+IDENTIFIER = "User"
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements/User"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "User"
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements/User"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="Password" type="HBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements" node_paths=PackedStringArray("TextRef")]
+layout_mode = 2
+script = SubResource("GDScript_5774h")
+DEFAULT_VALUE = "incubator"
+TextRef = NodePath("LineEdit")
+IDENTIFIER = "Password"
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements/Password"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Password"
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements/Password"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="Host" type="HBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements" node_paths=PackedStringArray("TextRef")]
+layout_mode = 2
+script = SubResource("GDScript_p1dxy")
+DEFAULT_VALUE = "localhost"
+TextRef = NodePath("LineEdit")
+IDENTIFIER = "Host"
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements/Host"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Host
+"
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements/Host"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="Port" type="HBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements" node_paths=PackedStringArray("SliderRef", "ValueBoxRef")]
+layout_mode = 2
+script = SubResource("GDScript_6t3qu")
+MAX_VALUE = 1e+07
+STEP_VALUE = 1.0
+DEFAULT_VALUE = 5762.0
+SliderRef = NodePath("SliderValue/Slider")
+ValueBoxRef = NodePath("SliderValue/Value")
+IDENTIFIER = "Port"
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements/Port"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Port"
+vertical_alignment = 1
+
+[node name="SliderValue" type="HBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements/Port"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="Slider" type="HSlider" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements/Port/SliderValue"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 999999.0
+value = 5672.0
+allow_greater = true
+ticks_on_borders = true
+
+[node name="Value" type="SpinBox" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/SubSectionElements/Port/SliderValue"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme = SubResource("Theme_4i2xw")
+max_value = 999999.0
+value = 5672.0
+allow_greater = true
+alignment = 2
+
+[node name="AdvancedSettings" type="VBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList"]
+layout_mode = 2
+
+[node name="SubSectionName" type="Label" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/AdvancedSettings"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Advanced Settings
+"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/AdvancedSettings"]
+layout_mode = 2
+
+[node name="SubSectionElements" type="VBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/AdvancedSettings"]
+layout_mode = 2
+
+[node name="MessageLimit" type="HBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/AdvancedSettings/SubSectionElements" node_paths=PackedStringArray("SliderRef", "ValueBoxRef")]
+layout_mode = 2
+script = SubResource("GDScript_1jfa2")
+MAX_VALUE = 1000.0
+STEP_VALUE = 1.0
+DEFAULT_VALUE = 100.0
+SliderRef = NodePath("SliderValue/Slider")
+ValueBoxRef = NodePath("SliderValue/Value")
+IDENTIFIER = "MessageLimit"
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/AdvancedSettings/SubSectionElements/MessageLimit"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Message Limit"
+vertical_alignment = 1
+
+[node name="SliderValue" type="HBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/AdvancedSettings/SubSectionElements/MessageLimit"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="Slider" type="HSlider" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/AdvancedSettings/SubSectionElements/MessageLimit/SliderValue"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 1000.0
+value = 100.0
+allow_greater = true
+ticks_on_borders = true
+
+[node name="Value" type="SpinBox" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/AdvancedSettings/SubSectionElements/MessageLimit/SliderValue"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme = SubResource("Theme_4i2xw")
+max_value = 1000.0
+value = 100.0
+allow_greater = true
+alignment = 2
+
+[node name="MinTimePlotted" type="HBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/AdvancedSettings/SubSectionElements" node_paths=PackedStringArray("SliderRef", "ValueBoxRef")]
+layout_mode = 2
+script = SubResource("GDScript_w1n2m")
+MAX_VALUE = 9.22337e+18
+STEP_VALUE = 0.0
+DEFAULT_VALUE = 0.0
+SliderRef = NodePath("SliderValue/Slider")
+ValueBoxRef = NodePath("SliderValue/Value")
+IDENTIFIER = "MinTimePlotted"
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/AdvancedSettings/SubSectionElements/MinTimePlotted"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Min Time Plotted"
+vertical_alignment = 1
+
+[node name="SliderValue" type="HBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/AdvancedSettings/SubSectionElements/MinTimePlotted"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="Slider" type="HSlider" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/AdvancedSettings/SubSectionElements/MinTimePlotted/SliderValue"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 0.0
+step = 0.0
+allow_greater = true
+allow_lesser = true
+ticks_on_borders = true
+
+[node name="Value" type="SpinBox" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/AdvancedSettings/SubSectionElements/MinTimePlotted/SliderValue"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme = SubResource("Theme_4i2xw")
+max_value = 0.0
+step = 0.0
+allow_greater = true
+allow_lesser = true
+alignment = 2
+
+[node name="MaxTimePlotted" type="HBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/AdvancedSettings/SubSectionElements" node_paths=PackedStringArray("SliderRef", "ValueBoxRef")]
+layout_mode = 2
+script = SubResource("GDScript_8yddh")
+MAX_VALUE = 9.22337e+18
+STEP_VALUE = 0.0
+DEFAULT_VALUE = 40.0
+SliderRef = NodePath("SliderValue/Slider")
+ValueBoxRef = NodePath("SliderValue/Value")
+IDENTIFIER = "MaxTimePlotted"
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/AdvancedSettings/SubSectionElements/MaxTimePlotted"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Max Time Plotted"
+vertical_alignment = 1
+
+[node name="SliderValue" type="HBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/AdvancedSettings/SubSectionElements/MaxTimePlotted"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="Slider" type="HSlider" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/AdvancedSettings/SubSectionElements/MaxTimePlotted/SliderValue"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 1000.0
+value = 100.0
+allow_greater = true
+ticks_on_borders = true
+
+[node name="Value" type="SpinBox" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/AdvancedSettings/SubSectionElements/MaxTimePlotted/SliderValue"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme = SubResource("Theme_4i2xw")
+max_value = 0.0
+step = 0.0
+allow_greater = true
+allow_lesser = true
+alignment = 2
+
+[node name="ChartNullValue" type="HBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/AdvancedSettings/SubSectionElements" node_paths=PackedStringArray("SliderRef", "ValueBoxRef")]
+layout_mode = 2
+script = SubResource("GDScript_5cxcb")
+MAX_VALUE = 0.0
+STEP_VALUE = 0.0
+DEFAULT_VALUE = 0.0
+SliderRef = NodePath("SliderValue/Slider")
+ValueBoxRef = NodePath("SliderValue/Value")
+IDENTIFIER = "ChartNullValue"
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/AdvancedSettings/SubSectionElements/ChartNullValue"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Chart Null Value"
+vertical_alignment = 1
+
+[node name="SliderValue" type="HBoxContainer" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/AdvancedSettings/SubSectionElements/ChartNullValue"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="Slider" type="HSlider" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/AdvancedSettings/SubSectionElements/ChartNullValue/SliderValue"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 0.0
+step = 0.0
+allow_greater = true
+allow_lesser = true
+ticks_on_borders = true
+
+[node name="Value" type="SpinBox" parent="MarginContainer/ScrollContainer/MarginContainer/ElementList/AdvancedSettings/SubSectionElements/ChartNullValue/SliderValue"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme = SubResource("Theme_4i2xw")
+max_value = 0.0
+step = 0.0
+allow_greater = true
+allow_lesser = true
+alignment = 2

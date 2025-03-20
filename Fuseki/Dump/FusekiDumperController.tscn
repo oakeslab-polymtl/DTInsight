@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bpja34bbtxgig"]
+[gd_scene load_steps=3 format=3 uid="uid://bpja34bbtxgig"]
 
-[ext_resource type="Script" path="res://Fuseki/Dump/FusekiDumper.gd" id="1_wsn3w"]
+[ext_resource type="Script" uid="uid://bj1p7hd2hhbj5" path="res://Fuseki/Dump/FusekiDumper.gd" id="1_wsn3w"]
+[ext_resource type="Theme" uid="uid://xukk6lvgcpaa" path="res://main_theme.tres" id="2_evc53"]
 
 [node name="DumpUIContainer" type="HBoxContainer"]
 custom_minimum_size = Vector2(400, 78)
@@ -11,11 +12,12 @@ script = ExtResource("1_wsn3w")
 [node name="DumpPathEdit" type="TextEdit" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("2_evc53")
 placeholder_text = "Dump file path..."
 
 [node name="PickButton" type="Button" parent="."]
 layout_mode = 2
-text = "PIck file"
+text = "Pick file"
 
 [node name="ButtonsContainer" type="VBoxContainer" parent="."]
 layout_mode = 2

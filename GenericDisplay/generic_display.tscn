@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://tvcjlrt40n0q"]
 
-[ext_resource type="Script" path="res://GenericDisplay/GenericDisplay.gd" id="1_5lixw"]
+[ext_resource type="Script" uid="uid://ost4ju4q0ybe" path="res://GenericDisplay/GenericDisplay.gd" id="1_5lixw"]
 [ext_resource type="PackedScene" uid="uid://dxhbsp0l566d6" path="res://GenericDisplay/PopUpChart/PopUpChart.tscn" id="2_fnxtv"]
 [ext_resource type="PackedScene" uid="uid://cspiwjvdyi8ce" path="res://GenericDisplay/PopUpScript/PopUpScript.tscn" id="3_o18us"]
 

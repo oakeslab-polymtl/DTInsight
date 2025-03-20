@@ -10,4 +10,5 @@ class Mouvement:
 class Zoom:
 	const MAX_ZOOM_IN_SCALE : float = 2
 	const MAX_ZOOM_OUT_SCALE : float = 0.3
-	const ZOOM_PER_SECOND : float = 1
+	const ZOOM_KEY_SPEED : float = 1
+	const ZOOM_SCROLL_SPEED : float = 5

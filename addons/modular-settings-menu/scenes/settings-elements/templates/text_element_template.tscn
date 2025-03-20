@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://t3dohtd17h86"]
+
+[ext_resource type="Script" uid="uid://yak1rpcti8pi" path="res://addons/modular-settings-menu/scripts/base-settings-elements/text_element.gd" id="1_ql3m8"]
+
+[node name="text_element_template" type="HBoxContainer" node_paths=PackedStringArray("TextRef")]
+script = ExtResource("1_ql3m8")
+TextRef = NodePath("LineEdit")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[connection signal="text_changed" from="LineEdit" to="." method="text_selected"]

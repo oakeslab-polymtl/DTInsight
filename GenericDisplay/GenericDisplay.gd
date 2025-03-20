@@ -7,7 +7,7 @@ class_name GenericDisplay
 @onready var real_time_container = $GenericDisplay/RealTimeContainer
 @onready var attributes : Label = $GenericDisplay/RealTimeContainer/GenericElementAttributes
 @onready var pop_up_chart : Popup = $PopupChart
-@onready var chart : ChartControl = $PopupChart/ChartControl
+@onready var chart = $PopupChart/ChartControl
 @onready var pop_up_script : Popup = $PopupScript
 @onready var script_control = $PopupScript/ScriptControl
 
@@ -15,6 +15,7 @@ var script_software_directory : String = ""
 var script_file_path : String = ""
 var absolute_path : String = ""
 var data : Array = []
+var highlightable : bool = true
 
 func _ready():
 	GenericDisplaySignals.generic_display_highlight.connect(_on_display_highlight)
@@ -30,10 +31,17 @@ func _on_display_highlight(highlighted_elements_names : Array):
 		set_dimmed_style()
 
 func _on_mouse_entered():
-	GenericDisplaySignals.generic_display_over.emit(element.text)
+	GenericDisplaySignals.generic_display_over.emit(element.text, false)
 
 func _on_mouse_exited():
-	GenericDisplaySignals.generic_display_over.emit("")
+	GenericDisplaySignals.generic_display_over.emit("", false)
+	
+func _gui_input(event: InputEvent) -> void:
+	if event.button_mask == MOUSE_BUTTON_LEFT and highlightable:
+		highlightable = false
+		GenericDisplaySignals.generic_display_over.emit(element.text, true)
+		await get_tree().create_timer(0.2).timeout
+		highlightable = true
 
 func _on_pop_up_button_pressed() -> void:
 	chart.feed_historic(data)
