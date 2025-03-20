@@ -8,14 +8,14 @@
 [ext_resource type="PackedScene" uid="uid://cwd5j8qr66eh3" path="res://Legends/Legends.tscn" id="5_8cnmr"]
 [ext_resource type="Theme" uid="uid://xukk6lvgcpaa" path="res://main_theme.tres" id="5_77ryg"]
 [ext_resource type="PackedScene" uid="uid://bkgqmtunv5x7n" path="res://ControlPanel/StandaloneControl/ScriptFileSelector/ScriptFileSelector.tscn" id="6_74x34"]
-[ext_resource type="Script" uid="uid://wfoj63h06hpx" path="res://help_button.gd" id="6_tgjmw"]
+[ext_resource type="Script" uid="uid://wfoj63h06hpx" path="res://MainScene/help_button.gd" id="6_tgjmw"]
 [ext_resource type="PackedScene" uid="uid://bpja34bbtxgig" path="res://Fuseki/Dump/FusekiDumperController.tscn" id="7_8t617"]
-[ext_resource type="Script" uid="uid://b0mon1bk14hp6" path="res://settings_button.gd" id="7_gs64f"]
+[ext_resource type="Script" uid="uid://b0mon1bk14hp6" path="res://MainScene/settings_button.gd" id="7_gs64f"]
 [ext_resource type="PackedScene" uid="uid://6crhwyl883nn" path="res://RabbitMQ/Data/RabbitMQ.tscn" id="7_j6wr3"]
 [ext_resource type="PackedScene" uid="uid://px6a2dg8cawb" path="res://addons/modular-settings-menu/scenes/settings.tscn" id="8_ixws2"]
 [ext_resource type="PackedScene" uid="uid://cowug1mbtod0e" path="res://Fuseki/Caller/FusekiCallerBtton.tscn" id="8_ped26"]
 [ext_resource type="Script" uid="uid://cfkgtkfhl06v5" path="res://RabbitMQ/Control/RabbitButton.gd" id="9_qda1k"]
-[ext_resource type="Script" uid="uid://0b3cap3tphwi" path="res://ScreenshotServer.gd" id="11_cueep"]
+[ext_resource type="Script" uid="uid://0b3cap3tphwi" path="res://MainScene/ScreenshotServer.gd" id="11_cueep"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ffs3u"]
 border_color = Color(0.259294, 0.259294, 0.259294, 1)
