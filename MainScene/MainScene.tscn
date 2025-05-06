@@ -9,9 +9,9 @@
 [ext_resource type="Theme" uid="uid://xukk6lvgcpaa" path="res://main_theme.tres" id="5_77ryg"]
 [ext_resource type="PackedScene" uid="uid://bkgqmtunv5x7n" path="res://ControlPanel/StandaloneControl/ScriptFileSelector/ScriptFileSelector.tscn" id="6_74x34"]
 [ext_resource type="Script" uid="uid://wfoj63h06hpx" path="res://MainScene/help_button.gd" id="6_tgjmw"]
-[ext_resource type="PackedScene" uid="uid://bpja34bbtxgig" path="res://Fuseki/Dump/FusekiDumperController.tscn" id="7_8t617"]
 [ext_resource type="Script" uid="uid://b0mon1bk14hp6" path="res://MainScene/settings_button.gd" id="7_gs64f"]
 [ext_resource type="PackedScene" uid="uid://6crhwyl883nn" path="res://RabbitMQ/Data/RabbitMQ.tscn" id="7_j6wr3"]
+[ext_resource type="Script" uid="uid://bj1p7hd2hhbj5" path="res://Fuseki/Dump/FusekiDumper.gd" id="7_xqnle"]
 [ext_resource type="PackedScene" uid="uid://px6a2dg8cawb" path="res://addons/modular-settings-menu/scenes/settings.tscn" id="8_ixws2"]
 [ext_resource type="PackedScene" uid="uid://cowug1mbtod0e" path="res://Fuseki/Caller/FusekiCallerBtton.tscn" id="8_ped26"]
 [ext_resource type="Script" uid="uid://cfkgtkfhl06v5" path="res://RabbitMQ/Control/RabbitButton.gd" id="9_qda1k"]
@@ -82,9 +82,48 @@ layout_mode = 2
 layout_mode = 2
 theme = ExtResource("5_77ryg")
 
-[node name="FusekiDumperController" parent="ControlLayer/ControlPanel/MarginContainer/ControlContainer" instance=ExtResource("7_8t617")]
+[node name="FusekiDumperController" type="HBoxContainer" parent="ControlLayer/ControlPanel/MarginContainer/ControlContainer"]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
+script = ExtResource("7_xqnle")
+
+[node name="DumpPathEdit" type="TextEdit" parent="ControlLayer/ControlPanel/MarginContainer/ControlContainer/FusekiDumperController"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("5_77ryg")
+placeholder_text = "Dump file path..."
+
+[node name="PickButton" type="Button" parent="ControlLayer/ControlPanel/MarginContainer/ControlContainer/FusekiDumperController"]
+layout_mode = 2
+text = "Pick file"
+
+[node name="ButtonsContainer" type="VBoxContainer" parent="ControlLayer/ControlPanel/MarginContainer/ControlContainer/FusekiDumperController"]
+layout_mode = 2
+
+[node name="DumpButton" type="Button" parent="ControlLayer/ControlPanel/MarginContainer/ControlContainer/FusekiDumperController/ButtonsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+text = "Dump"
+
+[node name="LoadButton" type="Button" parent="ControlLayer/ControlPanel/MarginContainer/ControlContainer/FusekiDumperController/ButtonsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+text = "Load
+"
+
+[node name="FileDialog" type="FileDialog" parent="ControlLayer/ControlPanel/MarginContainer/ControlContainer/FusekiDumperController"]
+title = "Open a File"
+initial_position = 1
+size = Vector2i(600, 500)
+always_on_top = true
+popup_window = true
+min_size = Vector2i(600, 500)
+ok_button_text = "Open"
+dialog_hide_on_ok = true
+file_mode = 0
+access = 2
 
 [node name="VSeparator2" type="VSeparator" parent="ControlLayer/ControlPanel/MarginContainer/ControlContainer"]
 layout_mode = 2
@@ -215,6 +254,12 @@ script = ExtResource("11_cueep")
 container = NodePath("../DTContainer")
 to_hide = [NodePath("../ControlLayer")]
 
+[connection signal="focus_entered" from="ControlLayer/ControlPanel/MarginContainer/ControlContainer/FusekiDumperController/DumpPathEdit" to="ControlLayer/ControlPanel/MarginContainer/ControlContainer/FusekiDumperController" method="_on_dump_path_edit_focus_entered"]
+[connection signal="focus_exited" from="ControlLayer/ControlPanel/MarginContainer/ControlContainer/FusekiDumperController/DumpPathEdit" to="ControlLayer/ControlPanel/MarginContainer/ControlContainer/FusekiDumperController" method="_on_dump_path_edit_focus_exited"]
+[connection signal="pressed" from="ControlLayer/ControlPanel/MarginContainer/ControlContainer/FusekiDumperController/PickButton" to="ControlLayer/ControlPanel/MarginContainer/ControlContainer/FusekiDumperController" method="_on_pick_button_pressed"]
+[connection signal="pressed" from="ControlLayer/ControlPanel/MarginContainer/ControlContainer/FusekiDumperController/ButtonsContainer/DumpButton" to="ControlLayer/ControlPanel/MarginContainer/ControlContainer/FusekiDumperController" method="_on_dump_button_pressed"]
+[connection signal="pressed" from="ControlLayer/ControlPanel/MarginContainer/ControlContainer/FusekiDumperController/ButtonsContainer/LoadButton" to="ControlLayer/ControlPanel/MarginContainer/ControlContainer/FusekiDumperController" method="_on_load_button_pressed"]
+[connection signal="file_selected" from="ControlLayer/ControlPanel/MarginContainer/ControlContainer/FusekiDumperController/FileDialog" to="ControlLayer/ControlPanel/MarginContainer/ControlContainer/FusekiDumperController" method="_on_file_dialog_file_selected"]
 [connection signal="toggled" from="ControlLayer/ControlPanel/MarginContainer/ControlContainer/RabbitButton" to="ControlLayer/ControlPanel/MarginContainer/ControlContainer/RabbitButton" method="_on_toggled"]
 [connection signal="pressed" from="ControlLayer/HelpButton" to="ControlLayer/HelpButton" method="_on_help_button_pressed"]
 [connection signal="pressed" from="ControlLayer/SettingsButton" to="ControlLayer/SettingsButton" method="_on_pressed"]
