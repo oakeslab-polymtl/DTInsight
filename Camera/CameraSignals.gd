@@ -1,4 +1,4 @@
 extends Node
 
-signal disable_camera_mouvement
-signal enable_camera_mouvement
+signal disable_camera_movement
+signal enable_camera_movement
