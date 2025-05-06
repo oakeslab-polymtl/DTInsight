@@ -3,18 +3,22 @@ extends Camera2D
 class_name CameraControl
 
 var movement_enabled : bool = true
+var zoom_enabled : bool = true
 var currently_zooming : bool = false
 
 func _ready() -> void:
 	CameraSignals.disable_camera_movement.connect(_disable_camera_movement)
 	CameraSignals.enable_camera_movement.connect(_enable_camera_movement)
+	CameraSignals.enable_camera_zoom.connect(_enable_camera_zoom)
+	CameraSignals.disable_camera_zoom.connect(_disable_camera_zoom)
 
 func _process(delta : float):
-	if (movement_enabled):
+	if movement_enabled:
 		var inputmovementVector : Vector2 = handle_movement_input()
 		moveCamera(inputmovementVector, delta)
-	var inputZoomVector : Vector2 = handle_zoom_input(false)
-	zoom_camera(inputZoomVector)
+	if zoom_enabled:
+		var inputZoomVector : Vector2 = handle_zoom_input(false)
+		zoom_camera(inputZoomVector)
 
 #Movement functions -----------------------------------------------------------
 var current_velocity : Vector2 = Vector2(0, 0)
@@ -64,8 +68,9 @@ func opposite_signs(x:float, y:float) -> bool:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask == MOUSE_BUTTON_LEFT:
 		handle_mouse_movement(event)
-	var inputZoomVector : Vector2 = handle_zoom_input(true)
-	zoom_camera(inputZoomVector)
+	if zoom_enabled:
+		var inputZoomVector : Vector2 = handle_zoom_input(true)
+		zoom_camera(inputZoomVector)
 
 func handle_mouse_movement(event : InputEventMouseMotion) -> void:
 	translate(-event.relative / zoom)
@@ -94,6 +99,12 @@ func _disable_camera_movement() -> void:
 
 func _enable_camera_movement() -> void:
 	movement_enabled = true
+
+func _disable_camera_zoom() -> void:
+	zoom_enabled = false
+
+func _enable_camera_zoom() -> void:
+	zoom_enabled = true
 
 func zoom_to_fit(target_rect: Rect2):
 	var viewport_size = get_viewport_rect().size
