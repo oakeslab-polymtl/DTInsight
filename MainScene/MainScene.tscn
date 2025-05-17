@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cxj8tr6re2b4t"]
+[gd_scene load_steps=19 format=3 uid="uid://cxj8tr6re2b4t"]
 
 [ext_resource type="PackedScene" uid="uid://nqgolpvgp7yg" path="res://DTContainer/DT&PTContainer.tscn" id="1_lklxr"]
 [ext_resource type="Script" uid="uid://dfun6prbhxg7c" path="res://MainScene/MainSceneController.gd" id="1_r7thu"]
@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://cowug1mbtod0e" path="res://Fuseki/Caller/FusekiCallerBtton.tscn" id="8_ped26"]
 [ext_resource type="Script" uid="uid://cfkgtkfhl06v5" path="res://RabbitMQ/Control/RabbitButton.gd" id="9_qda1k"]
 [ext_resource type="Script" uid="uid://0b3cap3tphwi" path="res://MainScene/ScreenshotServer.gd" id="11_cueep"]
+[ext_resource type="Texture2D" uid="uid://doyxcp824t4vw" path="res://gear.png" id="12_77ryg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ffs3u"]
 border_color = Color(0.259294, 0.259294, 0.259294, 1)
@@ -195,8 +196,9 @@ offset_right = 41.0
 offset_bottom = -50.0
 grow_vertical = 0
 tooltip_text = "Settings"
-text = "⚙️"
+icon = ExtResource("12_77ryg")
 icon_alignment = 1
+expand_icon = true
 script = ExtResource("7_gs64f")
 
 [node name="SettingsPopup" type="PopupPanel" parent="ControlLayer/SettingsButton"]
