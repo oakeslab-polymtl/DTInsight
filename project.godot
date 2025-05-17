@@ -32,11 +32,6 @@ ChartSignals="*res://GenericDisplay/PopUpChart/ChartSignals.gd"
 ScriptSignals="*res://GenericDisplay/PopUpScript/ScriptSignals.gd"
 PythonConfig="*res://Config/PythonConfig.gd"
 
-[display]
-
-window/size/viewport_width=1181
-window/size/viewport_height=568
-
 [dotnet]
 
 project/assembly_name="DigitalTwinVisualisationProject"

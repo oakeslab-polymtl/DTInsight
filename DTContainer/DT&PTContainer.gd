@@ -91,7 +91,7 @@ func _on_element_over(element_name, click: bool):
 			all_highlighted_element = get_all_connected_to(element_name)
 			GenericDisplaySignals.generic_display_highlight.emit(all_highlighted_element)
 
-#Return a node by its nale in the displayes_node_list
+#Return a node by its name in the displayes_node_list
 func get_node_by_name(node_name : String) -> GenericDisplay:
 	for displayed_node in displayed_node_list:
 		if (displayed_node.name == node_name && displayed_node.node != null):
@@ -102,7 +102,7 @@ func get_node_by_name(node_name : String) -> GenericDisplay:
 	print(node_name + " not found in " + displayed_node_list_string)
 	return null
 
-#get a list of elements connected to inputed element
+#Get a list of elements connected to inputed element
 func get_all_connected_to(element_name : String) -> Array[String]:
 	var all_connected : Array[String]= [element_name]
 	var all_links = fuseki_data.enabler_to_service + fuseki_data.model_to_enabler + fuseki_data.service_to_provided_thing + fuseki_data.sensor_to_data_transmitted + fuseki_data.data_transmitted_to_data + fuseki_data.data_to_enabler
@@ -188,7 +188,7 @@ func in_critical_path(source, destinations : Array) -> bool:
 	return (highlighted_element == null or source == highlighted_element or highlighted_element in destinations)
 
 #Return color for link depending on its conditions
-func get_appripriate_link_color(is_in_critical_path : bool):
+func get_appropriate_link_color(is_in_critical_path : bool):
 	return StyleConfig.Link.HIGHLIGHT_COLOR if is_in_critical_path else StyleConfig.Link.DIMMED_COLOR
 
 #Draw from element node on y axis to linking lane on x axis, with an arrow if destination of link
@@ -197,7 +197,7 @@ func draw_element_to_lane(node, drawable_y_position : int, color : Color, destin
 	var drawing_position_element : Vector2 = get_bottom_side(node) if (is_pointing_up) else get_top_side(node)
 	var adjusted_x : int = get_drawable_x_position(drawing_position_element.x)
 	var vertical_shift : int = draw_triangle(Vector2(adjusted_x, drawing_position_element.y), color, is_pointing_up) if destination else 0
-	draw_line(Vector2(adjusted_x, drawing_position_element.y + vertical_shift), Vector2(adjusted_x, drawable_y_position), color, StyleConfig.Link.WIDTH)
+	draw_line(Vector2(adjusted_x, drawing_position_element.y + vertical_shift), Vector2(adjusted_x, drawable_y_position), color, StyleConfig.Link.WIDTH, true)
 	return adjusted_x
 
 #Draw triangle intended to be an arrow head
@@ -215,11 +215,11 @@ func draw_link_lane(x_drawn : Array[int], x_highlight : Array[int], drawable_y_p
 	var most_left_x_position : int = x_drawn.min() - round(StyleConfig.Link.WIDTH / 2 - 0.5)
 	var most_right_x_position : int = x_drawn.max() + round(StyleConfig.Link.WIDTH / 2 + 0.5)
 	var base_color = StyleConfig.Link.HIGHLIGHT_COLOR if (highlighted_element == null) else StyleConfig.Link.DIMMED_COLOR
-	draw_line(Vector2(most_left_x_position, drawable_y_position), Vector2(most_right_x_position, drawable_y_position), base_color, StyleConfig.Link.WIDTH)
+	draw_line(Vector2(most_left_x_position, drawable_y_position), Vector2(most_right_x_position, drawable_y_position), base_color, StyleConfig.Link.WIDTH, true)
 	if (not x_highlight.is_empty()):
 		var most_left_highlight_x_position : int = x_highlight.min() - round(StyleConfig.Link.WIDTH / 2 - 0.5)
 		var most_right_highlight_x_position : int = x_highlight.max() + round(StyleConfig.Link.WIDTH / 2 + 0.5)
-		draw_line(Vector2(most_left_highlight_x_position, drawable_y_position), Vector2(most_right_highlight_x_position, drawable_y_position), StyleConfig.Link.HIGHLIGHT_COLOR, StyleConfig.Link.WIDTH)
+		draw_line(Vector2(most_left_highlight_x_position, drawable_y_position), Vector2(most_right_highlight_x_position, drawable_y_position), StyleConfig.Link.HIGHLIGHT_COLOR, StyleConfig.Link.WIDTH, true)
 
 #Get not already drawed y 
 func get_drawable_y_height(key, array_nodes: Array) -> int:
@@ -260,14 +260,14 @@ func update_link_with(fuseki_link_data, force_side_source : ContainerSide = Cont
 		var x_drawn_list : Array[int] = []
 		var x_highlight_list : Array[int] = []
 		var source_in_critical_path : bool = in_critical_path(key, links_as_dict[key])
-		var source_color : Color = get_appripriate_link_color(source_in_critical_path)
+		var source_color : Color = get_appropriate_link_color(source_in_critical_path)
 		var source_x = draw_element_to_lane(key, drawable_y_position, source_color)
 		x_drawn_list.append(source_x)
 		if(source_in_critical_path):
 			x_highlight_list.append(source_x)
 		for association_element in links_as_dict[key]:
 			var destination_in_critical_path : bool = in_critical_path(key, [association_element])
-			var arrow_color : Color = get_appripriate_link_color(destination_in_critical_path)
+			var arrow_color : Color = get_appropriate_link_color(destination_in_critical_path)
 			var drawn_x : int = draw_element_to_lane(association_element, drawable_y_position, arrow_color, true)
 			x_drawn_list.append(drawn_x)
 			if(destination_in_critical_path):
