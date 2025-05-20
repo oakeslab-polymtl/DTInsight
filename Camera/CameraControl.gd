@@ -40,8 +40,8 @@ func handle_movement_input() -> Vector2:
 func moveCamera(input_vector : Vector2, delta : float) -> void:
 	var scaled_input : Vector2 = input_vector * ACCELERATION_PER_SECOND * delta
 	if (input_vector != Vector2.ZERO): #acceleration
-		var max_x_velocity = CameraConfig.movement.MAX_VELOCITY if input_vector.normalized().x == 0 else CameraConfig.movement.MAX_VELOCITY * abs(input_vector.normalized().x)
-		var max_y_velocity = CameraConfig.movement.MAX_VELOCITY if input_vector.normalized().y == 0 else CameraConfig.movement.MAX_VELOCITY * abs(input_vector.normalized().y)
+		var max_x_velocity = CameraConfig.Movement.MAX_VELOCITY if input_vector.normalized().x == 0 else CameraConfig.Movement.MAX_VELOCITY * abs(input_vector.normalized().x)
+		var max_y_velocity = CameraConfig.Movement.MAX_VELOCITY if input_vector.normalized().y == 0 else CameraConfig.Movement.MAX_VELOCITY * abs(input_vector.normalized().y)
 		current_velocity.x = clamp(current_velocity.x + scaled_input.x, -max_x_velocity, max_x_velocity)
 		current_velocity.y = clamp(current_velocity.y + scaled_input.y, -max_y_velocity, max_y_velocity)
 	if(input_vector.x == 0 or opposite_signs(input_vector.x, current_velocity.x)):
