@@ -7,7 +7,7 @@ extends Node
 var server := TCPServer.new()
 @export var port = 9090
 var screenshot_save_path = OS.get_user_data_dir() + "/latest_screenshot.png"
-var dump_save_path = OS.get_user_data_dir() + "/data_dump.json"
+var dump_save_path = OS.get_user_data_dir() + "/data_dump.yaml"
 
 func _ready():
 	start_server()
