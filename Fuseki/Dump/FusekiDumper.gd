@@ -68,6 +68,7 @@ static func dump(data : FusekiData, dump_path : String, to_console = false):
 	else:
 		var file = FileAccess.open(dump_path, FileAccess.WRITE)
 		file.store_string(dump_string)
+		print("Data dumped at: ", dump_path)
 
 static func dump_dictionary(dict : Dictionary) -> String:
 	var dict_string = ""

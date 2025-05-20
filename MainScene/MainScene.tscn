@@ -15,7 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://px6a2dg8cawb" path="res://addons/modular-settings-menu/scenes/settings.tscn" id="8_ixws2"]
 [ext_resource type="PackedScene" uid="uid://cowug1mbtod0e" path="res://Fuseki/Caller/FusekiCallerBtton.tscn" id="8_ped26"]
 [ext_resource type="Script" uid="uid://cfkgtkfhl06v5" path="res://RabbitMQ/Control/RabbitButton.gd" id="9_qda1k"]
-[ext_resource type="Script" uid="uid://0b3cap3tphwi" path="res://MainScene/ScreenshotServer.gd" id="11_cueep"]
+[ext_resource type="Script" uid="uid://0b3cap3tphwi" path="res://MainScene/CICDServer.gd" id="11_cueep"]
 [ext_resource type="Texture2D" uid="uid://doyxcp824t4vw" path="res://gear.png" id="12_77ryg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ffs3u"]
@@ -84,6 +84,7 @@ layout_mode = 2
 theme = ExtResource("5_77ryg")
 
 [node name="FusekiDumperController" type="HBoxContainer" parent="ControlLayer/ControlPanel/MarginContainer/ControlContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 script = ExtResource("7_xqnle")
@@ -251,7 +252,7 @@ IS_IN_GAME_MENU = false
 
 [node name="RabbitMq" parent="." instance=ExtResource("7_j6wr3")]
 
-[node name="ScreenshotServer" type="Node" parent="." node_paths=PackedStringArray("container", "to_hide")]
+[node name="CICDServer" type="Node" parent="." node_paths=PackedStringArray("container", "to_hide")]
 script = ExtResource("11_cueep")
 container = NodePath("../DTContainer")
 to_hide = [NodePath("../ControlLayer")]

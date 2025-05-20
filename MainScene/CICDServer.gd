@@ -6,16 +6,17 @@ extends Node
 
 var server := TCPServer.new()
 @export var port = 9090
-var save_path = OS.get_user_data_dir() + "/latest_screenshot.png"
+var screenshot_save_path = OS.get_user_data_dir() + "/latest_screenshot.png"
+var dump_save_path = OS.get_user_data_dir() + "/data_dump.json"
 
 func _ready():
 	start_server()
 
 func start_server():
 	if server.listen(port) == OK:
-		print("ScreenshotServer started on port ", port)
+		print("CICDServer started on port ", port)
 	else:
-		print("Failed to start ScreenshotServer")
+		print("Failed to start CICDServer")
 
 func _process(_delta):
 	if server.is_connection_available():
@@ -27,22 +28,29 @@ func handle_request(client: StreamPeerTCP):
 	var fuseki_button = get_tree().root.get_node("MainScene/%FusekiCallerButton")
 	fuseki_button._on_pressed()
 	
+	# Wait for the visualization to load
 	await get_tree().create_timer(1).timeout
 	
+	# Dump the json
+	dump_json()
+	
+	# Capture a screenshot
 	capture_image()
 	
-	client.put_data("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 17\r\n\r\nScreenshot taken!".to_utf8_buffer())	
+	# Return a success string
+	client.put_data("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 33\r\n\r\nScreenshot taken and data dumped!".to_utf8_buffer())
+	
 	# Wait until the image is saved
 	await get_tree().create_timer(0.2).timeout
 
-	# Disconnect client
+	# Disconnect the client
 	client.disconnect_from_host()
 
 
 func capture_image():
 	print("[Start Capture...]")
 	
-	# Hide nodes
+	# Hide nodes (UI)
 	for node_to_hide: Node in to_hide:
 		node_to_hide.visible = false
 	
@@ -59,8 +67,6 @@ func capture_image():
 	full_rect.size.x += margins.x
 	full_rect.size.y += margins.y
 	
-	#print("full_rect: " + str(full_rect))
-	#camera.zoom=Vector2(5.0, 5.0)
 	var starting_position = full_rect.position
 	camera.position = starting_position
 
@@ -70,6 +76,7 @@ func capture_image():
 
 	var viewport_size = get_viewport().size / camera.zoom.x
 	var image = Image.create_empty(full_rect.size.x, full_rect.size.y, false, Image.FORMAT_RGBA8)
+	# Take multiple screenshots and merge them into one image
 	while camera.position.y < full_rect.size.y:
 		while camera.position.x < full_rect.size.x:
 			await tree.process_frame
@@ -88,9 +95,9 @@ func capture_image():
 		camera.position.x = full_rect.position.x
 		camera.position.y += viewport_size.y
 	
-	# Capture the screenshot
-	image.save_png(save_path)
-	print("Screenshot saved at: ", save_path)
+	# Save the screenshot on the disk
+	image.save_png(screenshot_save_path)
+	print("Screenshot saved at: ", screenshot_save_path)
 	get_tree().paused = false
 	camera.queue_free()
 	
@@ -99,3 +106,8 @@ func capture_image():
 		node_to_hide.visible = true
 	
 	print("[END Capture...]")
+
+func dump_json():
+	var dumper_controller = get_tree().root.get_node("MainScene/%FusekiDumperController")
+	var fuseki_data : FusekiData = get_tree().root.get_node("MainScene/FusekiData")
+	dumper_controller.dump(fuseki_data, dump_save_path)
