@@ -30,9 +30,14 @@ func set_fuseki_data_manager(fuseki_data_manager : FusekiData):
 	FusekiDataManager = fuseki_data_manager
 
 func _on_load_button_pressed():
-	load_from_dump(FusekiDataManager, file_path_input.text)
+	var file = FileAccess.open(file_path_input.text, FileAccess.READ)
+	if (file == null):
+		return
+	var content : String = file.get_as_text()
+	load_from_dump(FusekiDataManager, content)
 
 func _on_dump_button_pressed():
+	
 	dump(FusekiDataManager, file_path_input.text)
 
 static func dump(data : FusekiData, dump_path : String, to_console = false):
@@ -89,12 +94,8 @@ static func array_to_str(array : Array) -> String:
 static func str_to_array(str : String) -> Array:
 	return str.split("/")
 
-static func load_from_dump(fuseki_data : FusekiData, file_path : String):
-	var file = FileAccess.open(file_path, FileAccess.READ)
-	if (file == null):
-		return
-	FusekiSignals.fuseki_data_clear.emit()
-	var content : PackedStringArray = file.get_as_text().split("\n")
+static func load_from_dump(fuseki_data : FusekiData, yaml_content: String):
+	var content = yaml_content.split("\n")
 	fuseki_data.service = load_between(content, SERVICES_INDICATOR, ENABLERS_INDICATOR)
 	fuseki_data.enabler = load_between(content, ENABLERS_INDICATOR, MODELS_INDICATOR)
 	fuseki_data.model = load_between(content, MODELS_INDICATOR, PROVIDED_THING_INDICATOR)
