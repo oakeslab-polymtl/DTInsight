@@ -10,7 +10,8 @@ var screenshot_save_path = OS.get_user_data_dir() + "/latest_screenshot.png"
 var dump_save_path = OS.get_user_data_dir() + "/data_dump.yaml"
 
 func _ready():
-	start_server()
+	if not OS.has_feature("web"):
+		start_server()
 
 func start_server():
 	if server.listen(port) == OK:
@@ -31,8 +32,8 @@ func handle_request(client: StreamPeerTCP):
 	# Wait for the visualization to load
 	await get_tree().create_timer(1).timeout
 	
-	# Dump the json
-	dump_json()
+	# Dump the yaml
+	dump_yaml()
 	
 	# Capture a screenshot
 	capture_image()
@@ -107,7 +108,7 @@ func capture_image():
 	
 	print("[END Capture...]")
 
-func dump_json():
+func dump_yaml():
 	var dumper_controller = get_tree().root.get_node("MainScene/%FusekiDumperController")
 	var fuseki_data : FusekiData = get_tree().root.get_node("MainScene/FusekiData")
 	dumper_controller.dump(fuseki_data, dump_save_path)
