@@ -16,6 +16,7 @@ func _ready():
 	FusekiSignals.fuseki_data_updated.connect(_update_fuseki_data)
 	if OS.has_feature("web"):
 		print("Detected running on the web")
+		$ControlLayer.hide()
 		load_yaml_from_dump()
 
 func _update_fuseki_data():
