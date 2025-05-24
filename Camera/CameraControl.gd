@@ -11,6 +11,7 @@ func _ready() -> void:
 	CameraSignals.enable_camera_movement.connect(_enable_camera_movement)
 	CameraSignals.enable_camera_zoom.connect(_enable_camera_zoom)
 	CameraSignals.disable_camera_zoom.connect(_disable_camera_zoom)
+	CameraSignals.zoom_to_fit.connect(_zoom_to_fit)
 
 func _process(delta : float):
 	if movement_enabled:
@@ -106,7 +107,7 @@ func _disable_camera_zoom() -> void:
 func _enable_camera_zoom() -> void:
 	zoom_enabled = true
 
-func zoom_to_fit(target_rect: Rect2):
+func _zoom_to_fit(target_rect: Rect2):
 	var viewport_size = get_viewport_rect().size
 	var scale_x = viewport_size.x / target_rect.size.x
 	var scale_y = viewport_size.y / target_rect.size.y

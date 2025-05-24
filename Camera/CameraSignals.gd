@@ -4,3 +4,4 @@ signal disable_camera_movement
 signal enable_camera_movement
 signal enable_camera_zoom
 signal disable_camera_zoom
+signal zoom_to_fit

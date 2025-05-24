@@ -280,6 +280,8 @@ func update_link_with(fuseki_link_data, force_side_source : ContainerSide = Cont
 func feed_fuseki_data(feed):
 	fuseki_data = feed
 	on_fuseki_data_updated()
+	await get_tree().create_timer(0.2).timeout
+	CameraSignals.zoom_to_fit.emit(get_rect())
 
 #Update all displayed information on data update from a signal from FusekiCallerButton
 func on_fuseki_data_updated():
