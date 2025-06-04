@@ -39,4 +39,4 @@ jobs:
             ~/.local/share/godot/archives/Linux.zip
             ~/.local/share/godot/archives/Web.zip
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
