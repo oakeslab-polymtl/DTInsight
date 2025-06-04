@@ -1,0 +1,54 @@
+name: Nightly Build and Release
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Export game (Linux and Web)
+        id: export
+        uses: firebelley/godot-export@master
+        with:
+          godot_executable_download_url: https://github.com/godotengine/godot-builds/releases/download/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64.zip
+          godot_export_templates_download_url: https://github.com/godotengine/godot-builds/releases/download/4.4.1-stable/Godot_v4.4.1-stable_export_templates.tpz
+          relative_project_path: ./DTInsight
+          cache: true
+          archive_output: true
+
+      - name: Unzip Linux export
+        run: |
+          unzip ~/.local/share/godot/archives/Linux.zip -d linux_export/
+          chmod +x linux_export/DTInsight.x86_64
+
+      - name: Unzip Web export
+        run: |
+          mkdir -p web_export
+          unzip ~/.local/share/godot/archives/Web.zip -d web_export/
+
+      - name: Delete existing 'nightly' release (if exists)
+        continue-on-error: true
+        run: gh release delete nightly --yes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Nightly Pre-release with both builds
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: nightly
+          name: "Nightly Build"
+          body: "This is the latest Linux and Web build from the 'develop' branch."
+          prerelease: true
+          files: |
+            linux_export/DTInsight.x86_64
+            web_export/**
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
