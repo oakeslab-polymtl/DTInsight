@@ -27,31 +27,16 @@ jobs:
           cache: true
           archive_output: true
 
-      - name: Unzip Linux export
-        run: |
-          unzip ~/.local/share/godot/archives/Linux.zip -d linux_export/
-          chmod +x linux_export/DTInsight.x86_64
-
-      - name: Unzip Web export
-        run: |
-          mkdir -p web_export
-          unzip ~/.local/share/godot/archives/Web.zip -d web_export/
-
-      - name: Delete existing 'nightly' release (if exists)
-        continue-on-error: true
-        run: gh release delete nightly --yes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create Nightly Pre-release with both builds
-        uses: softprops/action-gh-release@v2
+      - name: Create or update nightly release
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: nightly
+          tag: nightly
           name: "Nightly Build"
-          body: "This is the latest Linux and Web build from the 'develop' branch."
+          body: "Automated nightly build from 'develop' branch."
           prerelease: true
-          files: |
-            linux_export/DTInsight.x86_64
-            web_export/**
+          allowUpdates: true
+          artifacts: |
+            ~/.local/share/godot/archives/Linux.zip
+            ~/.local/share/godot/archives/Web.zip
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }
