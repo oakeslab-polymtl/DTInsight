@@ -20,6 +20,13 @@ class JsonHead:
 	const RABBIT_ROUTE = "route"
 	const RABBIT_SOURCE = "source"
 	const RABBIT_MESSAGE_LISTENER = "ml"
+	const C12 = "c12"
+	const C14 = "c14"
+	const C15 = "c15"
+	const C16 = "c16"
+	const C19 = "c19"
+	const C20 = "c20"
+	const C21 = "c21"
 
 class RelationAttribute:
 	const MODEL_TO_ENABLER = "inputTo"
