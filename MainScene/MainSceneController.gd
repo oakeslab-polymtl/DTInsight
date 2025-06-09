@@ -28,7 +28,9 @@ func load_yaml_from_dump():
 	var http = HTTPRequest.new()
 	add_child(http)
 	http.request_completed.connect(self._on_HTTPRequest_yaml_completed)
-	var error = http.request("http://localhost:1313/DTOnto/data_dump.yaml")
+	# TODO: Fix this hardcoded URL
+	var error = http.request("https://oakeslab-polymtl.github.io/DTDF/data_dump.yaml")
+	#var error = http.request("http://localhost:1313/DTDF/data_dump.yaml")
 	if error != OK:
 		push_error("An error occurred in the HTTP request for YAML data.")
 
