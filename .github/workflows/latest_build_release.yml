@@ -1,4 +1,4 @@
-name: Nightly Build and Release
+name: Latest Build and Release
 permissions:
   contents: write
 on:
@@ -28,12 +28,12 @@ jobs:
           cache: true
           archive_output: true
 
-      - name: Create or update nightly release
+      - name: Create or update latest release
         uses: ncipollo/release-action@v1
         with:
-          tag: nightly
-          name: "Nightly Build"
-          body: "Automated nightly build from 'develop' branch."
+          tag: latest
+          name: "Latest Build"
+          body: "Automated latest build from 'develop' branch."
           prerelease: true
           allowUpdates: true
           artifacts: |
