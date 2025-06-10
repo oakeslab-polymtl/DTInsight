@@ -145,6 +145,59 @@ enum ContainerSide {
 var already_drawn_x : Array[int] = []
 var already_drawn_y : Array[int] = []
 
+#display list
+var dimmed_lines : Array[Dictionary] = []
+var highlighted_lines : Array[Dictionary] = []
+var dimmed_triangles : Array[Dictionary] = []
+var highlighted_triangles : Array[Dictionary] = []
+
+#Add lines to call list
+func draw_line_differed(start: Vector2, end: Vector2, color: Color, width : int, antialiased: bool):
+	if (color == StyleConfig.Link.DIMMED_COLOR):
+		dimmed_lines.append({
+			"start": start,
+			"end": end,
+			"color": color,
+			"width": width,
+			"antialiased": antialiased
+			})
+	else :
+		highlighted_lines.append({
+			"start": start,
+			"end": end,
+			"color": color,
+			"width": width,
+			"antialiased": antialiased
+			})
+
+#Add triangles to call list
+func draw_triangle_differed(aimed_at : Vector2, color : Color, is_pointing_up : bool) -> int:
+	var vertical_shift = StyleConfig.Link.WIDTH if is_pointing_up else - StyleConfig.Link.WIDTH
+	if (color == StyleConfig.Link.DIMMED_COLOR):
+		dimmed_triangles.append({
+			"aimed_at": aimed_at,
+			"vertical_shift": vertical_shift,
+			"color": color,
+			"is_pointing_up": is_pointing_up
+		})
+	else :
+		highlighted_triangles.append({
+			"aimed_at": aimed_at,
+			"vertical_shift": vertical_shift,
+			"color": color,
+			"is_pointing_up": is_pointing_up
+		})
+	return vertical_shift
+
+#Draw all differed call list
+func draw_all_differed():
+	var lines_draw_list = dimmed_lines + highlighted_lines
+	for line in lines_draw_list:
+		draw_line(line["start"], line["end"], line["color"], line["width"], line["antialiased"])
+	var triangles_draw_list = dimmed_triangles + highlighted_triangles
+	for triangle in triangles_draw_list:
+		draw_triangle(triangle["aimed_at"], triangle["vertical_shift"], triangle["color"], triangle["is_pointing_up"])
+
 #Update operator container and machine container, differenciate on attibute
 func update_provided_things(operator_container : HBoxContainer, machine_container : HBoxContainer, provided_data : Dictionary):
 	var operator_data : Dictionary = {}
@@ -196,15 +249,14 @@ func draw_element_to_lane(node, drawable_y_position : int, color : Color, destin
 	var is_pointing_up : bool = node.global_position.y < drawable_y_position
 	var drawing_position_element : Vector2 = get_bottom_side(node) if (is_pointing_up) else get_top_side(node)
 	var adjusted_x : int = get_drawable_x_position(drawing_position_element.x)
-	var vertical_shift : int = draw_triangle(Vector2(adjusted_x, drawing_position_element.y), color, is_pointing_up) if destination else 0
-	draw_line(Vector2(adjusted_x, drawing_position_element.y + vertical_shift), Vector2(adjusted_x, drawable_y_position), color, StyleConfig.Link.WIDTH, true)
+	var vertical_shift : int = draw_triangle_differed(Vector2(adjusted_x, drawing_position_element.y), color, is_pointing_up) if destination else 0
+	draw_line_differed(Vector2(adjusted_x, drawing_position_element.y + vertical_shift), Vector2(adjusted_x, drawable_y_position), color, StyleConfig.Link.WIDTH, true)
 	return adjusted_x
 
 #Draw triangle intended to be an arrow head
-func draw_triangle(aimed_at : Vector2, color : Color, is_pointing_up : bool) -> int:
+func draw_triangle(aimed_at : Vector2, vertical_shift: int, color : Color, is_pointing_up : bool) -> int:
 	var triangle : PackedVector2Array = []
 	triangle.append(aimed_at)
-	var vertical_shift = StyleConfig.Link.WIDTH if is_pointing_up else - StyleConfig.Link.WIDTH
 	triangle.append(Vector2(aimed_at.x + StyleConfig.Link.WIDTH * 2, aimed_at.y + vertical_shift * 3))
 	triangle.append(Vector2(aimed_at.x - StyleConfig.Link.WIDTH * 2, aimed_at.y + vertical_shift * 3))
 	draw_polygon(triangle, [color])
@@ -215,11 +267,11 @@ func draw_link_lane(x_drawn : Array[int], x_highlight : Array[int], drawable_y_p
 	var most_left_x_position : int = x_drawn.min() - round(StyleConfig.Link.WIDTH / 2 - 0.5)
 	var most_right_x_position : int = x_drawn.max() + round(StyleConfig.Link.WIDTH / 2 + 0.5)
 	var base_color = StyleConfig.Link.HIGHLIGHT_COLOR if (highlighted_element == null) else StyleConfig.Link.DIMMED_COLOR
-	draw_line(Vector2(most_left_x_position, drawable_y_position), Vector2(most_right_x_position, drawable_y_position), base_color, StyleConfig.Link.WIDTH, true)
+	draw_line_differed(Vector2(most_left_x_position, drawable_y_position), Vector2(most_right_x_position, drawable_y_position), base_color, StyleConfig.Link.WIDTH, true)
 	if (not x_highlight.is_empty()):
 		var most_left_highlight_x_position : int = x_highlight.min() - round(StyleConfig.Link.WIDTH / 2 - 0.5)
 		var most_right_highlight_x_position : int = x_highlight.max() + round(StyleConfig.Link.WIDTH / 2 + 0.5)
-		draw_line(Vector2(most_left_highlight_x_position, drawable_y_position), Vector2(most_right_highlight_x_position, drawable_y_position), StyleConfig.Link.HIGHLIGHT_COLOR, StyleConfig.Link.WIDTH, true)
+		draw_line_differed(Vector2(most_left_highlight_x_position, drawable_y_position), Vector2(most_right_highlight_x_position, drawable_y_position), StyleConfig.Link.HIGHLIGHT_COLOR, StyleConfig.Link.WIDTH, true)
 
 #Get not already drawed y 
 func get_drawable_y_height(key, array_nodes: Array) -> int:
@@ -299,6 +351,10 @@ func on_fuseki_data_updated():
 func _process(_delta):
 	already_drawn_x.clear()
 	already_drawn_y.clear()
+	dimmed_lines.clear()
+	highlighted_lines.clear()
+	dimmed_triangles.clear()
+	highlighted_triangles.clear()
 	queue_redraw()
 
 #Free all childs of a node
@@ -316,6 +372,7 @@ func _draw():
 		update_link_with(fuseki_data.sensor_to_data_transmitted)
 		update_link_with(fuseki_data.data_to_enabler)
 		update_link_with(fuseki_data.data_transmitted_to_data, ContainerSide.BOTTOM)
+		draw_all_differed()
 
 # Rabbit MQ data integration ---------------------------------------------------
 func _on_rabbit_data_updated(container_name: String, data : Array[String]):
