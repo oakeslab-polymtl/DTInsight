@@ -19,6 +19,7 @@ corner_radius_bottom_left = 20
 offset_right = 97.0
 offset_bottom = 43.0
 size_flags_vertical = 4
+mouse_default_cursor_shape = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_2niug")
 script = ExtResource("1_5lixw")
 

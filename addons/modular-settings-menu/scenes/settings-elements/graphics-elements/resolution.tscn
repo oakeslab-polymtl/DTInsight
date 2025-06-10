@@ -34,10 +34,10 @@ func _apply_settings() -> void:
 	if DisplayServer.window_get_flag(DisplayServer.WINDOW_FLAG_BORDERLESS):
 		return
 	
-	# Change the window size to the selected resolution
-	get_window().set_size(OPTION_LIST_[currentValue])
-	get_viewport().set_size(OPTION_LIST_[currentValue])
-	get_window().move_to_center()
+	## Change the window size to the selected resolution
+	#get_window().set_size(OPTION_LIST_[currentValue])
+	#get_viewport().set_size(OPTION_LIST_[currentValue])
+	#get_window().move_to_center()
 "
 
 [node name="Resolution" type="HBoxContainer" node_paths=PackedStringArray("OptionsRef")]

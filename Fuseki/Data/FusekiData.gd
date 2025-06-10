@@ -22,6 +22,21 @@ var sensing_component : Dictionary
 var env : Dictionary
 var sys_component : Dictionary
 var data : Dictionary
+var c1 : Dictionary
+var c2 : Dictionary
+var c4 : Dictionary
+var c5 : Dictionary
+var c7 : Dictionary
+var c8 : Dictionary
+var c9 : Dictionary
+var c12 : Dictionary
+var c14 : Dictionary
+var c15 : Dictionary
+var c16 : Dictionary
+var c18 : Dictionary
+var c19 : Dictionary
+var c20 : Dictionary
+var c21 : Dictionary
 
 var service_to_provided_thing : Array[GenericLinkedNodes]
 var enabler_to_service : Array[GenericLinkedNodes]
@@ -42,40 +57,55 @@ func _ready():
 func _on_data_updated():
 	build_relations()
 
-#Teke a json from a Fuseki query and store the resulting informations in 
-#variables reachable from the Godot application
+# Take a JSON from a Fuseki query and store the resulting information in 
+# variables reachable from the Godot application
 func input_data_from_fuseki_JSON(json):
-	if(not json["head"]["vars"].size() == 3):
-		print("Incorrect JSON head : shoulb be [\"<variable>\",\"attribute\",\"value\"]")
+	if json == null:
+		printerr("Incorrect JSON: It is null")
 		return
+	if json["head"]["vars"].size() != 3:
+		printerr("Incorrect JSON head: should be [\"<variable>\", \"attribute\", \"value\"]")
+		return
+	
 	var json_variable : String = json["head"]["vars"][0]
-	match json_variable:
-		FusekiConfig.JsonHead.SERVICE:
-			service = parse_fuseki_json(json)
-		FusekiConfig.JsonHead.ENABLER:
-			enabler = parse_fuseki_json(json)
-		FusekiConfig.JsonHead.MODEL:
-			model = parse_fuseki_json(json)
-		FusekiConfig.JsonHead.DATA_TRANSMITTED:
-			data_transmitted = parse_fuseki_json(json)
-		FusekiConfig.JsonHead.PROVIDED:
-			provided_thing = parse_fuseki_json(json)
-		FusekiConfig.JsonHead.SENSOR:
-			sensing_component = parse_fuseki_json(json)
-		FusekiConfig.JsonHead.ENV:
-			env = parse_fuseki_json(json)
-		FusekiConfig.JsonHead.SYSTEM_COMPONENT:
-			sys_component = parse_fuseki_json(json)
-		FusekiConfig.JsonHead.DATA:
-			data = parse_fuseki_json(json)
-		FusekiConfig.JsonHead.RABBIT_EXCHANGE:
-			rabbit_exchange = parse_fuseki_json(json)
-		FusekiConfig.JsonHead.RABBIT_ROUTE:
-			rabbit_route = parse_fuseki_json(json)
-		FusekiConfig.JsonHead.RABBIT_SOURCE:
-			rabbit_source = parse_fuseki_json(json)
-		FusekiConfig.JsonHead.RABBIT_MESSAGE_LISTENER:
-			rabbit_message_listener = parse_fuseki_json(json)
+	var value = parse_fuseki_json(json)
+	
+	print(value)
+	
+	var targets = {
+		FusekiConfig.JsonHead.SERVICE: "service",
+		FusekiConfig.JsonHead.ENABLER: "enabler",
+		FusekiConfig.JsonHead.MODEL: "model",
+		FusekiConfig.JsonHead.DATA_TRANSMITTED: "data_transmitted",
+		FusekiConfig.JsonHead.PROVIDED: "provided_thing",
+		FusekiConfig.JsonHead.SENSOR: "sensing_component",
+		FusekiConfig.JsonHead.ENV: "env",
+		FusekiConfig.JsonHead.SYSTEM_COMPONENT: "sys_component",
+		FusekiConfig.JsonHead.DATA: "data",
+		FusekiConfig.JsonHead.RABBIT_EXCHANGE: "rabbit_exchange",
+		FusekiConfig.JsonHead.RABBIT_ROUTE: "rabbit_route",
+		FusekiConfig.JsonHead.RABBIT_SOURCE: "rabbit_source",
+		FusekiConfig.JsonHead.RABBIT_MESSAGE_LISTENER: "rabbit_message_listener",
+		FusekiConfig.JsonHead.C1: "c1",
+		FusekiConfig.JsonHead.C2: "c2",
+		FusekiConfig.JsonHead.C4: "c4",
+		FusekiConfig.JsonHead.C5: "c5",
+		FusekiConfig.JsonHead.C7: "c7",
+		FusekiConfig.JsonHead.C8: "c8",
+		FusekiConfig.JsonHead.C9: "c9",
+		FusekiConfig.JsonHead.C12: "c12",
+		FusekiConfig.JsonHead.C14: "c14",
+		FusekiConfig.JsonHead.C15: "c15",
+		FusekiConfig.JsonHead.C16: "c16",
+		FusekiConfig.JsonHead.C18: "c18",
+		FusekiConfig.JsonHead.C19: "c19",
+		FusekiConfig.JsonHead.C20: "c20",
+		FusekiConfig.JsonHead.C21: "c21",
+	}
+	
+	if targets.has(json_variable):
+		set(targets[json_variable], value) # Fill the variables with data
+
 
 #Parse the json from Fuseki into internal data structure
 #Return an Array of GenericLinkedNodes or a Dictionary depending on the data type
@@ -118,8 +148,8 @@ static func parse_link_result(result_agregator) -> Array[GenericLinkedNodes]:
 		formated_result.append(link)
 	return formated_result
 
-#Transfrom the result agregator in a dictionary, in each entry corresponding 
-#to an elementis a disctionary containing every attributes of this element
+#Transform the result agregator in a dictionary, in each entry corresponding 
+#to an element is a disctionary containing every attributes of this element
 static func parse_element_result(result_agregator) -> Dictionary:
 	var formated_result : Dictionary = {}
 	for result in result_agregator:
@@ -184,4 +214,4 @@ func empty():
 
 #Call dump function
 func dump(dump_path : String, to_console : bool = false):
-	FusekiDataDumper.dump(self, dump_path, to_console)
+	FusekiDataDumper.dump_architecture(self, dump_path, to_console)

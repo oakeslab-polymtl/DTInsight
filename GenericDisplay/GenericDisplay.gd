@@ -108,14 +108,19 @@ func update_chart(last_data) -> void:
 #Background style --------------------------------------------------------------
 func set_dimmed_style():
 	set_bg_color(StyleConfig.DTElement.DIMMED_COLOR)
+	set_text_color(Color.BLACK)
 
 func set_highlight_style():
 	set_bg_color(StyleConfig.DTElement.HIGHLIGHT_COLOR)
+	set_text_color(StyleConfig.DTElement.TEXT_HIGHLIGHT_COLOR)
 
 func set_bg_color(color : Color):
 	var styleBox : StyleBoxFlat = get_theme_stylebox("panel").duplicate()
 	styleBox.bg_color = color
 	add_theme_stylebox_override("panel", styleBox)
+	
+func set_text_color(color: Color):
+	element.set("theme_override_colors/font_color", color)
 
 #Border style ------------------------------------------------------------------
 func set_slower_style():

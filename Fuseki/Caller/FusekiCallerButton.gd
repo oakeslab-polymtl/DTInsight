@@ -1,51 +1,28 @@
 extends Button
 
-@onready var SparqlRequest = $SparqlFusekiQueries
-@onready var FusekiQueryManager = $SparqlFusekiQueries/FusekiQuery
+@onready var sparql_request = $SparqlFusekiQueries
+@onready var fuseki_query_manager = $SparqlFusekiQueries/FusekiQuery
 
-#FusekiDataManager
-var FusekiDataManager : FusekiData
-func set_fuseki_data_manager(fuseki_data_manager : FusekiData):
-	FusekiDataManager = fuseki_data_manager
+var fuseki_data_manager: FusekiData
 
-#On pressed call all queries and emit a signal
-func _on_pressed():
+func set_fuseki_data_manager(manager: FusekiData) -> void:
+	fuseki_data_manager = manager
+
+func _on_pressed() -> void:
 	FusekiSignals.fuseki_data_clear.emit()
 	disabled = true
-	query_fuseky(FusekiQueryManager.SERVICES_QUERY)
-	await(SparqlRequest.request_completed)
-	query_fuseky(FusekiQueryManager.ENABLERS_QUERY)
-	await(SparqlRequest.request_completed)
-	query_fuseky(FusekiQueryManager.MODELS_QUERY)
-	await(SparqlRequest.request_completed)
-	query_fuseky(FusekiQueryManager.DATA_TRANSMITTED_QUERY)
-	await(SparqlRequest.request_completed)
-	query_fuseky(FusekiQueryManager.PROVIDED_THINGS_QUERY)
-	await(SparqlRequest.request_completed)
-	query_fuseky(FusekiQueryManager.SENSORS_QUERY)
-	await(SparqlRequest.request_completed)
-	query_fuseky(FusekiQueryManager.ENV_QUERY)
-	await(SparqlRequest.request_completed)
-	query_fuseky(FusekiQueryManager.SYS_COMPONENT_QUERY)
-	await(SparqlRequest.request_completed)
-	query_fuseky(FusekiQueryManager.DATA_QUERY)
-	await(SparqlRequest.request_completed)
-	query_fuseky(FusekiQueryManager.RABBIT_EXCHANGE_QUERY)
-	await(SparqlRequest.request_completed)
-	query_fuseky(FusekiQueryManager.RABBIT_ROUTING_KEY_QUERY)
-	await(SparqlRequest.request_completed)
-	query_fuseky(FusekiQueryManager.RABBIT_SOURCE_QUERY)
-	await(SparqlRequest.request_completed)
-	query_fuseky(FusekiQueryManager.RABBIT_MESSAGE_LISTENER_QUERY)
-	await(SparqlRequest.request_completed)
+
+	for query_name in fuseki_query_manager.QUERIES.keys():
+		var query = fuseki_query_manager.QUERIES[query_name]
+		_send_query(query)
+		await sparql_request.request_completed
+
 	FusekiSignals.fuseki_data_updated.emit()
 	disabled = false
 
-#Query the Fuseki Server with a given query
-func query_fuseky(query):
-	SparqlRequest.request(FusekiConfig.URL + FusekiConfig.DATASET + FusekiConfig.ENDPOINT + query.uri_encode())
+func _send_query(query: String) -> void:
+	sparql_request.request(FusekiConfig.URL + FusekiConfig.DATASET + FusekiConfig.ENDPOINT + query.uri_encode())
 
-#Parse and store resulting Fuseki json
-func _on_fuseki_completion(_result, _response_code, _headers, body):
+func _on_fuseki_completion(_result, _response_code, _headers, body) -> void:
 	var json = JSON.parse_string(body.get_string_from_utf8())
-	FusekiDataManager.input_data_from_fuseki_JSON(json)
+	fuseki_data_manager.input_data_from_fuseki_JSON(json)

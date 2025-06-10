@@ -12,6 +12,7 @@ class RTBorder:
 class DTElement:
 	const DIMMED_COLOR : Color = Color.GRAY
 	const HIGHLIGHT_COLOR : Color = Color.DIM_GRAY
+	const TEXT_HIGHLIGHT_COLOR : Color = Color.WHITE_SMOKE
 
 #Visual link style
 class Link:

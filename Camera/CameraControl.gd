@@ -2,26 +2,31 @@ extends Camera2D
 
 class_name CameraControl
 
-var mouvement_enabled : bool = true
+var movement_enabled : bool = true
+var zoom_enabled : bool = true
 var currently_zooming : bool = false
 
 func _ready() -> void:
-	CameraSignals.disable_camera_mouvement.connect(_disable_camera_mouvement)
-	CameraSignals.enable_camera_mouvement.connect(_enable_camera_mouvement)
+	CameraSignals.disable_camera_movement.connect(_disable_camera_movement)
+	CameraSignals.enable_camera_movement.connect(_enable_camera_movement)
+	CameraSignals.enable_camera_zoom.connect(_enable_camera_zoom)
+	CameraSignals.disable_camera_zoom.connect(_disable_camera_zoom)
+	CameraSignals.zoom_to_fit.connect(_zoom_to_fit)
 
 func _process(delta : float):
-	if (mouvement_enabled):
-		var inputMouvementVector : Vector2 = handle_mouvement_input()
-		moveCamera(inputMouvementVector, delta)
-	var inputZoomVector : Vector2 = handle_zoom_input(false)
-	zoom_camera(inputZoomVector)
+	if movement_enabled:
+		var inputmovementVector : Vector2 = handle_movement_input()
+		moveCamera(inputmovementVector, delta)
+	if zoom_enabled:
+		var inputZoomVector : Vector2 = handle_zoom_input(false)
+		zoom_camera(inputZoomVector)
 
 #Movement functions -----------------------------------------------------------
 var current_velocity : Vector2 = Vector2(0, 0)
-const ACCELERATION_PER_SECOND : float = CameraConfig.Mouvement.MAX_VELOCITY / CameraConfig.Mouvement.SECONDS_TO_REACH_MAX_VELOCITY
-const DECELERATION_PER_SECOND : float = CameraConfig.Mouvement.MAX_VELOCITY / CameraConfig.Mouvement.SECONDS_TO_STOP_FROM_MAX_VELOCITY
+const ACCELERATION_PER_SECOND : float = CameraConfig.Movement.MAX_VELOCITY / CameraConfig.Movement.SECONDS_TO_REACH_MAX_VELOCITY
+const DECELERATION_PER_SECOND : float = CameraConfig.Movement.MAX_VELOCITY / CameraConfig.Movement.SECONDS_TO_STOP_FROM_MAX_VELOCITY
 
-func handle_mouvement_input() -> Vector2:
+func handle_movement_input() -> Vector2:
 	var input_vector : Vector2 = Vector2(0, 0)
 	if Input.is_action_pressed("cam_move_left"):
 		input_vector += Vector2(-1, 0)
@@ -36,8 +41,8 @@ func handle_mouvement_input() -> Vector2:
 func moveCamera(input_vector : Vector2, delta : float) -> void:
 	var scaled_input : Vector2 = input_vector * ACCELERATION_PER_SECOND * delta
 	if (input_vector != Vector2.ZERO): #acceleration
-		var max_x_velocity = CameraConfig.Mouvement.MAX_VELOCITY if input_vector.normalized().x == 0 else CameraConfig.Mouvement.MAX_VELOCITY * abs(input_vector.normalized().x)
-		var max_y_velocity = CameraConfig.Mouvement.MAX_VELOCITY if input_vector.normalized().y == 0 else CameraConfig.Mouvement.MAX_VELOCITY * abs(input_vector.normalized().y)
+		var max_x_velocity = CameraConfig.Movement.MAX_VELOCITY if input_vector.normalized().x == 0 else CameraConfig.Movement.MAX_VELOCITY * abs(input_vector.normalized().x)
+		var max_y_velocity = CameraConfig.Movement.MAX_VELOCITY if input_vector.normalized().y == 0 else CameraConfig.Movement.MAX_VELOCITY * abs(input_vector.normalized().y)
 		current_velocity.x = clamp(current_velocity.x + scaled_input.x, -max_x_velocity, max_x_velocity)
 		current_velocity.y = clamp(current_velocity.y + scaled_input.y, -max_y_velocity, max_y_velocity)
 	if(input_vector.x == 0 or opposite_signs(input_vector.x, current_velocity.x)):
@@ -63,11 +68,12 @@ func opposite_signs(x:float, y:float) -> bool:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask == MOUSE_BUTTON_LEFT:
-		handle_mouse_mouvement(event)
-	var inputZoomVector : Vector2 = handle_zoom_input(true)
-	zoom_camera(inputZoomVector)
+		handle_mouse_movement(event)
+	if zoom_enabled:
+		var inputZoomVector : Vector2 = handle_zoom_input(true)
+		zoom_camera(inputZoomVector)
 
-func handle_mouse_mouvement(event : InputEventMouseMotion) -> void:
+func handle_mouse_movement(event : InputEventMouseMotion) -> void:
 	translate(-event.relative / zoom)
 
 #Camera functions --------------------------------------------------------------
@@ -89,13 +95,19 @@ func zoom_camera(input_vector: Vector2):
 	zoom = clamp(lerp(zoom, zoom + input_vector, 0.01), Vector2(CameraConfig.Zoom.MAX_ZOOM_OUT_SCALE, CameraConfig.Zoom.MAX_ZOOM_OUT_SCALE), Vector2(CameraConfig.Zoom.MAX_ZOOM_IN_SCALE, CameraConfig.Zoom.MAX_ZOOM_IN_SCALE))
 
 #Signal handling ---------------------------------------------------------------
-func _disable_camera_mouvement() -> void:
-	mouvement_enabled = false
+func _disable_camera_movement() -> void:
+	movement_enabled = false
 
-func _enable_camera_mouvement() -> void:
-	mouvement_enabled = true
+func _enable_camera_movement() -> void:
+	movement_enabled = true
 
-func zoom_to_fit(target_rect: Rect2):
+func _disable_camera_zoom() -> void:
+	zoom_enabled = false
+
+func _enable_camera_zoom() -> void:
+	zoom_enabled = true
+
+func _zoom_to_fit(target_rect: Rect2):
 	var viewport_size = get_viewport_rect().size
 	var scale_x = viewport_size.x / target_rect.size.x
 	var scale_y = viewport_size.y / target_rect.size.y

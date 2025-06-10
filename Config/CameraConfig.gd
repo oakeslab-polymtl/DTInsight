@@ -1,7 +1,7 @@
 extends Node
 
-#Mouvement config
-class Mouvement:
+#Movement config
+class Movement:
 	const MAX_VELOCITY : float = 20
 	const SECONDS_TO_REACH_MAX_VELOCITY : float = 0.2
 	const SECONDS_TO_STOP_FROM_MAX_VELOCITY : float = 0.05
