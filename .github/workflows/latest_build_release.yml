@@ -1,0 +1,43 @@
+name: Latest Build and Release
+permissions:
+  contents: write
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+          path: DTInsight
+
+      - name: Export game (Linux and Web)
+        id: export
+        uses: firebelley/godot-export@master
+        with:
+          godot_executable_download_url: https://github.com/godotengine/godot-builds/releases/download/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64.zip
+          godot_export_templates_download_url: https://github.com/godotengine/godot-builds/releases/download/4.4.1-stable/Godot_v4.4.1-stable_export_templates.tpz
+          relative_project_path: ./DTInsight
+          cache: true
+          archive_output: true
+
+      - name: Create or update latest release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: latest
+          name: "Latest Build"
+          body: "Automated latest build from 'develop' branch."
+          prerelease: true
+          allowUpdates: true
+          artifacts: |
+            ~/.local/share/godot/archives/Linux.zip
+            ~/.local/share/godot/archives/Web.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

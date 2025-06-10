@@ -4,6 +4,9 @@
 [ext_resource type="Script" uid="uid://dfun6prbhxg7c" path="res://MainScene/MainSceneController.gd" id="1_r7thu"]
 [ext_resource type="Script" uid="uid://chsxi3pvlcut1" path="res://Camera/CameraControl.gd" id="3_5mxu4"]
 [ext_resource type="Script" uid="uid://cwl13x3trg1o3" path="res://ControlPanel/ControlPanelSuperviser.gd" id="4_xqnle"]
+[ext_resource type="Script" uid="uid://dfun6prbhxg7c" path="res://MainScene/MainSceneController.gd" id="1_r7thu"]
+[ext_resource type="Script" uid="uid://chsxi3pvlcut1" path="res://Camera/CameraControl.gd" id="3_5mxu4"]
+[ext_resource type="Script" uid="uid://cwl13x3trg1o3" path="res://ControlPanel/ControlPanelSuperviser.gd" id="4_xqnle"]
 [ext_resource type="PackedScene" uid="uid://bx42q4hl46td1" path="res://Fuseki/Data/FusekiData.tscn" id="5_4e51a"]
 [ext_resource type="PackedScene" uid="uid://cwd5j8qr66eh3" path="res://Legends/Legends.tscn" id="5_8cnmr"]
 [ext_resource type="Theme" uid="uid://xukk6lvgcpaa" path="res://main_theme.tres" id="5_77ryg"]
@@ -32,10 +35,13 @@ offset_left = -9.0
 offset_top = -2.0
 offset_right = 1710.0
 offset_bottom = 726.0
+offset_right = 1710.0
+offset_bottom = 726.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(575, 326)
 script = ExtResource("3_5mxu4")
+metadata/_custom_type_script = "uid://chsxi3pvlcut1"
 metadata/_custom_type_script = "uid://chsxi3pvlcut1"
 
 [node name="BackgroundLayer" type="CanvasLayer" parent="."]
