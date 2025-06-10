@@ -25,7 +25,7 @@ jobs:
           godot_executable_download_url: https://github.com/godotengine/godot-builds/releases/download/4.4.1-stable/Godot_v4.4.1-stable_linux.x86_64.zip
           godot_export_templates_download_url: https://github.com/godotengine/godot-builds/releases/download/4.4.1-stable/Godot_v4.4.1-stable_export_templates.tpz
           relative_project_path: ./DTInsight
-          cache: true
+          cache: false
           archive_output: true
 
       - name: Create or update latest release
