@@ -22,6 +22,18 @@ var sensing_component : Dictionary
 var env : Dictionary
 var sys_component : Dictionary
 var data : Dictionary
+var c1 : Dictionary
+var c2 : Dictionary
+var c4 : Dictionary
+var c5 : Dictionary
+var c7 : Dictionary
+var c8 : Dictionary
+var c9 : Dictionary
+var c12 : Dictionary
+var c14 : Dictionary
+var c15 : Dictionary
+var c16 : Dictionary
+var c18 : Dictionary
 var c19 : Dictionary
 var c20 : Dictionary
 var c21 : Dictionary
@@ -74,10 +86,18 @@ func input_data_from_fuseki_JSON(json):
 		FusekiConfig.JsonHead.RABBIT_ROUTE: "rabbit_route",
 		FusekiConfig.JsonHead.RABBIT_SOURCE: "rabbit_source",
 		FusekiConfig.JsonHead.RABBIT_MESSAGE_LISTENER: "rabbit_message_listener",
+		FusekiConfig.JsonHead.C1: "c1",
+		FusekiConfig.JsonHead.C2: "c2",
+		FusekiConfig.JsonHead.C4: "c4",
+		FusekiConfig.JsonHead.C5: "c5",
+		FusekiConfig.JsonHead.C7: "c7",
+		FusekiConfig.JsonHead.C8: "c8",
+		FusekiConfig.JsonHead.C9: "c9",
 		FusekiConfig.JsonHead.C12: "c12",
 		FusekiConfig.JsonHead.C14: "c14",
 		FusekiConfig.JsonHead.C15: "c15",
 		FusekiConfig.JsonHead.C16: "c16",
+		FusekiConfig.JsonHead.C18: "c18",
 		FusekiConfig.JsonHead.C19: "c19",
 		FusekiConfig.JsonHead.C20: "c20",
 		FusekiConfig.JsonHead.C21: "c21",
@@ -194,4 +214,4 @@ func empty():
 
 #Call dump function
 func dump(dump_path : String, to_console : bool = false):
-	FusekiDataDumper.dump(self, dump_path, to_console)
+	FusekiDataDumper.dump_architecture(self, dump_path, to_console)

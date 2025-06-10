@@ -112,6 +112,69 @@ const QUERIES = {
 		?ml ?attribute ?value
 	}",
 #Characteristics ------------------------------------------------------------------------------------
+"c1": "PREFIX DTDFvocab: <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
+	PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
+	PREFIX base:        <https://bentleyjoakes.github.io/DTDF/vocab/base#>
+
+	SELECT *
+	WHERE {
+		?c1 a DTDFvocab:SystemUnderStudy  .
+		OPTIONAL {?c1 ?attribute ?value}
+	}",
+"c2": "PREFIX DTDFvocab: <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
+	PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
+	PREFIX base:        <https://bentleyjoakes.github.io/DTDF/vocab/base#>
+
+	SELECT *
+	WHERE {
+		?c2 a DTDFvocab:ActingComponent  .
+		OPTIONAL {?c2 ?attribute ?value}
+	}",
+"c4": "PREFIX DTDFvocab: <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
+	PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
+	PREFIX base:        <https://bentleyjoakes.github.io/DTDF/vocab/base#>
+
+	SELECT *
+	WHERE {
+		?c4 a DTDFvocab:DataTransmitted  .
+		OPTIONAL {?c4 ?attribute ?value}
+	}",
+"c5": "PREFIX DTDFvocab: <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
+	PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
+	PREFIX base:        <https://bentleyjoakes.github.io/DTDF/vocab/base#>
+
+	SELECT *
+	WHERE {
+		?c5 a DTDFvocab:VirtualToPhysical  .
+		OPTIONAL {?c5 ?attribute ?value}
+	}",
+"c7": "PREFIX DTDFvocab: <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
+	PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
+	PREFIX base:        <https://bentleyjoakes.github.io/DTDF/vocab/base#>
+
+	SELECT *
+	WHERE {
+		?c7 a DTDFvocab:TimeScale  .
+		OPTIONAL {?c7 ?attribute ?value}
+	}",
+"c8": "PREFIX DTDFvocab: <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
+	PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
+	PREFIX base:        <https://bentleyjoakes.github.io/DTDF/vocab/base#>
+
+	SELECT *
+	WHERE {
+		?c8 a DTDFvocab:Multiplicity  .
+		OPTIONAL {?c8 ?attribute ?value}
+	}",
+"c9": "PREFIX DTDFvocab: <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
+	PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
+	PREFIX base:        <https://bentleyjoakes.github.io/DTDF/vocab/base#>
+
+	SELECT *
+	WHERE {
+		?c9 a DTDFvocab:LifeCycleStage  .
+		OPTIONAL {?c9 ?attribute ?value}
+	}",
 "c12": "PREFIX DTDFvocab: <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
 	PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
 	PREFIX base:        <https://bentleyjoakes.github.io/DTDF/vocab/base#>
@@ -147,6 +210,15 @@ const QUERIES = {
 	WHERE {
 		?c16 a DTDFvocab:Deployment  .
 		OPTIONAL {?c16 ?attribute ?value}
+	}",
+"c18": "PREFIX DTDFvocab: <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
+	PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>
+	PREFIX base:        <https://bentleyjoakes.github.io/DTDF/vocab/base#>
+
+	SELECT *
+	WHERE {
+		?c18 a DTDFvocab:HoriIntegration  .
+		OPTIONAL {?c18 ?attribute ?value}
 	}",
 "c19": "PREFIX DTDFvocab: <https://bentleyjoakes.github.io/DTDF/vocab/DTDFVocab#>
 	PREFIX rdfs:        <http://www.w3.org/2000/01/rdf-schema#>

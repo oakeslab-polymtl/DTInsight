@@ -7,7 +7,8 @@ extends Node
 var server := TCPServer.new()
 @export var port = 9090
 var screenshot_save_path = OS.get_user_data_dir() + "/latest_screenshot.png"
-var dump_save_path = OS.get_user_data_dir() + "/data_dump.yaml"
+var dump_architecture_save_path = OS.get_user_data_dir() + "/data_dump.yaml"
+var dump_characteristics_table_save_path = OS.get_user_data_dir() + "/characteristics-table.html"
 
 func _ready():
 	if not OS.has_feature("web"):
@@ -32,8 +33,11 @@ func handle_request(client: StreamPeerTCP):
 	# Wait for the visualization to load
 	await get_tree().create_timer(1).timeout
 	
-	# Dump the yaml
-	dump_yaml()
+	# Dump the architecture as a yaml file
+	dump_architecture_yaml()
+	
+	# Dump the characteristics table as a html file
+	dump_characteristics_table_html()
 	
 	# Capture a screenshot
 	capture_image()
@@ -108,7 +112,12 @@ func capture_image():
 	
 	print("[END Capture...]")
 
-func dump_yaml():
+func dump_architecture_yaml():
 	var dumper_controller = get_tree().root.get_node("MainScene/%FusekiDumperController")
 	var fuseki_data : FusekiData = get_tree().root.get_node("MainScene/FusekiData")
-	dumper_controller.dump(fuseki_data, dump_save_path)
+	dumper_controller.dump_architecture(fuseki_data, dump_architecture_save_path)
+
+func dump_characteristics_table_html():
+	var dumper_controller = get_tree().root.get_node("MainScene/%FusekiDumperController")
+	var fuseki_data : FusekiData = get_tree().root.get_node("MainScene/FusekiData")
+	dumper_controller.dump_characteristics_table(fuseki_data, dump_characteristics_table_save_path)

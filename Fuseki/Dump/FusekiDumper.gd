@@ -37,10 +37,93 @@ func _on_load_button_pressed():
 	load_from_dump(FusekiDataManager, content)
 
 func _on_dump_button_pressed():
-	
-	dump(FusekiDataManager, file_path_input.text)
+	dump_architecture(FusekiDataManager, file_path_input.text)
 
-static func dump(data : FusekiData, dump_path : String, to_console = false):
+static func dump_characteristics_table(data : FusekiData, dump_path : String, to_console = false):
+	var html_string = ""
+	
+	# Create the main characteristics table
+	html_string += "    <table>\n"
+	html_string += "        <tr>\n"
+	html_string += "            <th></th>\n"
+	html_string += "            <th>Characteristics</th>\n"
+	html_string += "            <th>Description</th>\n"
+	html_string += "        </tr>\n"
+	
+	# Add each section as table rows
+	html_string += add_html_table_section("C<sub>1</sub>", "System under study", dump_dictionary_html(data.c1))
+	html_string += add_html_table_section("C<sub>2</sub>", "Physical acting components", dump_dictionary_html(data.c2, false))  
+	html_string += add_html_table_section("C<sub>3</sub>", "Physical sensing components", dump_dictionary_html(data.sensing_component, false))
+	html_string += add_html_table_section("C<sub>4</sub>", "Physical-to-virtual interaction", dump_dictionary_html(data.c4, false))
+	html_string += add_html_table_section("C<sub>5</sub>", "Virtual-to-physical interaction", dump_dictionary_html(data.c5))
+	html_string += add_html_table_section("C<sub>6</sub>", "DT services", dump_dictionary_html(data.service, false))
+	html_string += add_html_table_section("C<sub>7</sub>", "Twinning time-scale", dump_dictionary_html(data.c7))
+	html_string += add_html_table_section("C<sub>8</sub>", "Multiplicities", dump_dictionary_html(data.c8))
+	html_string += add_html_table_section("C<sub>9</sub>", "Life-cycle stages", dump_dictionary_html(data.c9))
+	html_string += add_html_table_section("C<sub>10</sub>", "DT models and data", "Models:<br>" + dump_dictionary_html(data.model, false) + "<br><br>Data:<br>" + dump_dictionary_html(data.data, false))
+	html_string += add_html_table_section("C<sub>11</sub>", "Tooling and enablers", dump_dictionary_html(data.enabler, false))
+	html_string += add_html_table_section("C<sub>12</sub>", "DT constellation", dump_dictionary_html(data.c12))
+	html_string += add_html_table_section("C<sub>13</sub>", "Twinning process and DT evolution", dump_dictionary_html(data.c15))
+	html_string += add_html_table_section("C<sub>14</sub>", "Fidelity and validity considerations", dump_dictionary_html(data.c14))
+	html_string += add_html_table_section("C<sub>15</sub>", "DT technical connection", dump_dictionary_html(data.c15))
+	html_string += add_html_table_section("C<sub>16</sub>", "DT hosting/deployment", dump_dictionary_html(data.c16))
+	html_string += add_html_table_section("C<sub>17</sub>", "Insights and decision making", dump_dictionary_html(data.provided_thing, false))
+	html_string += add_html_table_section("C<sub>18</sub>", "Horizontal integration", dump_dictionary_html(data.c18))
+	html_string += add_html_table_section("C<sub>19</sub>", "Data ownership and privacy", dump_dictionary_html(data.c19))
+	html_string += add_html_table_section("C<sub>20</sub>", "Standardization", dump_dictionary_html(data.c20))
+	html_string += add_html_table_section("C<sub>21</sub>", "Security and safety considerations", dump_dictionary_html(data.c21))
+	
+	html_string += "    </table>\n"
+	
+	if(to_console):
+		print(html_string)
+	else:
+		var file = FileAccess.open(dump_path, FileAccess.WRITE)
+		file.store_string(html_string)
+		print("HTML data dumped at: ", dump_path)
+
+static func add_html_table_section(id: String, characteristic: String, description: String) -> String:
+	var row = ""
+	row += "        <tr>\n"
+	row += "            <td class=\"characteristic-id\">" + id + "</td>\n"
+	row += "            <td>" + characteristic + "</td>\n"
+	row += "            <td>" + description + "</td>\n"
+	row += "        </tr>\n"
+	return row
+
+static func dump_dictionary_html(dict : Dictionary, only_show_desc = true) -> String:
+	var result = ""
+	if dict == null:
+		return "No data available"
+	
+	for key in dict.keys():
+		if result != "":
+			result += "<br>"
+		if not only_show_desc:
+			result += str(key)
+		if dict[key].has('desc'):
+			if not only_show_desc:
+				result += ": "
+			result += str(dict[key]['desc']).replace("[\"", "").replace("\"]", "")
+	
+	if result == "":
+		result = "No data available"
+	
+	return result
+	
+#static func dump_dictionary_html(dict) -> String:
+	#var result = ""
+	#print(dict.keys())
+	#if dict == null:
+		#return "No data available"
+	#
+	#for key in dict.keys():
+		#if key == "desc":
+			#result = dict[key]
+	#
+	#return result
+
+static func dump_architecture(data : FusekiData, dump_path : String, to_console = false):
 	var dump_string = ""
 	dump_string += SERVICES_INDICATOR + "\n"
 	dump_string += dump_dictionary(data.service)
