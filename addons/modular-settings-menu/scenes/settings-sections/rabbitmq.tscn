@@ -60,11 +60,11 @@ func _apply_settings() -> void:
 	return
 "
 
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_hlot4"]
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_up5gm"]
 size = Vector2(0, 0)
 
 [sub_resource type="Theme" id="Theme_4i2xw"]
-SpinBox/icons/updown = SubResource("PlaceholderTexture2D_hlot4")
+SpinBox/icons/updown = SubResource("PlaceholderTexture2D_up5gm")
 
 [sub_resource type="GDScript" id="GDScript_1jfa2"]
 resource_name = "message_limit"

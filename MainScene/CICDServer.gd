@@ -113,11 +113,11 @@ func capture_image():
 	print("[END Capture...]")
 
 func dump_architecture_yaml():
-	var dumper_controller = get_tree().root.get_node("MainScene/%FusekiDumperController")
+	var dumper_controller = get_tree().root.get_node("MainScene/%Settings/%FusekiDumperController")
 	var fuseki_data : FusekiData = get_tree().root.get_node("MainScene/FusekiData")
 	dumper_controller.dump_architecture(fuseki_data, dump_architecture_save_path)
 
 func dump_characteristics_table_html():
-	var dumper_controller = get_tree().root.get_node("MainScene/%FusekiDumperController")
+	var dumper_controller = get_tree().root.get_node("MainScene/%Settings/%FusekiDumperController")
 	var fuseki_data : FusekiData = get_tree().root.get_node("MainScene/FusekiData")
 	dumper_controller.dump_characteristics_table(fuseki_data, dump_characteristics_table_save_path)
