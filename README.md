@@ -6,13 +6,17 @@ The purpose of this project is to provide users with a graphical and interactive
 
 # About this project
 
-This tool was built with the aim of being cross compatible with any digital twin ontology built with the vocab available at "https://github.com/BentleyJOakes/2023.IncubatorOnto". To build such ontologies we recommend tools such as openCAESAR Rosetta available at "https://github.com/opencaesar/oml-rosetta".
+This tool was built with the aim of being cross compatible with any digital twin ontology built with the Ontology Modeling Lanuage (OML) vocabulary available at "https://github.com/oakeslab-polymtl/DTDF". To build such ontologies we recommend tools such as openCAESAR Rosetta available at "https://github.com/opencaesar/oml-rosetta".
 
 To benefit from all of the real time communication features you will need a related digital twin simulator publishing its data with RabbitMQ, similar to this project "https://github.com/INTO-CPS-Association/example_digital-twin_incubator", as well as an ontology providing the necessary data to connect it to the visualization.
 
 # How to use
 
 To demonstrate how to use this tool we will take the example of the incubator project available with the links provided in the "About this project" section.
+
+## Settings
+
+Click on the gear on the bottom left button to access the settings panel.
 
 ## Load an ontology
 
@@ -60,7 +64,7 @@ D - Move Right \
 A - Zoom out \
 E - Zoom in
 
-*You can also move the camera by clicking and draging it*
+*You can also move the camera by clicking and dragging it*
 
 **Highlighting relationships :**
 
@@ -97,4 +101,10 @@ Once loaded if a script is associated with a Digital Twin component, a new butto
 # Credits
 
 @Ryskann / Louis Malassigné-Onfroy \
+@Kérian Fiter \
 Under the supervision of Benley Oakes
+
+# License
+
+This project is licensed under the 
+[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/).
