@@ -1,10 +1,14 @@
-[gd_scene load_steps=11 format=3 uid="uid://px6a2dg8cawb"]
+[gd_scene load_steps=15 format=3 uid="uid://px6a2dg8cawb"]
 
 [ext_resource type="Script" uid="uid://cj71y2lip0wby" path="res://addons/modular-settings-menu/scripts/settings_menu.gd" id="1_crapp"]
+[ext_resource type="Script" uid="uid://b2uskv7m4kmgm" path="res://addons/modular-settings-menu/scripts/settings_section.gd" id="2_4tyfx"]
 [ext_resource type="PackedScene" uid="uid://c1rsvqsv63cco" path="res://addons/modular-settings-menu/scenes/settings-sections/rabbitmq.tscn" id="2_qpphr"]
+[ext_resource type="PackedScene" uid="uid://bkgqmtunv5x7n" path="res://ControlPanel/StandaloneControl/ScriptFileSelector/ScriptFileSelector.tscn" id="3_0qu0k"]
 [ext_resource type="PackedScene" uid="uid://buqq0kms2dbb4" path="res://addons/modular-settings-menu/scenes/settings-sections/graphics.tscn" id="3_8fcn6"]
 [ext_resource type="PackedScene" uid="uid://byoys8cpmn66u" path="res://addons/modular-settings-menu/scenes/settings-sections/fuseki.tscn" id="3_i2jv1"]
+[ext_resource type="Script" uid="uid://bj1p7hd2hhbj5" path="res://Fuseki/Dump/FusekiDumper.gd" id="4_rlirv"]
 [ext_resource type="PackedScene" uid="uid://dvkksl3mrnoto" path="res://addons/modular-settings-menu/scenes/settings-elements/discard_changes_popup.tscn" id="4_yfemx"]
+[ext_resource type="Theme" uid="uid://xukk6lvgcpaa" path="res://main_theme.tres" id="5_lwpvd"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kwbsm"]
 
@@ -48,19 +52,117 @@ theme_override_styles/tab_focus = SubResource("StyleBoxEmpty_kwbsm")
 theme_override_styles/panel = SubResource("StyleBoxFlat_lj62q")
 current_tab = 0
 
+[node name="General" type="Control" parent="SettingsPanel/SettingsTabs"]
+layout_mode = 2
+script = ExtResource("2_4tyfx")
+metadata/_custom_type_script = "uid://b2uskv7m4kmgm"
+metadata/_tab_index = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="SettingsPanel/SettingsTabs/General"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="ScrollContainer" type="ScrollContainer" parent="SettingsPanel/SettingsTabs/General/MarginContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="SettingsPanel/SettingsTabs/General/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="ElementList" type="VBoxContainer" parent="SettingsPanel/SettingsTabs/General/MarginContainer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 24
+
+[node name="BasicSettings" type="VBoxContainer" parent="SettingsPanel/SettingsTabs/General/MarginContainer/ScrollContainer/MarginContainer/ElementList"]
+layout_mode = 2
+
+[node name="SubSectionName" type="Label" parent="SettingsPanel/SettingsTabs/General/MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Basic Settings"
+
+[node name="HSeparator" type="HSeparator" parent="SettingsPanel/SettingsTabs/General/MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings"]
+layout_mode = 2
+
+[node name="ScriptFileSelector" parent="SettingsPanel/SettingsTabs/General/MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings" instance=ExtResource("3_0qu0k")]
+layout_mode = 2
+
+[node name="FusekiDumperController" type="HBoxContainer" parent="SettingsPanel/SettingsTabs/General/MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+script = ExtResource("4_rlirv")
+
+[node name="DumpPathEdit" type="TextEdit" parent="SettingsPanel/SettingsTabs/General/MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/FusekiDumperController"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("5_lwpvd")
+placeholder_text = "Dump file path..."
+
+[node name="PickButton" type="Button" parent="SettingsPanel/SettingsTabs/General/MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/FusekiDumperController"]
+layout_mode = 2
+text = "Pick file"
+
+[node name="ButtonsContainer" type="VBoxContainer" parent="SettingsPanel/SettingsTabs/General/MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/FusekiDumperController"]
+layout_mode = 2
+
+[node name="DumpButton" type="Button" parent="SettingsPanel/SettingsTabs/General/MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/FusekiDumperController/ButtonsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+text = "Dump"
+
+[node name="LoadButton" type="Button" parent="SettingsPanel/SettingsTabs/General/MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/FusekiDumperController/ButtonsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+text = "Load
+"
+
+[node name="FileDialog" type="FileDialog" parent="SettingsPanel/SettingsTabs/General/MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/FusekiDumperController"]
+auto_translate_mode = 1
+title = "Open a File"
+initial_position = 1
+size = Vector2i(600, 500)
+always_on_top = true
+popup_window = true
+min_size = Vector2i(600, 500)
+ok_button_text = "Open"
+dialog_hide_on_ok = true
+file_mode = 0
+access = 2
+
 [node name="RabbitMQ" parent="SettingsPanel/SettingsTabs" instance=ExtResource("2_qpphr")]
+visible = false
 layout_mode = 2
 theme_override_styles/tab_focus = SubResource("StyleBoxEmpty_v0fou")
-metadata/_tab_index = 0
+metadata/_tab_index = 1
 
 [node name="Fuseki" parent="SettingsPanel/SettingsTabs" instance=ExtResource("3_i2jv1")]
 visible = false
 layout_mode = 2
+metadata/_tab_index = 2
 
 [node name="Graphics" parent="SettingsPanel/SettingsTabs" instance=ExtResource("3_8fcn6")]
 visible = false
 layout_mode = 2
-metadata/_tab_index = 2
+metadata/_tab_index = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="SettingsPanel"]
 layout_mode = 2
@@ -93,5 +195,11 @@ visible = false
 layout_mode = 1
 
 [connection signal="visibility_changed" from="." to="." method="on_visibility_changed"]
+[connection signal="focus_entered" from="SettingsPanel/SettingsTabs/General/MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/FusekiDumperController/DumpPathEdit" to="SettingsPanel/SettingsTabs/General/MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/FusekiDumperController" method="_on_dump_path_edit_focus_entered"]
+[connection signal="focus_exited" from="SettingsPanel/SettingsTabs/General/MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/FusekiDumperController/DumpPathEdit" to="SettingsPanel/SettingsTabs/General/MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/FusekiDumperController" method="_on_dump_path_edit_focus_exited"]
+[connection signal="pressed" from="SettingsPanel/SettingsTabs/General/MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/FusekiDumperController/PickButton" to="SettingsPanel/SettingsTabs/General/MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/FusekiDumperController" method="_on_pick_button_pressed"]
+[connection signal="pressed" from="SettingsPanel/SettingsTabs/General/MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/FusekiDumperController/ButtonsContainer/DumpButton" to="SettingsPanel/SettingsTabs/General/MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/FusekiDumperController" method="_on_dump_button_pressed"]
+[connection signal="pressed" from="SettingsPanel/SettingsTabs/General/MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/FusekiDumperController/ButtonsContainer/LoadButton" to="SettingsPanel/SettingsTabs/General/MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/FusekiDumperController" method="_on_load_button_pressed"]
+[connection signal="file_selected" from="SettingsPanel/SettingsTabs/General/MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/FusekiDumperController/FileDialog" to="SettingsPanel/SettingsTabs/General/MarginContainer/ScrollContainer/MarginContainer/ElementList/BasicSettings/FusekiDumperController" method="_on_file_dialog_file_selected"]
 [connection signal="pressed" from="SettingsPanel/HBoxContainer/ApplyButton" to="." method="on_apply_button_pressed"]
 [connection signal="pressed" from="SettingsPanel/HBoxContainer/BackButton" to="." method="on_back_button_pressed"]
