@@ -18,6 +18,8 @@ var message_listeners : Dictionary = {}
 
 var connected : bool
 
+signal OnMessage(message: String)
+
 func _ready():
 	rabbit_mq.connect("UpdatedRabbit", _on_updated_rabbit)
 	FusekiSignals.fuseki_data_updated.connect(update_rabbit_data)
@@ -37,8 +39,8 @@ func update_rabbit_data() -> void:
 	rabbit_mq_controller.get_rabbit_parameters(exchange_name, [routing_key] as Array[String])
 
 func _on_updated_rabbit(rabbit_data : String) -> void:
+	emit_signal("OnMessage", rabbit_data)
 	var data = JSON.parse_string(rabbit_data)
-
 	if data.tags.source != null && data.tags.source == source:
 		for src in message_listeners.keys():
 			message_listeners[src].data.add_element(data.fields[src])

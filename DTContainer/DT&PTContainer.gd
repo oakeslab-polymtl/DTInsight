@@ -219,6 +219,8 @@ func update_node_with(visual_container : HBoxContainer, fuseki_node_data : Dicti
 		new_node.set_text(key)
 		if (PythonConfig.LOCATION_KEY in fuseki_node_data[key].keys()):
 			new_node.set_python_script_location(fuseki_node_data[key][PythonConfig.LOCATION_KEY][0])
+		if ("HasVisualization" in fuseki_node_data[key].keys() and fuseki_node_data[key]["HasVisualization"][0] == "true"):
+			new_node.set_visualization()
 		visual_container.add_child(new_node)
 		var displayed_element = NamedNode.new()
 		displayed_element.name = key

@@ -19,11 +19,8 @@ func _ready():
 		# Start checking for data after a short delay
 		get_tree().create_timer(1.0).timeout.connect(_check_for_data)
 	else:
-		# IMPORTANT: COMMENT THE FOLLOWING LINES EXPORTING TO THE WEB
-		var rabbit_scene = preload("res://RabbitMQ/Data/RabbitMQ.tscn")
-		var rabbit_data = rabbit_scene.instantiate()
-		add_child(rabbit_data)
-		rabbit_data.set_fuseki_data_manager(fuseki_data)
+		RabbitMq.set_fuseki_data_manager(fuseki_data)
+
 func _check_for_data():
 	print("🔍 Checking for YAML data...")
 	
