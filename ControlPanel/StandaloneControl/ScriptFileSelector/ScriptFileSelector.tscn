@@ -23,6 +23,7 @@ ok_button_text = "Select Current Folder"
 dialog_hide_on_ok = true
 file_mode = 2
 access = 2
+use_native_dialog = true
 
 [connection signal="focus_entered" from="SoftwarePathEdit" to="." method="_on_path_edit_focus_entered"]
 [connection signal="focus_exited" from="SoftwarePathEdit" to="." method="_on_path_edit_focus_exited"]

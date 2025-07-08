@@ -39,6 +39,7 @@ func update_rabbit_data() -> void:
 	rabbit_mq_controller.get_rabbit_parameters(exchange_name, [routing_key] as Array[String])
 
 func _on_updated_rabbit(rabbit_data : String) -> void:
+	# Emit signal for sending data to other nodes
 	emit_signal("OnMessage", rabbit_data)
 	var data = JSON.parse_string(rabbit_data)
 	if data.tags.source != null && data.tags.source == source:
