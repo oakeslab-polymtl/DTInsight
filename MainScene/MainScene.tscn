@@ -27,7 +27,7 @@ script = ExtResource("1_r7thu")
 z_as_relative = false
 offset_left = -9.0
 offset_top = -2.0
-offset_right = 1710.0
+offset_right = 1344.0
 offset_bottom = 726.0
 
 [node name="Camera2D" type="Camera2D" parent="."]

@@ -31,7 +31,7 @@ func handle_request(client: StreamPeerTCP):
 	fuseki_button._on_pressed()
 	
 	# Wait for the visualization to load
-	await get_tree().create_timer(1).timeout
+	await get_tree().create_timer(3).timeout
 	
 	# Dump the architecture as a yaml file
 	dump_architecture_yaml()
