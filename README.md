@@ -2,7 +2,7 @@
 
 The purpose of this project is to provide users with a graphical and interactive representation of a Digital Twin.
 
-<img width="1075" alt="image" src="https://github.com/user-attachments/assets/8f6d9343-2fb9-44ef-9594-b66e5959323">
+<img width="1075" alt="image" src="https://github.com/user-attachments/assets/6841f934-bf88-4eb5-9e41-3e4e1e57c05b">
 
 # About this project
 
