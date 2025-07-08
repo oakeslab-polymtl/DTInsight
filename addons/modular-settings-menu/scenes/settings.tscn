@@ -10,10 +10,10 @@
 [ext_resource type="PackedScene" uid="uid://dvkksl3mrnoto" path="res://addons/modular-settings-menu/scenes/settings-elements/discard_changes_popup.tscn" id="4_yfemx"]
 [ext_resource type="Theme" uid="uid://xukk6lvgcpaa" path="res://main_theme.tres" id="5_lwpvd"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kwbsm"]
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lj62q"]
 bg_color = Color(0.298039, 0.298039, 0.298039, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kwbsm"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v0fou"]
 
@@ -48,8 +48,8 @@ grow_vertical = 2
 [node name="SettingsTabs" type="TabContainer" parent="SettingsPanel"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/tab_focus = SubResource("StyleBoxEmpty_kwbsm")
 theme_override_styles/panel = SubResource("StyleBoxFlat_lj62q")
+theme_override_styles/tab_focus = SubResource("StyleBoxEmpty_kwbsm")
 current_tab = 0
 
 [node name="General" type="Control" parent="SettingsPanel/SettingsTabs"]
@@ -147,6 +147,7 @@ ok_button_text = "Open"
 dialog_hide_on_ok = true
 file_mode = 0
 access = 2
+use_native_dialog = true
 
 [node name="RabbitMQ" parent="SettingsPanel/SettingsTabs" instance=ExtResource("2_qpphr")]
 visible = false

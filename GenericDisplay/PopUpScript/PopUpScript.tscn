@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://cspiwjvdyi8ce"]
+[gd_scene load_steps=2 format=3 uid="uid://dnldb6b6xpbug"]
 
 [ext_resource type="Script" uid="uid://qe3n3obtygdn" path="res://GenericDisplay/PopUpScript/PopUpScriptControl.gd" id="1_65ouh"]
 
@@ -19,13 +19,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HideButton" type="Button" parent="ScriptContainer"]
-layout_mode = 2
-text = "Hide"
-
 [node name="Script" type="RichTextLabel" parent="ScriptContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 text = "Select script folder..."
-
-[connection signal="pressed" from="ScriptContainer/HideButton" to="." method="_on_hide_button_pressed"]

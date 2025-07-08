@@ -2,223 +2,298 @@ extends Node
 
 class_name FusekiDataDumper
 
-@onready var file_path_input : TextEdit = $DumpPathEdit
-@onready var file_dialog : FileDialog = $FileDialog
+@onready var file_path_input: TextEdit = $DumpPathEdit
+@onready var file_dialog: FileDialog = $FileDialog
 
-#Dump file indicators
-const SERVICES_INDICATOR = "Services :"
-const ENABLERS_TO_SERVICES_INDICATOR = "Enablers to services :"
-const ENABLERS_INDICATOR = "Enablers :"
-const MODELS_TO_ENABLERS_INDICATOR = "Models to enablers :"
-const MODELS_INDICATOR = "Models :"
-const PROVIDED_THING_INDICATOR = "ProvidedThings :"
-const SERVICES_TO_PROVIDED_THING_INDICATOR = "Services to provided thing :"
-const DATA_TRANSMITTED_INDICATOR = "Data transmitted :"
-const SENSORS_INDICATOR = "Sensors :"
-const SYS_INDICATOR = "System :"
-const ENV_INDICATOR = "System environnement :"
-const DATA_INDICATOR = "Data :"
-const RABBIT_EXCHANGE_INDICATOR = "Rabbit exchange :"
-const RABBIT_ROUTE_INDICATOR = "Rabbit route :"
-const RABBIT_SOURCE_INDICATOR = "Rabbit source :"
-const RABBIT_ML_INDICATOR = "Rabbit message listener :"
-const EOF_INDICATOR = ""
+# Configuration for dump sections - easier to maintain and extend
+const DUMP_CONFIG = [
+	{indicator = "Services :", field = "service"},
+	{indicator = "Enablers :", field = "enabler"},
+	{indicator = "Models :", field = "model"},
+	{indicator = "ProvidedThings :", field = "provided_thing"},
+	{indicator = "Data transmitted :", field = "data_transmitted"},
+	{indicator = "Sensors :", field = "sensing_component"},
+	{indicator = "System :", field = "sys_component"},
+	{indicator = "System environnement :", field = "env"},
+	{indicator = "Data :", field = "data"},
+	{indicator = "Rabbit exchange :", field = "rabbit_exchange"},
+	{indicator = "Rabbit route :", field = "rabbit_route"},
+	{indicator = "Rabbit source :", field = "rabbit_source"},
+	{indicator = "Rabbit message listener :", field = "rabbit_message_listener"}
+]
 
-#FusekiDataManager
-var FusekiDataManager : FusekiData
-func set_fuseki_data_manager(fuseki_data_manager : FusekiData):
-	FusekiDataManager = fuseki_data_manager
+# HTML characteristics configuration
+const CHARACTERISTICS_CONFIG = [
+	{id = "C<sub>1</sub>", name = "System under study", field = "c1", desc_only = true},
+	{id = "C<sub>2</sub>", name = "Physical acting components", field = "c2", desc_only = false},
+	{id = "C<sub>3</sub>", name = "Physical sensing components", field = "sensing_component", desc_only = false},
+	{id = "C<sub>4</sub>", name = "Physical-to-virtual interaction", field = "c4", desc_only = false},
+	{id = "C<sub>5</sub>", name = "Virtual-to-physical interaction", field = "c5", desc_only = true},
+	{id = "C<sub>6</sub>", name = "DT services", field = "service", desc_only = false},
+	{id = "C<sub>7</sub>", name = "Twinning time-scale", field = "c7", desc_only = true},
+	{id = "C<sub>8</sub>", name = "Multiplicities", field = "c8", desc_only = true},
+	{id = "C<sub>9</sub>", name = "Life-cycle stages", field = "c9", desc_only = true},
+	{id = "C<sub>10</sub>", name = "DT models and data", fields = ["model", "data"], desc_only = false, is_composite = true},
+	{id = "C<sub>11</sub>", name = "Tooling and enablers", field = "enabler", desc_only = false},
+	{id = "C<sub>12</sub>", name = "DT constellation", field = "c12", desc_only = true},
+	{id = "C<sub>13</sub>", name = "Twinning process and DT evolution", field = "c15", desc_only = true},
+	{id = "C<sub>14</sub>", name = "Fidelity and validity considerations", field = "c14", desc_only = true},
+	{id = "C<sub>15</sub>", name = "DT technical connection", field = "c15", desc_only = true},
+	{id = "C<sub>16</sub>", name = "DT hosting/deployment", field = "c16", desc_only = true},
+	{id = "C<sub>17</sub>", name = "Insights and decision making", field = "provided_thing", desc_only = false},
+	{id = "C<sub>18</sub>", name = "Horizontal integration", field = "c18", desc_only = true},
+	{id = "C<sub>19</sub>", name = "Data ownership and privacy", field = "c19", desc_only = true},
+	{id = "C<sub>20</sub>", name = "Standardization", field = "c20", desc_only = true},
+	{id = "C<sub>21</sub>", name = "Security and safety considerations", field = "c21", desc_only = true}
+]
 
-func _on_load_button_pressed():
-	var file = FileAccess.open(file_path_input.text, FileAccess.READ)
-	if (file == null):
-		return
-	var content : String = file.get_as_text()
-	load_from_dump(FusekiDataManager, content)
+var fuseki_data_manager: FusekiData
 
-func _on_dump_button_pressed():
-	dump_architecture(FusekiDataManager, file_path_input.text)
+func set_fuseki_data_manager(manager: FusekiData) -> void:
+	fuseki_data_manager = manager
 
-static func dump_characteristics_table(data : FusekiData, dump_path : String, to_console = false):
-	var html_string = ""
-	
-	# Create the main characteristics table
-	html_string += "    <table>\n"
-	html_string += "        <tr>\n"
-	html_string += "            <th></th>\n"
-	html_string += "            <th>Characteristics</th>\n"
-	html_string += "            <th>Description</th>\n"
-	html_string += "        </tr>\n"
-	
-	# Add each section as table rows
-	html_string += add_html_table_section("C<sub>1</sub>", "System under study", dump_dictionary_html(data.c1))
-	html_string += add_html_table_section("C<sub>2</sub>", "Physical acting components", dump_dictionary_html(data.c2, false))  
-	html_string += add_html_table_section("C<sub>3</sub>", "Physical sensing components", dump_dictionary_html(data.sensing_component, false))
-	html_string += add_html_table_section("C<sub>4</sub>", "Physical-to-virtual interaction", dump_dictionary_html(data.c4, false))
-	html_string += add_html_table_section("C<sub>5</sub>", "Virtual-to-physical interaction", dump_dictionary_html(data.c5))
-	html_string += add_html_table_section("C<sub>6</sub>", "DT services", dump_dictionary_html(data.service, false))
-	html_string += add_html_table_section("C<sub>7</sub>", "Twinning time-scale", dump_dictionary_html(data.c7))
-	html_string += add_html_table_section("C<sub>8</sub>", "Multiplicities", dump_dictionary_html(data.c8))
-	html_string += add_html_table_section("C<sub>9</sub>", "Life-cycle stages", dump_dictionary_html(data.c9))
-	html_string += add_html_table_section("C<sub>10</sub>", "DT models and data", "Models:<br>" + dump_dictionary_html(data.model, false) + "<br><br>Data:<br>" + dump_dictionary_html(data.data, false))
-	html_string += add_html_table_section("C<sub>11</sub>", "Tooling and enablers", dump_dictionary_html(data.enabler, false))
-	html_string += add_html_table_section("C<sub>12</sub>", "DT constellation", dump_dictionary_html(data.c12))
-	html_string += add_html_table_section("C<sub>13</sub>", "Twinning process and DT evolution", dump_dictionary_html(data.c15))
-	html_string += add_html_table_section("C<sub>14</sub>", "Fidelity and validity considerations", dump_dictionary_html(data.c14))
-	html_string += add_html_table_section("C<sub>15</sub>", "DT technical connection", dump_dictionary_html(data.c15))
-	html_string += add_html_table_section("C<sub>16</sub>", "DT hosting/deployment", dump_dictionary_html(data.c16))
-	html_string += add_html_table_section("C<sub>17</sub>", "Insights and decision making", dump_dictionary_html(data.provided_thing, false))
-	html_string += add_html_table_section("C<sub>18</sub>", "Horizontal integration", dump_dictionary_html(data.c18))
-	html_string += add_html_table_section("C<sub>19</sub>", "Data ownership and privacy", dump_dictionary_html(data.c19))
-	html_string += add_html_table_section("C<sub>20</sub>", "Standardization", dump_dictionary_html(data.c20))
-	html_string += add_html_table_section("C<sub>21</sub>", "Security and safety considerations", dump_dictionary_html(data.c21))
-	
-	html_string += "    </table>\n"
-	
-	if(to_console):
-		print(html_string)
+func _on_load_button_pressed() -> void:
+	var result = _load_file_content(file_path_input.text)
+	if result.success:
+		load_from_dump(fuseki_data_manager, result.content)
+		print("Data loaded successfully from: ", file_path_input.text)
 	else:
-		var file = FileAccess.open(dump_path, FileAccess.WRITE)
-		file.store_string(html_string)
-		print("HTML data dumped at: ", dump_path)
+		print("Error loading file: ", result.error)
 
-static func add_html_table_section(id: String, characteristic: String, description: String) -> String:
-	var row = ""
-	row += "        <tr>\n"
-	row += "            <td class=\"characteristic-id\">" + id + "</td>\n"
-	row += "            <td>" + characteristic + "</td>\n"
-	row += "            <td>" + description + "</td>\n"
-	row += "        </tr>\n"
-	return row
+func _on_dump_button_pressed() -> void:
+	if not fuseki_data_manager:
+		print("Error: No FusekiData manager set")
+		return
+	
+	var result = dump_architecture(fuseki_data_manager, file_path_input.text)
+	if result.success:
+		print("Data dumped successfully to: ", file_path_input.text)
+	else:
+		print("Error dumping data: ", result.error)
 
-static func dump_dictionary_html(dict : Dictionary, only_show_desc = true) -> String:
-	var result = ""
-	if dict == null:
+# Helper function to safely load file content
+func _load_file_content(path: String) -> Dictionary:
+	var file = FileAccess.open(path, FileAccess.READ)
+	if not file:
+		return {success = false, error = "Could not open file: " + path}
+	
+	var content = file.get_as_text()
+	file.close()
+	return {success = true, content = content}
+
+# Helper function to safely write file content
+func _write_file_content(path: String, content: String) -> Dictionary:
+	var file = FileAccess.open(path, FileAccess.WRITE)
+	if not file:
+		return {success = false, error = "Could not create file: " + path}
+	
+	file.store_string(content)
+	file.close()
+	return {success = true}
+
+static func dump_characteristics_table(data: FusekiData, dump_path: String, to_console: bool = false) -> Dictionary:
+	if not data:
+		return {success = false, error = "No data provided"}
+	
+	var html_content = _build_characteristics_html(data)
+	
+	if to_console:
+		print(html_content)
+		return {success = true}
+	else:
+		var dumper = FusekiDataDumper.new()
+		var result = dumper._write_file_content(dump_path, html_content)
+		if result.success:
+			print("HTML data dumped at: ", dump_path)
+		return result
+
+static func _build_characteristics_html(data: FusekiData) -> String:
+	var html = PackedStringArray()
+	
+	html.append("    <table>")
+	html.append("        <tr>")
+	html.append("            <th></th>")
+	html.append("            <th>Characteristics</th>")
+	html.append("            <th>Description</th>")
+	html.append("        </tr>")
+	
+	for config in CHARACTERISTICS_CONFIG:
+		var description = _get_characteristic_description(data, config)
+		html.append(_create_html_table_row(config.id, config.name, description))
+	
+	html.append("    </table>")
+	return "\n".join(html)
+
+static func _get_characteristic_description(data: FusekiData, config: Dictionary) -> String:
+	if config.get("is_composite", false):
+		# Handle composite fields (like C10 with models and data)
+		var parts = PackedStringArray()
+		for i in range(config.fields.size()):
+			var field_name = config.fields[i]
+			var field_data = data.get(field_name)
+			var field_label = field_name.capitalize() + ":"
+			parts.append(field_label + "<br>" + _format_dictionary_html(field_data, config.desc_only))
+		return "<br><br>".join(parts)
+	else:
+		var field_data = data.get(config.field)
+		return _format_dictionary_html(field_data, config.desc_only)
+
+static func _create_html_table_row(id: String, characteristic: String, description: String) -> String:
+	return "        <tr>\n            <td class=\"characteristic-id\">" + id + \
+		   "</td>\n            <td>" + characteristic + \
+		   "</td>\n            <td>" + description + "</td>\n        </tr>"
+
+static func _format_dictionary_html(dict: Dictionary, desc_only: bool = true) -> String:
+	if not dict or dict.is_empty():
 		return "No data available"
 	
+	var results = PackedStringArray()
+	
 	for key in dict.keys():
-		if result != "":
-			result += "<br>"
-		if not only_show_desc:
-			result += str(key)
-		if dict[key].has('desc'):
-			if not only_show_desc:
-				result += ": "
-			result += str(dict[key]['desc']).replace("[\"", "").replace("\"]", "")
+		var entry = ""
+		if not desc_only:
+			entry += str(key)
+		
+		var value = dict[key]
+		if value is Dictionary and value.has('desc'):
+			if not desc_only:
+				entry += ": "
+			var desc = str(value['desc']).strip_edges()
+			# Clean up array formatting
+			desc = desc.replace("[\"", "").replace("\"]", "")
+			entry += desc
+		
+		if not entry.is_empty():
+			results.append(entry)
 	
-	if result == "":
-		result = "No data available"
-	
-	return result
-	
-#static func dump_dictionary_html(dict) -> String:
-	#var result = ""
-	#print(dict.keys())
-	#if dict == null:
-		#return "No data available"
-	#
-	#for key in dict.keys():
-		#if key == "desc":
-			#result = dict[key]
-	#
-	#return result
+	return "<br>".join(results) if not results.is_empty() else "No data available"
 
-static func dump_architecture(data : FusekiData, dump_path : String, to_console = false):
-	var dump_string = ""
-	dump_string += SERVICES_INDICATOR + "\n"
-	dump_string += dump_dictionary(data.service)
-	dump_string += ENABLERS_INDICATOR + "\n"
-	dump_string += dump_dictionary(data.enabler)
-	dump_string += MODELS_INDICATOR + "\n"
-	dump_string += dump_dictionary(data.model)
-	dump_string += PROVIDED_THING_INDICATOR + "\n"
-	dump_string += dump_dictionary(data.provided_thing)
-	dump_string += DATA_TRANSMITTED_INDICATOR + "\n"
-	dump_string += dump_dictionary(data.data_transmitted)
-	dump_string += SENSORS_INDICATOR + "\n"
-	dump_string += dump_dictionary(data.sensing_component)
-	dump_string += SYS_INDICATOR + "\n"
-	dump_string += dump_dictionary(data.sys_component)
-	dump_string += ENV_INDICATOR + "\n"
-	dump_string += dump_dictionary(data.env)
-	dump_string += DATA_INDICATOR + "\n"
-	dump_string += dump_dictionary(data.data)
-	dump_string += RABBIT_EXCHANGE_INDICATOR + "\n"
-	dump_string += dump_dictionary(data.rabbit_exchange)
-	dump_string += RABBIT_ROUTE_INDICATOR + "\n"
-	dump_string += dump_dictionary(data.rabbit_route)
-	dump_string += RABBIT_SOURCE_INDICATOR + "\n"
-	dump_string += dump_dictionary(data.rabbit_source)
-	dump_string += RABBIT_ML_INDICATOR + "\n"
-	dump_string += dump_dictionary(data.rabbit_message_listener)
-	if(to_console):
-		print(dump_string)
+static func dump_architecture(data: FusekiData, dump_path: String, to_console: bool = false) -> Dictionary:
+	if not data:
+		return {success = false, error = "No data provided"}
+	
+	var dump_content = _build_dump_content(data)
+	
+	if to_console:
+		print(dump_content)
+		return {success = true}
 	else:
-		var file = FileAccess.open(dump_path, FileAccess.WRITE)
-		file.store_string(dump_string)
-		print("Data dumped at: ", dump_path)
+		var dumper = FusekiDataDumper.new()
+		return dumper._write_file_content(dump_path, dump_content)
 
-static func dump_dictionary(dict : Dictionary) -> String:
-	var dict_string = ""
-	for key in dict.keys():
-		dict_string += "	" + key + "\n"
-		for attribute_key in dict[key].keys():
-			dict_string += "		" + attribute_key + " : " + array_to_str(dict[key][attribute_key]) + "\n"
-	return dict_string
-
-static func array_to_str(array : Array) -> String:
-	var result_string : String = ""
-	for element in array:
-		if(not result_string.is_empty()):
-			result_string += "/"
-		result_string += element
-	return result_string
-
-static func str_to_array(str : String) -> Array:
-	return str.split("/")
-
-static func load_from_dump(fuseki_data : FusekiData, yaml_content: String):
-	var content = yaml_content.split("\n")
-	fuseki_data.service = load_between(content, SERVICES_INDICATOR, ENABLERS_INDICATOR)
-	fuseki_data.enabler = load_between(content, ENABLERS_INDICATOR, MODELS_INDICATOR)
-	fuseki_data.model = load_between(content, MODELS_INDICATOR, PROVIDED_THING_INDICATOR)
-	fuseki_data.provided_thing = load_between(content, PROVIDED_THING_INDICATOR, DATA_TRANSMITTED_INDICATOR)
-	fuseki_data.data_transmitted = load_between(content, DATA_TRANSMITTED_INDICATOR, SENSORS_INDICATOR)
-	fuseki_data.sensing_component = load_between(content, SENSORS_INDICATOR, SYS_INDICATOR)
-	fuseki_data.sys_component = load_between(content, SYS_INDICATOR, ENV_INDICATOR)
-	fuseki_data.env = load_between(content, ENV_INDICATOR, DATA_INDICATOR)
-	fuseki_data.data = load_between(content, DATA_INDICATOR, RABBIT_EXCHANGE_INDICATOR)
-	fuseki_data.rabbit_exchange = load_between(content, RABBIT_EXCHANGE_INDICATOR, RABBIT_ROUTE_INDICATOR)
-	fuseki_data.rabbit_route = load_between(content, RABBIT_ROUTE_INDICATOR, RABBIT_SOURCE_INDICATOR)
-	fuseki_data.rabbit_source = load_between(content, RABBIT_SOURCE_INDICATOR, RABBIT_ML_INDICATOR)
-	fuseki_data.rabbit_message_listener = load_between(content, RABBIT_ML_INDICATOR, EOF_INDICATOR)
+static func _build_dump_content(data: FusekiData) -> String:
+	var content = PackedStringArray()
 	
-	FusekiSignals.fuseki_data_updated.emit()
+	for config in DUMP_CONFIG:
+		content.append(config.indicator)
+		var field_data = data.get(config.field)
+		content.append(_format_dictionary_dump(field_data))
+	
+	return "\n".join(content)
 
-static func load_between(content : PackedStringArray, start_indicator : String, end_indicator : String) -> Dictionary:
-	return load_dictionary(content.slice(content.find(start_indicator), content.find(end_indicator)))
+static func _format_dictionary_dump(dict: Dictionary) -> String:
+	var lines = PackedStringArray()
+	
+	for key in dict.keys():
+		lines.append("\t" + key)
+		var attributes = dict[key]
+		if attributes is Dictionary:
+			for attr_key in attributes.keys():
+				var attr_value = _array_to_string(attributes[attr_key])
+				lines.append("\t\t" + attr_key + " : " + attr_value)
+	
+	return "\n".join(lines)
 
-static func load_dictionary(lines : Array[String]) -> Dictionary:
-	lines.pop_front() #remove indicaor
-	var elements : Dictionary = {}
-	var last_appended_element : String
+static func load_from_dump(fuseki_data: FusekiData, content: String) -> Dictionary:
+	if not fuseki_data:
+		return {success = false, error = "No FusekiData object provided"}
+	
+	content = content.replace("\r", "\n")
+	var lines = content.split("\n")
+	var success = true
+	var errors = PackedStringArray()
+	
+	# Load each section based on configuration
+	for i in range(DUMP_CONFIG.size()):
+		var current_config = DUMP_CONFIG[i]
+		var next_indicator = DUMP_CONFIG[i + 1].indicator if i + 1 < DUMP_CONFIG.size() else ""
+		
+		var section_data = _extract_section(lines, current_config.indicator, next_indicator)
+		if section_data.success:
+			fuseki_data.set(current_config.field, section_data.data)
+		else:
+			success = false
+			errors.append("Failed to load " + current_config.field + ": " + section_data.error)
+	
+	if success:
+		FusekiSignals.fuseki_data_updated.emit()
+	
+	return {success = success, errors = errors}
+
+static func _extract_section(lines: PackedStringArray, start_indicator: String, end_indicator: String) -> Dictionary:
+	var start_idx = -1
+	var end_idx = lines.size()
+	
+	# Find start position
+	for i in range(lines.size()):
+		if lines[i] == start_indicator:
+			start_idx = i
+			break
+	
+	if start_idx == -1:
+		return {success = false, error = "Start indicator not found: " + start_indicator}
+	
+	# Find end position
+	if not end_indicator.is_empty():
+		for i in range(start_idx + 1, lines.size()):
+			if lines[i] == end_indicator:
+				end_idx = i
+				break
+	
+	var section_lines = lines.slice(start_idx + 1, end_idx)
+	return {success = true, data = _parse_dictionary_section(section_lines)}
+
+static func _parse_dictionary_section(lines: PackedStringArray) -> Dictionary:
+	var elements = {}
+	var current_element = ""
+	
 	for line in lines:
-		if line.begins_with("\t\t"): #is an attribute
-			var clean_attribute = clean_line(line)
-			var split_attribure = clean_attribute.split(" : ")
-			var attribute_name = split_attribure[0]
-			var attribute_value = split_attribure[1]
-			elements[last_appended_element][attribute_name] = str_to_array(attribute_value)
-		else : #is a new element
-			var clean_element = clean_line(line)
-			last_appended_element = clean_element
-			elements[clean_element] = {}
+		var clean_line = line.strip_edges()
+		if clean_line.is_empty():
+			continue
+		
+		if line.begins_with("\t\t"):  # Attribute line
+			if current_element.is_empty():
+				continue  # Skip orphaned attributes
+			
+			var attr_parts = clean_line.split(" : ", false, 1)
+			if attr_parts.size() == 2:
+				var attr_name = attr_parts[0].strip_edges()
+				var attr_value = _string_to_array(attr_parts[1].strip_edges())
+				elements[current_element][attr_name] = attr_value
+		
+		elif line.begins_with("\t"):  # Element line
+			current_element = clean_line
+			elements[current_element] = {}
+	
 	return elements
 
-static func clean_line(str : String) -> String :
-	return str.replace("\t","")
+static func _array_to_string(array: Array) -> String:
+	if array.is_empty():
+		return ""
+	
+	var string_array = PackedStringArray()
+	for element in array:
+		string_array.append(str(element))
+	
+	return "/".join(string_array)
 
-#file picker functions ---------------------------------------------------------
+static func _string_to_array(text: String) -> Array:
+	if text.is_empty():
+		return []
+	return Array(text.split("/"))
+
+# File picker functions
 func _on_pick_button_pressed() -> void:
 	file_dialog.visible = true
 

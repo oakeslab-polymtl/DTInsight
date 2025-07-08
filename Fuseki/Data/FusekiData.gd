@@ -69,9 +69,7 @@ func input_data_from_fuseki_JSON(json):
 	
 	var json_variable : String = json["head"]["vars"][0]
 	var value = parse_fuseki_json(json)
-	
-	print(value)
-	
+		
 	var targets = {
 		FusekiConfig.JsonHead.SERVICE: "service",
 		FusekiConfig.JsonHead.ENABLER: "enabler",

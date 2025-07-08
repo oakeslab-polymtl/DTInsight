@@ -3,12 +3,14 @@ extends PanelContainer
 class_name GenericDisplay
 
 @onready var element : Label = $GenericDisplay/PresentationBox/GenericElementName
+@onready var realtime_element : Label = $GenericDisplay/RealTimeContainer/GenericElementAttributes
 @onready var script_button = $GenericDisplay/PresentationBox/ScriptButton
 @onready var real_time_container = $GenericDisplay/RealTimeContainer
 @onready var attributes : Label = $GenericDisplay/RealTimeContainer/GenericElementAttributes
-@onready var pop_up_chart : Popup = $PopupChart
+@onready var visualization_container = $GenericDisplay/VisualizationContainer
+@onready var pop_up_chart = $PopupChart
 @onready var chart = $PopupChart/ChartControl
-@onready var pop_up_script : Popup = $PopupScript
+@onready var pop_up_script = $PopupScript
 @onready var script_control = $PopupScript/ScriptControl
 
 var script_software_directory : String = ""
@@ -16,6 +18,8 @@ var script_file_path : String = ""
 var absolute_path : String = ""
 var data : Array = []
 var highlightable : bool = true
+
+var last_loaded_pck_path: String = ""
 
 func _ready():
 	GenericDisplaySignals.generic_display_highlight.connect(_on_display_highlight)
@@ -61,14 +65,51 @@ func _on_script_folder_updated(dir : String) -> void:
 	script_software_directory = dir
 	set_python_script()
 
+ #Trigger the file dialog when the button is pressed
+func _on_viz_picker_button_pressed() -> void:
+	var file_picker = $GenericDisplay/FilePicker
+	file_picker.popup_centered()
+
+# Handle file selection and load the .pck
+func _on_file_selected(pck_path: String) -> void:
+	last_loaded_pck_path = pck_path
+	if not last_loaded_pck_path.is_empty():
+		$GenericDisplay/VisualizationContainer/HBoxContainer/VizPopUpButton.disabled = false
+
+func _on_viz_pop_up_button_pressed():
+	var pop_up_panel = $GenericDisplay/VisualizationContainer/HBoxContainer/VizPopUpButton/PopupPanel
+	var pop_up_panel_3d_root = %popup_root
+
+	# Clear the pop up panel
+	for child in pop_up_panel_3d_root.get_children():
+		pop_up_panel_3d_root.remove_child(child)
+		child.queue_free()
+
+	# Load the selected .pck file
+	var success := ProjectSettings.load_resource_pack(last_loaded_pck_path)
+	if not success:
+		push_error("Failed to load .pck file: %s" % last_loaded_pck_path)
+		return
+
+	var pop_up_scene_path := "res://main.tscn"
+	var pop_up_scene = load(pop_up_scene_path).instantiate()
+	pop_up_panel_3d_root.add_child(pop_up_scene)
+
+	if not OS.has_feature("web"):
+		if RabbitMq.is_connected("OnMessage", Callable(pop_up_scene, "_on_message")) == false:
+			RabbitMq.connect("OnMessage", Callable(pop_up_scene, "_on_message"))
+
+	pop_up_panel.show()
+
 #Informations ------------------------------------------------------------------
 func set_text(text : String) -> void:
 	var node : Label = get_node("GenericDisplay/PresentationBox/GenericElementName")
 	node.text = text
 
 func set_python_script_location(path : String) -> void:
-	script_file_path = path
-	set_python_script()
+	if not OS.has_feature("web"):
+		script_file_path = path
+		set_python_script()
 
 func set_python_script() -> void:
 	if (not script_file_path.is_empty()):
@@ -79,23 +120,54 @@ func set_python_script() -> void:
 		python_button.text = script_name
 		python_button.show()
 
+func set_visualization():
+	if not OS.has_feature("web"):
+		$GenericDisplay/VisualizationContainer.show()
+		if last_loaded_pck_path.is_empty():
+			$GenericDisplay/VisualizationContainer/HBoxContainer/VizPopUpButton.disabled = true
+
 func set_info(new_data : Array[String], is_bool = false) -> void:
-	data = to_int_array(new_data, is_bool)
+	data = to_float_array(new_data, is_bool)
 	var node : Label = get_node("GenericDisplay/RealTimeContainer/GenericElementAttributes")
 	var last_data = data[data.size() - 1]
-	var info : String = str(last_data) if (!is_bool) else "on" if (last_data == 1) else "off"
+	var info : String
+	if is_bool:
+		if last_data == 1:
+			info = "on"
+		else:
+			info = "off"
+	
+	else:
+		info = format_float(last_data, 4)
 	node.text = "Real time info : \n" + info
 	var real_time : VBoxContainer = get_node("GenericDisplay/RealTimeContainer")
 	real_time.visible = false if (info.is_empty()) else true
 	update_chart(last_data)
 
-func to_int_array(str_array : Array[String], is_bool) -> Array:
+func to_float_array(str_array : Array[String], is_bool) -> Array:
 	if is_bool:
-		var int_array : Array = str_array.map(func(s) -> int : return int(s == "true")) as Array[int]
+		var int_array : Array = str_array.map(func(s) -> float : return float(s == "true")) as Array[float]
 		return int_array
 	else :
-		var int_array : Array = str_array.map(func(s) -> int : return int(s)) as Array[int]
+		var int_array : Array = str_array.map(func(s) -> float : return float(s)) as Array[float]
 		return int_array
+
+func format_float(f: float, sig_digits: int = 4) -> String:
+	if f == 0.0:
+		return "0"
+
+	var abs_f = abs(f)
+	var exponent = floor(log(abs_f) / log(10))
+	var scale = pow(10, sig_digits - 1 - exponent)
+	var rounded = round(f * scale) / scale
+
+	var result = String.num(rounded, 10)
+
+	if "." in result:
+		result = result.rstrip("0").rstrip(".")
+	
+	return result
+
 
 func update_chart(last_data) -> void:
 	if pop_up_chart.visible == false :
@@ -121,6 +193,7 @@ func set_bg_color(color : Color):
 	
 func set_text_color(color: Color):
 	element.set("theme_override_colors/font_color", color)
+	realtime_element.set("theme_override_colors/font_color", color)
 
 #Border style ------------------------------------------------------------------
 func set_slower_style():

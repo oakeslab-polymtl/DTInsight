@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cxj8tr6re2b4t"]
+[gd_scene load_steps=16 format=3 uid="uid://cxj8tr6re2b4t"]
 
 [ext_resource type="PackedScene" uid="uid://nqgolpvgp7yg" path="res://DTContainer/DT&PTContainer.tscn" id="1_lklxr"]
 [ext_resource type="Script" uid="uid://dfun6prbhxg7c" path="res://MainScene/MainSceneController.gd" id="1_r7thu"]
@@ -9,7 +9,6 @@
 [ext_resource type="Theme" uid="uid://xukk6lvgcpaa" path="res://main_theme.tres" id="5_77ryg"]
 [ext_resource type="Script" uid="uid://wfoj63h06hpx" path="res://MainScene/help_button.gd" id="6_tgjmw"]
 [ext_resource type="Script" uid="uid://b0mon1bk14hp6" path="res://MainScene/settings_button.gd" id="7_gs64f"]
-[ext_resource type="PackedScene" uid="uid://6crhwyl883nn" path="res://RabbitMQ/Data/RabbitMQ.tscn" id="7_j6wr3"]
 [ext_resource type="PackedScene" uid="uid://px6a2dg8cawb" path="res://addons/modular-settings-menu/scenes/settings.tscn" id="8_ixws2"]
 [ext_resource type="PackedScene" uid="uid://cowug1mbtod0e" path="res://Fuseki/Caller/FusekiCallerBtton.tscn" id="8_ped26"]
 [ext_resource type="Script" uid="uid://cfkgtkfhl06v5" path="res://RabbitMQ/Control/RabbitButton.gd" id="9_qda1k"]
@@ -28,7 +27,7 @@ script = ExtResource("1_r7thu")
 z_as_relative = false
 offset_left = -9.0
 offset_top = -2.0
-offset_right = 1710.0
+offset_right = 1344.0
 offset_bottom = 726.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -185,8 +184,6 @@ IS_IN_GAME_MENU = false
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 
 [node name="FusekiData" parent="." instance=ExtResource("5_4e51a")]
-
-[node name="RabbitMq" parent="." instance=ExtResource("7_j6wr3")]
 
 [node name="CICDServer" type="Node" parent="." node_paths=PackedStringArray("container", "to_hide")]
 script = ExtResource("15_gmiik")
