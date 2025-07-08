@@ -21,7 +21,7 @@ func _on_hide_button_pressed() -> void:
 func hide_pop_up() -> void:
 	reset()
 
-func add_value(value : int) -> void:
+func add_value(value : float) -> void:
 	current_step += 1
 	f1.remove_point(0)
 	f1.add_point(current_step, value)
@@ -75,7 +75,7 @@ func reset():
 											# since it is `NONE`, no marker will be shown.
 			type = Function.Type.LINE, 		# This defines what kind of plotting will be used, 
 											# in this case it will be a Linear Chart.
-			interpolation = Function.Interpolation.STAIR	# Interpolation mode, only used for 
+			interpolation = Function.Interpolation.LINEAR	# Interpolation mode, only used for 
 															# Line Charts and Area Charts.
 		}
 	)

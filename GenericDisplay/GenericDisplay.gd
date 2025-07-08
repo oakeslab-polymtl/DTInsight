@@ -127,22 +127,47 @@ func set_visualization():
 			$GenericDisplay/VisualizationContainer/HBoxContainer/VizPopUpButton.disabled = true
 
 func set_info(new_data : Array[String], is_bool = false) -> void:
-	data = to_int_array(new_data, is_bool)
+	data = to_float_array(new_data, is_bool)
 	var node : Label = get_node("GenericDisplay/RealTimeContainer/GenericElementAttributes")
 	var last_data = data[data.size() - 1]
-	var info : String = str(last_data) if (!is_bool) else "on" if (last_data == 1) else "off"
+	var info : String
+	if is_bool:
+		if last_data == 1:
+			info = "on"
+		else:
+			info = "off"
+	
+	else:
+		info = format_float(last_data, 4)
 	node.text = "Real time info : \n" + info
 	var real_time : VBoxContainer = get_node("GenericDisplay/RealTimeContainer")
 	real_time.visible = false if (info.is_empty()) else true
 	update_chart(last_data)
 
-func to_int_array(str_array : Array[String], is_bool) -> Array:
+func to_float_array(str_array : Array[String], is_bool) -> Array:
 	if is_bool:
-		var int_array : Array = str_array.map(func(s) -> int : return int(s == "true")) as Array[int]
+		var int_array : Array = str_array.map(func(s) -> float : return float(s == "true")) as Array[float]
 		return int_array
 	else :
-		var int_array : Array = str_array.map(func(s) -> int : return int(s)) as Array[int]
+		var int_array : Array = str_array.map(func(s) -> float : return float(s)) as Array[float]
 		return int_array
+
+func format_float(f: float, sig_digits: int = 4) -> String:
+	if f == 0.0:
+		return "0"
+
+	var abs_f = abs(f)
+	var exponent = floor(log(abs_f) / log(10))
+	var scale = pow(10, sig_digits - 1 - exponent)
+	var rounded = round(f * scale) / scale
+
+	var result = String.num(rounded, 10)
+
+	if "." in result:
+		result = result.rstrip("0").rstrip(".")
+	
+	return result
+
 
 func update_chart(last_data) -> void:
 	if pop_up_chart.visible == false :

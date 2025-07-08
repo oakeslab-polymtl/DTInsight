@@ -91,20 +91,20 @@ transparent_bg = false
 oversampling_override = 1.0
 title = "Visualization"
 initial_position = 1
-size = Vector2i(520, 520)
+size = Vector2i(408, 408)
 borderless = false
 always_on_top = true
 transparent = false
-mouse_passthrough = true
 
 [node name="TextureRect" type="TextureRect" parent="GenericDisplay/VisualizationContainer/HBoxContainer/VizPopUpButton/PopupPanel"]
 offset_left = 4.0
 offset_top = 4.0
-offset_right = 516.0
-offset_bottom = 516.0
+offset_right = 404.0
+offset_bottom = 404.0
 texture = SubResource("ViewportTexture_ipcor")
 
 [node name="SubViewport" type="SubViewport" parent="GenericDisplay/VisualizationContainer/HBoxContainer/VizPopUpButton/PopupPanel/TextureRect"]
+size = Vector2i(400, 400)
 
 [node name="popup_root" type="Node3D" parent="GenericDisplay/VisualizationContainer/HBoxContainer/VizPopUpButton/PopupPanel/TextureRect/SubViewport"]
 unique_name_in_owner = true
