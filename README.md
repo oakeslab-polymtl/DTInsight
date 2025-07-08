@@ -80,7 +80,7 @@ If you have a Digital Twin publishing some data on RabbitMQ exchanges and an ont
 
 To access this functionality, you will have to load an ontology and then click on the switch "Record data form RabbitMQ". Once this switch is activated, real time data will be displayed in the DIgital Twin's component as well as a button. This button allows you to access a real time graph recording the last hundred messages coming from RabbitMQ. (At this time this graph can display numerical or boolean values.
 
-<img width="361" alt="image" src="https://github.com/user-attachments/assets/3cecf426-0d57-4a29-ad28-12fd7f64936d">
+<img width="361" alt="image" src="[https://github.com/user-attachments/assets/3cecf426-0d57-4a29-ad28-12fd7f64936d](https://github.com/user-attachments/assets/8f6d9343-2fb9-44ef-9594-b66e5959323)">
 
 **If nothing happens when enabling real time information, it either means that your ontology is missing the linking data or that there are no messages in the RabbitMQ exchange. You can explore a dump file with a text editor to check if linking data was correctly loaded.**
 
