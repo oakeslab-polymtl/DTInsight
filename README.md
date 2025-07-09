@@ -1,4 +1,4 @@
-# Digital twin visualizer
+# DTInsight
 
 The purpose of this project is to provide users with a graphical and interactive representation of a Digital Twin.
 
@@ -6,7 +6,7 @@ The purpose of this project is to provide users with a graphical and interactive
 
 # About this project
 
-This tool was built with the aim of being cross compatible with any digital twin ontology built with the Ontology Modeling Lanuage (OML) vocabulary available at "https://github.com/oakeslab-polymtl/DTDF". To build such ontologies we recommend tools such as openCAESAR Rosetta available at "https://github.com/opencaesar/oml-rosetta".
+This tool was built with the aim of being cross compatible with any digital twin ontology built with the Ontology Modeling Lanuage (OML) vocabulary available at "https://github.com/oakeslabmtl/DTDF". To build such ontologies we recommend tools such as openCAESAR Rosetta available at "https://github.com/opencaesar/oml-rosetta".
 
 To benefit from all of the real time communication features you will need a related digital twin simulator publishing its data with RabbitMQ, similar to this project "https://github.com/INTO-CPS-Association/example_digital-twin_incubator", as well as an ontology providing the necessary data to connect it to the visualization.
 
@@ -102,7 +102,7 @@ Once loaded if a script is associated with a Digital Twin component, a new butto
 
 @Ryskann / Louis Malassigné-Onfroy \
 @Kérian Fiter \
-Under the supervision of Benley Oakes
+Under the supervision of [Prof. Bentley Oakes](https://bentleyjoakes.github.io/)
 
 # License
 
