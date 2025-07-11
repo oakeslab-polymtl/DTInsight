@@ -89,8 +89,8 @@ To access this functionality, you will have to load an ontology and then click o
 ### Preparation
 
 - Create or Open another Godot project containing your visualization. **Warning: Godot software version must match DTInsight's**.
-- Create a scene called `main` that will host your visualization.
-- Configure a fucntion `_on_message(message)` that will receive raw real-time data from DTInsight.
+- Create a scene called `main.tscn` that will host your visualization.
+- Configure a function `_on_message(message)` that will receive raw real-time data from DTInsight.
 - Export the project as a `.pck`
 
 ### Use
