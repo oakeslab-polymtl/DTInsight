@@ -84,6 +84,21 @@ To access this functionality, you will have to load an ontology and then click o
 
 **If nothing happens when enabling real time information, it either means that your ontology is missing the linking data or that there are no messages in the RabbitMQ exchange. You can explore a dump file with a text editor to check if linking data was correctly loaded.**
 
+## Access Digital Twin Visualization
+
+### Preparation
+
+- Create or Open another Godot project containing your visualization. **Warning: Godot software version must match DTInsight's**.
+- Create a scene called `main` that will host your visualization.
+- Configure a fucntion `_on_message(message)` that will receive raw real-time data from DTInsight.
+- Export the project as a `.pck`
+
+### Use
+
+If the OML description is properly configured (by having the `DTDFVocab:HasVisualization true` property), simply pick the exported `.pck` file and you will be able to open the visualization on DTInsight.
+
+<img width="221" height="82" alt="Screenshot 2025-07-11 133809" src="https://github.com/user-attachments/assets/bffa7c0f-5e4c-4efe-8425-fede0fa82bc6" />
+
 ## Access Digital Twin script
 
 If you have your Digital Twin's scripts on your pc and an ontology providing a relative path to those files, you will be able to access those script files from the visualizer.
