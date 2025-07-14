@@ -76,6 +76,9 @@ func _on_file_selected(pck_path: String) -> void:
 	if not last_loaded_pck_path.is_empty():
 		$GenericDisplay/VisualizationContainer/HBoxContainer/VizPopUpButton.disabled = false
 
+func _on_description_button_pressed() -> void:
+	$PopupDescription.popup()
+
 func _on_viz_pop_up_button_pressed():
 	var pop_up_panel = $GenericDisplay/VisualizationContainer/HBoxContainer/VizPopUpButton/PopupPanel
 	var pop_up_panel_3d_root = %popup_root
@@ -103,7 +106,7 @@ func _on_viz_pop_up_button_pressed():
 
 #Informations ------------------------------------------------------------------
 func set_text(text : String) -> void:
-	var node : Label = get_node("GenericDisplay/PresentationBox/GenericElementName")
+	var node : Label = $GenericDisplay/PresentationBox/GenericElementName
 	node.text = text
 
 func set_python_script_location(path : String) -> void:
@@ -125,6 +128,11 @@ func set_visualization():
 		$GenericDisplay/VisualizationContainer.show()
 		if last_loaded_pck_path.is_empty():
 			$GenericDisplay/VisualizationContainer/HBoxContainer/VizPopUpButton.disabled = true
+
+func set_description(description):
+	$GenericDisplay/PresentationBox/DescriptionButton.show()
+	$PopupDescription.title = $GenericDisplay/PresentationBox/GenericElementName.text + " description"
+	$PopupDescription/DescriptionControl/DescriptionContainer/Description.text = description
 
 func set_info(new_data : Array[String], is_bool = false) -> void:
 	data = to_float_array(new_data, is_bool)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://tvcjlrt40n0q"]
+[gd_scene load_steps=10 format=3 uid="uid://tvcjlrt40n0q"]
 
 [ext_resource type="Script" uid="uid://ost4ju4q0ybe" path="res://GenericDisplay/GenericDisplay.gd" id="1_5lixw"]
 [ext_resource type="Script" uid="uid://jeh5r2brp2mt" path="res://GenericDisplay/PopUpChart/PopUpChartControl.gd" id="2_5nhr6"]
@@ -15,6 +15,42 @@ corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5nhr6"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0c6qw"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ycnc1"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.225, 0.225, 0.225, 0.6)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+corner_detail = 5
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_ipcor"]
 viewport_path = NodePath("GenericDisplay/VisualizationContainer/HBoxContainer/VizPopUpButton/PopupPanel/TextureRect/SubViewport")
@@ -50,6 +86,17 @@ theme_override_colors/font_color = Color(0.129558, 0.129558, 0.129558, 1)
 text = "Default"
 horizontal_alignment = 1
 vertical_alignment = 3
+
+[node name="DescriptionButton" type="Button" parent="GenericDisplay/PresentationBox"]
+visible = false
+layout_mode = 2
+tooltip_text = "Open Description"
+theme_override_font_sizes/font_size = 10
+theme_override_styles/normal = SubResource("StyleBoxFlat_5nhr6")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_0c6qw")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ycnc1")
+text = "  i  "
+icon_alignment = 1
 
 [node name="ScriptButton" type="Button" parent="GenericDisplay/PresentationBox"]
 visible = false
@@ -126,8 +173,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 4.0
 offset_top = 4.0
-offset_right = 516.0
-offset_bottom = 516.0
+offset_right = -4.0
+offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_5nhr6")
@@ -149,6 +196,41 @@ alignment = 1
 [node name="Chart" parent="PopupChart/ChartControl/VBoxContainer/ChartContainer" instance=ExtResource("3_0c6qw")]
 layout_mode = 2
 
+[node name="PopupDescription" type="PopupPanel" parent="."]
+disable_3d = true
+oversampling_override = 1.0
+title = "Description"
+initial_position = 4
+size = Vector2i(400, 200)
+unresizable = false
+borderless = false
+always_on_top = true
+
+[node name="DescriptionControl" type="Control" parent="PopupDescription"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 396.0
+offset_bottom = 196.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DescriptionContainer" type="VBoxContainer" parent="PopupDescription/DescriptionControl"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Description" type="RichTextLabel" parent="PopupDescription/DescriptionControl/DescriptionContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "No description"
+
 [node name="PopupScript" type="PopupPanel" parent="."]
 disable_3d = true
 oversampling_override = 1.0
@@ -166,8 +248,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 4.0
 offset_top = 4.0
-offset_right = 516.0
-offset_bottom = 516.0
+offset_right = -4.0
+offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("3_ipcor")
@@ -188,6 +270,7 @@ text = "Select the DT script folder in the settings first"
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
 [connection signal="file_selected" from="GenericDisplay/FilePicker" to="." method="_on_file_selected"]
+[connection signal="pressed" from="GenericDisplay/PresentationBox/DescriptionButton" to="." method="_on_description_button_pressed"]
 [connection signal="pressed" from="GenericDisplay/PresentationBox/ScriptButton" to="." method="_on_script_button_pressed"]
 [connection signal="pressed" from="GenericDisplay/RealTimeContainer/PopUpButton" to="." method="_on_pop_up_button_pressed"]
 [connection signal="pressed" from="GenericDisplay/VisualizationContainer/HBoxContainer/VizPickerButton" to="." method="_on_viz_picker_button_pressed"]

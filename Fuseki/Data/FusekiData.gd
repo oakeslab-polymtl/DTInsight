@@ -134,7 +134,7 @@ static func parse_fuseki_value(value) -> String:
 #Transform the result agregator in an array of GenericLinkedNodes or
 #in a dictionary depending on the data type
 static func format_result(result_aggregator, is_link = false):
-		return parse_link_result(result_aggregator) if (is_link) else parse_element_result(result_aggregator)
+	return parse_link_result(result_aggregator) if (is_link) else parse_element_result(result_aggregator)
 
 #Transform the result agregator in an Array of GenericLinkedNodes
 static func parse_link_result(result_agregator) -> Array[GenericLinkedNodes]:
