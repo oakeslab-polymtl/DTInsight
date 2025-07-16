@@ -18,7 +18,7 @@ class DTElement:
 class Link:
 	const WIDTH : int = 5
 	
-	const MEAN_OUTER_LINK_DISTANCE : int = 30 * WIDTH
+	const MEAN_OUTER_LINK_DISTANCE : int = 15 * WIDTH
 	
 	const DIMMED_COLOR : Color = Color.GRAY
 	const HIGHLIGHT_COLOR : Color = Color.DIM_GRAY

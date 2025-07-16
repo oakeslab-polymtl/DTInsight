@@ -25,7 +25,7 @@ script = ExtResource("1_r7thu")
 
 [node name="DTContainer" parent="." instance=ExtResource("1_lklxr")]
 z_as_relative = false
-offset_bottom = 503.0
+offset_bottom = 505.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(575, 326)
@@ -100,6 +100,7 @@ icon_alignment = 1
 script = ExtResource("6_tgjmw")
 
 [node name="HelpPopup" type="PopupPanel" parent="ControlLayer/HelpButton"]
+oversampling_override = 1.0
 title = "Help"
 position = Vector2i(18, 129)
 size = Vector2i(305, 455)

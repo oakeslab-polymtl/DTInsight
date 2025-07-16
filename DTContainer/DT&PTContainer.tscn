@@ -132,7 +132,7 @@ uppercase = true
 layout_mode = 2
 
 [node name="OperatorContainer" type="HBoxContainer" parent="PTContainer/Operator&EnvContainer/OperatorPanel/OperatorOrganizer"]
-custom_minimum_size = Vector2(200, 200)
+custom_minimum_size = Vector2(200, 175)
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 3
@@ -160,7 +160,7 @@ uppercase = true
 layout_mode = 2
 
 [node name="EnvContainer" type="HBoxContainer" parent="PTContainer/Operator&EnvContainer/ExperimentContainer/EnvPanel/EnvOrganizer"]
-custom_minimum_size = Vector2(200, 223)
+custom_minimum_size = Vector2(200, 250)
 layout_mode = 2
 size_flags_horizontal = 6
 
@@ -184,7 +184,7 @@ uppercase = true
 layout_mode = 2
 
 [node name="SystemContainer" type="HBoxContainer" parent="PTContainer/Operator&EnvContainer/ExperimentContainer/SystemPanel/SystemOrganizer"]
-custom_minimum_size = Vector2(200, 223)
+custom_minimum_size = Vector2(200, 250)
 layout_mode = 2
 size_flags_horizontal = 6
 
@@ -211,7 +211,7 @@ uppercase = true
 layout_mode = 2
 
 [node name="MachineContainer" type="HBoxContainer" parent="PTContainer/DataTravelContainer/MachinePanel/MachineOrganizer"]
-custom_minimum_size = Vector2(200, 200)
+custom_minimum_size = Vector2(200, 175)
 layout_mode = 2
 size_flags_horizontal = 6
 
@@ -221,7 +221,11 @@ layout_mode = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_rl1kt")
 
-[node name="SensorsLabel" type="Label" parent="PTContainer/DataTravelContainer/DataOutPanel"]
+[node name="DataOutContainer" type="VBoxContainer" parent="PTContainer/DataTravelContainer/DataOutPanel"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+
+[node name="SensorsLabel" type="Label" parent="PTContainer/DataTravelContainer/DataOutPanel/DataOutContainer"]
 z_index = 1
 layout_mode = 2
 size_flags_horizontal = 0
@@ -229,10 +233,6 @@ size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Sensors"
 uppercase = true
-
-[node name="DataOutContainer" type="VBoxContainer" parent="PTContainer/DataTravelContainer/DataOutPanel"]
-custom_minimum_size = Vector2(200, 200)
-layout_mode = 2
 
 [node name="SensorsOrganizer" type="HBoxContainer" parent="PTContainer/DataTravelContainer/DataOutPanel/DataOutContainer"]
 custom_minimum_size = Vector2(0, 100)
