@@ -25,10 +25,7 @@ script = ExtResource("1_r7thu")
 
 [node name="DTContainer" parent="." instance=ExtResource("1_lklxr")]
 z_as_relative = false
-offset_left = -9.0
-offset_top = -2.0
-offset_right = 1344.0
-offset_bottom = 726.0
+offset_bottom = 503.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(575, 326)

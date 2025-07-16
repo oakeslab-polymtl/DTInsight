@@ -166,8 +166,8 @@ func format_float(f: float, sig_digits: int = 4) -> String:
 
 	var abs_f = abs(f)
 	var exponent = floor(log(abs_f) / log(10))
-	var scale = pow(10, sig_digits - 1 - exponent)
-	var rounded = round(f * scale) / scale
+	var _scale = pow(10, sig_digits - 1 - exponent)
+	var rounded = round(f * _scale) / _scale
 
 	var result = String.num(rounded, 10)
 

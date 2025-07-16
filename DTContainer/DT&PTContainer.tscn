@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://nqgolpvgp7yg"]
+[gd_scene load_steps=12 format=3 uid="uid://nqgolpvgp7yg"]
 
 [ext_resource type="Script" uid="uid://cijvy55ehil" path="res://DTContainer/DT&PTContainer.gd" id="1_juoha"]
 
@@ -74,10 +74,33 @@ corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qb3t8"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.10196078, 0.10196078, 0.10196078, 0)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panlg"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.10196078, 0.10196078, 0.10196078, 0)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
 [node name="DT&PTContainer" type="HBoxContainer"]
-offset_top = 732.0
-offset_right = 240.0
-offset_bottom = 732.0
+offset_right = 1260.0
+offset_bottom = 480.0
 theme_override_constants/separation = 50
 script = ExtResource("1_juoha")
 
@@ -93,7 +116,6 @@ theme_override_constants/separation = 0
 [node name="OperatorPanel" type="PanelContainer" parent="PTContainer/Operator&EnvContainer"]
 z_index = -1
 layout_mode = 2
-size_flags_vertical = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_sp6md")
 
@@ -117,13 +139,11 @@ size_flags_vertical = 3
 
 [node name="ExperimentContainer" type="HBoxContainer" parent="PTContainer/Operator&EnvContainer"]
 layout_mode = 2
-size_flags_vertical = 3
 theme_override_constants/separation = 0
 
 [node name="EnvPanel" type="PanelContainer" parent="PTContainer/Operator&EnvContainer/ExperimentContainer"]
 z_index = -1
 layout_mode = 2
-size_flags_horizontal = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_ts1y0")
 
@@ -140,14 +160,13 @@ uppercase = true
 layout_mode = 2
 
 [node name="EnvContainer" type="HBoxContainer" parent="PTContainer/Operator&EnvContainer/ExperimentContainer/EnvPanel/EnvOrganizer"]
-custom_minimum_size = Vector2(200, 200)
+custom_minimum_size = Vector2(200, 223)
 layout_mode = 2
 size_flags_horizontal = 6
 
 [node name="SystemPanel" type="PanelContainer" parent="PTContainer/Operator&EnvContainer/ExperimentContainer"]
 z_index = -1
 layout_mode = 2
-size_flags_horizontal = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_5tggx")
 
@@ -165,7 +184,7 @@ uppercase = true
 layout_mode = 2
 
 [node name="SystemContainer" type="HBoxContainer" parent="PTContainer/Operator&EnvContainer/ExperimentContainer/SystemPanel/SystemOrganizer"]
-custom_minimum_size = Vector2(200, 200)
+custom_minimum_size = Vector2(200, 223)
 layout_mode = 2
 size_flags_horizontal = 6
 
@@ -176,7 +195,6 @@ theme_override_constants/separation = 0
 [node name="MachinePanel" type="PanelContainer" parent="PTContainer/DataTravelContainer"]
 z_index = -1
 layout_mode = 2
-size_flags_vertical = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_qb31t")
 
@@ -200,7 +218,6 @@ size_flags_horizontal = 6
 [node name="DataOutPanel" type="PanelContainer" parent="PTContainer/DataTravelContainer"]
 z_index = -1
 layout_mode = 2
-size_flags_vertical = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_rl1kt")
 
@@ -218,6 +235,7 @@ custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 
 [node name="SensorsOrganizer" type="HBoxContainer" parent="PTContainer/DataTravelContainer/DataOutPanel/DataOutContainer"]
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -236,6 +254,7 @@ text = "Data transmitted"
 uppercase = true
 
 [node name="DataTransmittedOrganizer" type="HBoxContainer" parent="PTContainer/DataTravelContainer/DataOutPanel/DataOutContainer"]
+custom_minimum_size = Vector2(0, 92)
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -267,7 +286,7 @@ uppercase = true
 layout_mode = 2
 
 [node name="ServicesContainer" type="HBoxContainer" parent="DTContainer/ServicesPanel/ServicesOrganizer"]
-custom_minimum_size = Vector2(200, 200)
+custom_minimum_size = Vector2(200, 125)
 layout_mode = 2
 size_flags_horizontal = 6
 
@@ -290,7 +309,7 @@ uppercase = true
 layout_mode = 2
 
 [node name="EnablersContainer" type="HBoxContainer" parent="DTContainer/EnablersPanel/EnablerOrganizer"]
-custom_minimum_size = Vector2(200, 200)
+custom_minimum_size = Vector2(200, 125)
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 3
@@ -301,7 +320,15 @@ layout_mode = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_ox2pm")
 
-[node name="ModelsLabel" type="Label" parent="DTContainer/ModelsDataPanel"]
+[node name="ModelsDataContainer" type="HBoxContainer" parent="DTContainer/ModelsDataPanel"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="ModelsPanelContainer" type="PanelContainer" parent="DTContainer/ModelsDataPanel/ModelsDataContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qb3t8")
+
+[node name="ModelsLabel" type="Label" parent="DTContainer/ModelsDataPanel/ModelsDataContainer/ModelsPanelContainer"]
 z_index = 1
 layout_mode = 2
 size_flags_horizontal = 0
@@ -311,17 +338,17 @@ text = "Models
 "
 uppercase = true
 
-[node name="ModelsDataContainer" type="HBoxContainer" parent="DTContainer/ModelsDataPanel"]
-layout_mode = 2
-theme_override_constants/separation = 50
-
-[node name="ModelsContainer" type="HBoxContainer" parent="DTContainer/ModelsDataPanel/ModelsDataContainer"]
-custom_minimum_size = Vector2(200, 200)
+[node name="ModelsContainer" type="HBoxContainer" parent="DTContainer/ModelsDataPanel/ModelsDataContainer/ModelsPanelContainer"]
+custom_minimum_size = Vector2(200, 125)
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 3
 
-[node name="DataLabel" type="Label" parent="DTContainer/ModelsDataPanel/ModelsDataContainer"]
+[node name="DataPanelContainer" type="PanelContainer" parent="DTContainer/ModelsDataPanel/ModelsDataContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panlg")
+
+[node name="DataLabel" type="Label" parent="DTContainer/ModelsDataPanel/ModelsDataContainer/DataPanelContainer"]
 z_index = 1
 layout_mode = 2
 size_flags_horizontal = 0
@@ -330,7 +357,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Data"
 uppercase = true
 
-[node name="DataContainer" type="HBoxContainer" parent="DTContainer/ModelsDataPanel/ModelsDataContainer"]
-custom_minimum_size = Vector2(200, 200)
+[node name="DataContainer" type="HBoxContainer" parent="DTContainer/ModelsDataPanel/ModelsDataContainer/DataPanelContainer"]
+custom_minimum_size = Vector2(200, 125)
 layout_mode = 2
 size_flags_horizontal = 6

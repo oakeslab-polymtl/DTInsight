@@ -6,8 +6,8 @@ class_name DT_PT
 #Reference each visual data container
 @onready var service_container = $DTContainer/ServicesPanel/ServicesOrganizer/ServicesContainer
 @onready var enabler_container = $DTContainer/EnablersPanel/EnablerOrganizer/EnablersContainer
-@onready var model_container = $DTContainer/ModelsDataPanel/ModelsDataContainer/ModelsContainer
-@onready var data_container = $DTContainer/ModelsDataPanel/ModelsDataContainer/DataContainer
+@onready var model_container = $DTContainer/ModelsDataPanel/ModelsDataContainer/ModelsPanelContainer/ModelsContainer
+@onready var data_container = $DTContainer/ModelsDataPanel/ModelsDataContainer/DataPanelContainer/DataContainer
 @onready var operator_container = $"PTContainer/Operator&EnvContainer/OperatorPanel/OperatorOrganizer/OperatorContainer"
 @onready var machine_container = $PTContainer/DataTravelContainer/MachinePanel/MachineOrganizer/MachineContainer
 @onready var data_transmitted_container = $PTContainer/DataTravelContainer/DataOutPanel/DataOutContainer/DataTransmittedOrganizer/DataTransmittedContainer
