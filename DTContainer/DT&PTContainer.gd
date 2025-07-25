@@ -221,6 +221,8 @@ func update_node_with(visual_container : HBoxContainer, fuseki_node_data : Dicti
 			new_node.set_python_script_location(fuseki_node_data[key][PythonConfig.LOCATION_KEY][0])
 		if ("HasVisualization" in fuseki_node_data[key].keys() and fuseki_node_data[key]["HasVisualization"][0] == "true"):
 			new_node.set_visualization()
+		if ("IsPlanned" in fuseki_node_data[key].keys() and fuseki_node_data[key]["IsPlanned"][0] == "true"):
+			new_node.set_is_planned()
 		if ("desc" in fuseki_node_data[key].keys() and fuseki_node_data[key]["desc"][0] != ""):
 			new_node.set_description(fuseki_node_data[key]["desc"][0])
 		visual_container.add_child(new_node)

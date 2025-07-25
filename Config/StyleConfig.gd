@@ -13,6 +13,7 @@ class DTElement:
 	const DIMMED_COLOR : Color = Color.GRAY
 	const HIGHLIGHT_COLOR : Color = Color.DIM_GRAY
 	const TEXT_HIGHLIGHT_COLOR : Color = Color.WHITE_SMOKE
+	const PLANNED_COLOR : Color = Color(Color.WHITE, 0.6)
 
 #Visual link style
 class Link:
@@ -29,5 +30,5 @@ class Legends:
 	const COME_IN_TEXT : String = "Show legend"
 	
 	const RETRACT_BUTTON_COLOR : Color = Color.DARK_ORANGE
-	const PANEL_COLOR : Color = Color.GRAY
-	const CATEGORY_ANNONCE_COLOR : Color = Color.DIM_GRAY
+	const PANEL_COLOR : Color = Color.DARK_GRAY
+	const CATEGORY_ANNONCE_COLOR : Color = Color(0.3, 0.3, 0.3)

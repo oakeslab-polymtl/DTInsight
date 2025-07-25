@@ -129,10 +129,15 @@ func set_visualization():
 		if last_loaded_pck_path.is_empty():
 			$GenericDisplay/VisualizationContainer/HBoxContainer/VizPopUpButton.disabled = true
 
+# Enables a button showing DTComponent's description
 func set_description(description):
 	$GenericDisplay/PresentationBox/DescriptionButton.show()
 	$PopupDescription.title = $GenericDisplay/PresentationBox/GenericElementName.text + " description"
 	$PopupDescription/DescriptionControl/DescriptionContainer/Description.text = description
+
+# Changes the style of the node when the DTComponent is planned
+func set_is_planned():
+	self_modulate = StyleConfig.DTElement.PLANNED_COLOR
 
 func set_info(new_data : Array[String], is_bool = false) -> void:
 	data = to_float_array(new_data, is_bool)

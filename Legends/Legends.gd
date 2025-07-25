@@ -18,9 +18,10 @@ func set_retract_button_color(color : Color):
 	retract_button.add_theme_stylebox_override("normal", buttonStylebox)
 
 func set_panel_color(color : Color):
-	var panelStylebox : StyleBoxFlat = legends_panel.get_theme_stylebox("normal").duplicate()
+	var panelStylebox : StyleBoxFlat = legends_panel.get_theme_stylebox("panel").duplicate()
 	panelStylebox.bg_color = color
-	legends_panel.add_theme_stylebox_override("normal", panelStylebox)
+	panelStylebox.border_color
+	legends_panel.add_theme_stylebox_override("panel", panelStylebox)
 
 func build_legends(legends : Dictionary):
 	for categoryKey : String in legends.keys():
