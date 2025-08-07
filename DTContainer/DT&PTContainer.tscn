@@ -167,6 +167,7 @@ size_flags_horizontal = 6
 [node name="SystemPanel" type="PanelContainer" parent="PTContainer/Operator&EnvContainer/ExperimentContainer"]
 z_index = -1
 layout_mode = 2
+size_flags_horizontal = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_5tggx")
 
